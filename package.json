@@ -27,7 +27,7 @@
     "react-router-dom": "^7.9.1",
     "react-scripts": "^5.0.1"
   },
-  "browserlist":[
+  "browserslist":[
     ">0.2%",
     "not dead",
     "not ie <= 11",
