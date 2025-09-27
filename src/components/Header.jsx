@@ -10,6 +10,7 @@ import {
   User,
   Settings,
   Badge,
+  Home
 } from "lucide-react";
 
 function Header() {
@@ -60,10 +61,10 @@ function Header() {
           </button>
           <button
             type="button"
-            className="btn btn-outline-secondary btn-custom btn-sm ms-3 d-none d-md-inline"
+            className="btn btn-outline-secondary btn-custom btn-sm ms-3 "
             style={{ color: "black" }}
           >
-            <Wallet className="icon-btn-size" />
+            <Home className="icon-btn-size" />
           </button>
           <button
             type="button"
@@ -97,7 +98,7 @@ function Header() {
           </button>
           <button
             type="button"
-            className="btn btn-outline-secondary btn-custom btn-sm ms-3 position-relative"
+            className="btn btn-outline-secondary btn-custom btn-sm ms-3 position-relative d-none d-md-inline"
             style={{ color: "black" }}
           >
             <Settings className="icon-btn-size" />
