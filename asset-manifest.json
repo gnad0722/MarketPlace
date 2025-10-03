@@ -1,11 +1,12 @@
 {
   "files": {
-    "main.js": "/MarketPlace/static/js/main.a0ec6486.js",
+    "main.js": "/MarketPlace/static/js/main.15e2a31e.js",
+    "static/media/iphone2.webp": "/MarketPlace/static/media/iphone2.fc4338c70449f5a6e5ff.webp",
     "static/media/iphone.webp": "/MarketPlace/static/media/iphone.707477ea51dac85d1a10.webp",
     "index.html": "/MarketPlace/index.html",
-    "main.a0ec6486.js.map": "/MarketPlace/static/js/main.a0ec6486.js.map"
+    "main.15e2a31e.js.map": "/MarketPlace/static/js/main.15e2a31e.js.map"
   },
   "entrypoints": [
-    "static/js/main.a0ec6486.js"
+    "static/js/main.15e2a31e.js"
   ]
 }
