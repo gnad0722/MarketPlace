@@ -1,19 +1,10 @@
 import React from "react";
-import ActionBar from "./ActionBar";
 import PriceProduct from "./PriceProduct";
 import Hashtag from "../../Hashtag";
+import { extractWords } from "../../utils";
 function InforProduct(props) {
   const postInfo = props.postInfo;
   const product = props.postInfo.product;
-  function extractWords(content, wordLimit) {
-    const words = content.trim().split(/\s+/);
-    const firstNWords = words.slice(0, wordLimit);
-    let excerpt = firstNWords.join(" ");
-    if (words.length > wordLimit) {
-      excerpt += "...";
-    }
-    return excerpt;
-  }
   return (
     <div className="info-product">
       <div className="name-seller">
@@ -21,13 +12,12 @@ function InforProduct(props) {
         <span
           style={{ fontSize: "0.9rem", opacity: "0.5", marginTop: "0.3rem" }}
         >
-          {extractWords(postInfo.content,20)}
+          {extractWords(postInfo.content,15)}
         </span>
       </div>
       <div className="hashtag-product">
        {product.hashtag.map((hashtag,index)=><Hashtag hashtag={hashtag} key={index}/>)}
       </div>
-      <ActionBar upVotes={postInfo.upVotes} downVotes={postInfo.downVotes} comments={postInfo.comments.length}/>
       <PriceProduct price={product.price} quantity={product.quantity} currencyCode={product.currencyCode}/>
     </div>
   );

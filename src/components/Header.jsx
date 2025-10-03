@@ -12,8 +12,9 @@ import {
   Badge,
   Home
 } from "lucide-react";
-
+import { useNavigate } from "react-router-dom";
 function Header() {
+  const navigate=useNavigate();
   return (
     <header className="header-sticky">
       <div className="py-2 d-flex justify-content-between align-items-center px-4">
@@ -21,6 +22,9 @@ function Header() {
           <button
             className="btn d-flex align-items-center btn-logo "
             style={{ cursor: "default" }}
+            onClick={()=>{
+              navigate("/")
+            }}
           >
             <div className="logo-space">
               <span style={{ color: "white", fontWeight: "bold" }}>M</span>
@@ -33,7 +37,7 @@ function Header() {
                 marginLeft: "0.5rem",
               }}
             >
-              MarketPlace
+              Marketplace
             </span>
           </button>
         </div>

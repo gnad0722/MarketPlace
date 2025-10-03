@@ -1,24 +1,17 @@
 import React from "react";
-import { Eye } from "lucide-react";
-
+import { Eye, ShoppingCart } from "lucide-react";
+import { formatPriceByCode } from "../../utils";
+import { useNavigate } from "react-router-dom";
 function PriceProduct(props) {
+  const navigate=useNavigate();
   const price = props.price;
   const currencyCode = props.currencyCode;
   const quantity = props.quantity;
-  function formatPriceByCode(price, currencyCode) {
-    const formatter = new Intl.NumberFormat("vi-VN", {
-      style: "currency",
-      currency: currencyCode,
-      minimumFractionDigits: currencyCode.toUpperCase() === "VND" ? 0 : 2,
-      maximumFractionDigits: currencyCode.toUpperCase() === "VND" ? 0 : 2,
-    });
-    return formatter.format(price);
-  }
   return (
     <div className="price-product">
       <div className="name-seller">
         <span style={{ fontSize: "1.3rem", color: "#3D74B6" }}>
-          {formatPriceByCode(price,currencyCode)}
+          {formatPriceByCode(price, currencyCode)}
         </span>
         <span
           style={{ fontSize: "0.9rem", opacity: "0.5", marginTop: "0.3rem" }}
@@ -26,24 +19,44 @@ function PriceProduct(props) {
           Còn {quantity} sản phẩm
         </span>
       </div>
-      <button
-        type="button"
-        className="btn btn-outline-secondary btn-custom btn-sm"
+      <div
         style={{
-          color: "black",
-          borderRadius: "0.5rem",
-          fontSize: "1rem",
-          marginLeft: "auto",
           display: "flex",
-          padding: "5px 10px",
-          justifyContent: "center",
-          alignItems: "center",
-          gap: "5px",
+          gap: "10px",
+          marginLeft: "auto",
         }}
       >
-        <Eye size={20} />
-        Chi tiết
-      </button>
+        <button
+          type="button"
+          className="btn btn-outline-secondary btn-custom btn-sm"
+          style={{
+            color: "black",
+            borderRadius: "0.5rem",
+            fontSize: "1rem",
+            display: "flex",
+            padding: "5px 10px",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: "5px",
+          }}
+          onClick={() => {
+            navigate("/detail");
+          }}
+        >
+          <Eye size={20} />
+          Chi tiết
+        </button>
+        <div className="btn-create">
+          <span style={{ fontWeight: "500" }}>
+            <ShoppingCart
+              color="white"
+              size={20}
+              style={{ marginRight: "5px", paddingBottom: "3px" }}
+            />
+            Thêm
+          </span>
+        </div>
+      </div>
     </div>
   );
 }
