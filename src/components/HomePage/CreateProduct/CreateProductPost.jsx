@@ -1,10 +1,14 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import {Plus} from "lucide-react"
 function CreateProductPost() {
+  const navigate=useNavigate();
   return (
-    <div className="create-card">
+    <div className="create-card" onClick={()=>{
+      navigate("/upload")
+    }}>
       <div className="btn-add">
-        <Plus className="icon-btn-size" style={{color:"#1B3C53"}}/>
+        <Plus className="icon-btn-size" style={{color:"#ff6a00"}}/>
       </div>
       <div className="content-create">
         <span>Chia sẻ sản phẩm của bạn</span>

@@ -10,11 +10,12 @@ import {
   User,
   Settings,
   Badge,
-  Home
+  Home,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-function Header() {
-  const navigate=useNavigate();
+function Header(props) {
+  const navigate = useNavigate();
+  const pageName = props.pageName;
   return (
     <header className="header-sticky">
       <div className="py-2 d-flex justify-content-between align-items-center px-4">
@@ -22,8 +23,8 @@ function Header() {
           <button
             className="btn d-flex align-items-center btn-logo "
             style={{ cursor: "default" }}
-            onClick={()=>{
-              navigate("/")
+            onClick={() => {
+              navigate("/");
             }}
           >
             <div className="logo-space">
@@ -60,13 +61,19 @@ function Header() {
             type="button"
             className="btn btn-outline-secondary btn-custom btn-sm d-none d-md-inline"
             style={{ color: "black" }}
+            onClick={()=>{
+              navigate("/upload")
+            }}
           >
             Đăng bán
           </button>
           <button
             type="button"
             className="btn btn-outline-secondary btn-custom btn-sm ms-3 "
-            style={{ color: "black" }}
+            style={{
+              color: "black",
+              backgroundColor: pageName === "Home" && "#FF9013",
+            }}
           >
             <Home className="icon-btn-size" />
           </button>
@@ -119,12 +126,12 @@ function Header() {
               fill="currentColor"
               className="bi bi-list icon-btn-size"
               viewBox="0 0 16 16"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"
-                />
-              </svg>
+            >
+              <path
+                fillRule="evenodd"
+                d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"
+              />
+            </svg>
           </button>
         </div>
       </div>

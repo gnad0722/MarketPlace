@@ -3,13 +3,14 @@ import { useState } from "react";
 import SelectBox from "./SelectBox";
 import OptionList from "./OptionList";
 function SelectorFilter() {
+  const listOption=["Mới nhất","Cũ nhất","Tốt nhất"];
   const [isOpen,setIsOpen]=useState(false);
-  const [filterBy,setFilterBy]=useState("Mới nhất");
+  const [option,setOption]=useState("Mới nhất");
   function toggleDropdown(){
     setIsOpen(!isOpen);
   }
   function handleOptionSelect(option){
-    setFilterBy(option);
+    setOption(option);
     setIsOpen(!isOpen);
   }
   
@@ -23,8 +24,8 @@ function SelectorFilter() {
       >
         Sắp xếp
       </span>
-        <SelectBox onToggle={toggleDropdown} isOpen={isOpen} filterBy={filterBy}/>
-       {isOpen&&<OptionList filterBy={filterBy} onSelect={handleOptionSelect}/>}
+        <SelectBox onToggle={toggleDropdown} isOpen={isOpen} option={option}/>
+       {isOpen&&<OptionList option={option} onSelect={handleOptionSelect} listOption={listOption}/>}
     </div>
   );
 }

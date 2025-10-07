@@ -33,7 +33,7 @@ function HeaderPost(props) {
       </div>
       <div className="follow-container">
         <span>
-          • <span className="follow-tag" style={{color:followed ?"#B0B3B8":"#0d6efd"}} onClick={handleFollow}>{followed ? "Đang theo dõi" : "Theo dõi"}</span>
+          • <span className="follow-tag" style={{color:followed ?"#B0B3B8":"#0046FF"}} onClick={handleFollow}>{followed ? "Đang theo dõi" : "Theo dõi"}</span>
         </span>
       </div>
       

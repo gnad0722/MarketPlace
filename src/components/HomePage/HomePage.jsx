@@ -9,7 +9,7 @@ import { listTrending,listCategories, listRecommendSeller,listPosts } from "../d
 function HomePage() {
   return (
     <div>
-      <Header />
+      <Header pageName="Home"/>
       <div className="container py-4 ">
         <div className="row">
           <div className="col">

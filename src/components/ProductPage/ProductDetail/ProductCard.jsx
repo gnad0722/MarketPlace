@@ -1,9 +1,11 @@
 import React from "react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Hashtag from "../../Hashtag";
 import { formatPriceByCode } from "../../utils";
 import { Minus, Plus, ShoppingCart, Truck, Shield } from "lucide-react";
 function ProductCard(props) {
+  const navigate=useNavigate();
   const title = props.title;
   const sold = props.sold;
   const quantity = props.quantity;
@@ -20,7 +22,7 @@ function ProductCard(props) {
       <span
         style={{
           fontSize: "2rem",
-          color: "#3D74B6",
+          color: "#ff6a00",
           fontWeight: "500",
           marginTop: "10px",
         }}
@@ -53,7 +55,9 @@ function ProductCard(props) {
         </button>
       </div>
       <div className="action-buy">
-        <div className="btn-create" style={{ width: "100%" }}>
+        <div className="btn-create" style={{ width: "100%" }} onClick={()=>{
+            navigate("/order")
+        }}>
           <span style={{ fontWeight: "490" }}>Mua ngay</span>
         </div>
         <div className="btn-add-cart">
@@ -65,11 +69,11 @@ function ProductCard(props) {
       <hr style={{ color: "gray" }}></hr>
       <div className="service-gurantees">
         <span>
-          <Truck size={15} style={{ marginRight: "10px" }} color="#0d6efd" />{" "}
+          <Truck size={15} style={{ marginRight: "10px" }} color="#ff6a00" />
           Miễn phí giao hàng toàn quốc
         </span>
         <span>
-          <Shield size={15} style={{ marginRight: "10px" }} color="#0d6efd" />{" "}
+          <Shield size={15} style={{ marginRight: "10px" }} color="#ff6a00" />
           Bảo hành 12 tháng chính hãng
         </span>
         <span style={{ opacity: "0.5" }}>

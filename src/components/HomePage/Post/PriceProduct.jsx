@@ -10,7 +10,7 @@ function PriceProduct(props) {
   return (
     <div className="price-product">
       <div className="name-seller">
-        <span style={{ fontSize: "1.3rem", color: "#3D74B6" }}>
+        <span style={{ fontSize: "1.3rem", color: "#ff6a00" }}>
           {formatPriceByCode(price, currencyCode)}
         </span>
         <span
