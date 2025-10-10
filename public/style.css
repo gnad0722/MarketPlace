@@ -47,8 +47,8 @@
   border-color: #0b12201a;
 }
 .icon-btn-size {
-  width: 1.25rem;
-  height: 1.25rem;
+  width: 1.1rem;
+  height: 1.1rem;
 }
 .badge-container {
   position: absolute;
@@ -69,8 +69,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 2rem;
+  height: 2rem;
   border-radius: 50%;
   padding: 0;
 }
@@ -743,4 +743,90 @@ img {
 .img-form:hover{
   background-color: #f5f5f5;
   border-color: #ff9013;
+}
+
+.content-item{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  align-items: flex-start;
+  padding: 125px 0px 20px 0px;
+  gap:30px;
+}
+#carouselHero
+.carousel-control-next-icon {
+  filter: invert(1) grayscale(100); 
+}
+
+#carouselHero
+.carousel-control-prev-icon {
+  filter: invert(1) grayscale(100); 
+}
+.container-login{
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+}
+.login-form{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 400px;
+  height: 550px;
+  border-radius: 0.7rem;
+  border: 1px solid rgba(11, 18, 32, 0.1);
+  border-radius: 0.8rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+}
+.header-login{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0;
+}
+.form-login{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 40px;
+  gap:5px
+}
+.eye-icon {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+
+  width: 1rem;
+  height: 1rem;
+  z-index: 5;
+}
+.underline-text{
+  margin-top: 5px;
+  margin-left: auto;
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: #ff6a00;
+  font-weight: 500;
+  cursor: pointer;
+  border-bottom: transparent solid 1px;
+  padding: 0;
+}
+.underline-text:hover{
+  border-bottom: #ff6a00 solid 1px;
+}
+
+.register-form{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 400px;
+  height: 600px;
+  border-radius: 0.7rem;
+  border: 1px solid rgba(11, 18, 32, 0.1);
+  border-radius: 0.8rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 30px;
 }

@@ -11,6 +11,9 @@ import {
   Settings,
   Badge,
   Home,
+  ShoppingBag,
+  ShoppingCart,
+  LogOut,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 function Header(props) {
@@ -24,7 +27,7 @@ function Header(props) {
             className="btn d-flex align-items-center btn-logo "
             style={{ cursor: "default" }}
             onClick={() => {
-              navigate("/");
+              navigate("/home");
             }}
           >
             <div className="logo-space">
@@ -72,7 +75,7 @@ function Header(props) {
             className="btn btn-outline-secondary btn-custom btn-sm ms-3 "
             style={{
               color: "black",
-              backgroundColor: pageName === "Home" && "#FF9013",
+           
             }}
           >
             <Home className="icon-btn-size" />
@@ -87,12 +90,19 @@ function Header(props) {
               <p style={{ margin: "0" }}>3</p>
             </div>
           </button>
+           <button
+            type="button"
+            className="btn btn-outline-secondary btn-custom btn-sm ms-3 position-relative d-none d-md-inline"
+            style={{ color: "black" }}
+          >
+            <ShoppingBag className="icon-btn-size" />
+          </button>
           <button
             type="button"
             className="btn btn-outline-secondary btn-custom btn-sm ms-3 position-relative d-none d-md-inline"
             style={{ color: "black" }}
           >
-            <Moon className="icon-btn-size" />
+            <ShoppingCart className="icon-btn-size" />
           </button>
           <button className="btn btn-outline-secondary btn-custom ms-3  btn-avt">
             <svg
@@ -107,12 +117,15 @@ function Header(props) {
               <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z" />
             </svg>
           </button>
-          <button
+           <button
             type="button"
             className="btn btn-outline-secondary btn-custom btn-sm ms-3 position-relative d-none d-md-inline"
             style={{ color: "black" }}
+            onClick={()=>{
+              navigate("/")
+            }}
           >
-            <Settings className="icon-btn-size" />
+            <LogOut className="icon-btn-size" />
           </button>
           <button
             type="button"

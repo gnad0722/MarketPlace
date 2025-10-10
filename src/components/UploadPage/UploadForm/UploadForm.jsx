@@ -140,7 +140,7 @@ function UploadForm() {
                 gap: "5px",
               }}
               onClick={() => {
-                navigate("/");
+                navigate("/home");
               }}
             >
               Hủy
