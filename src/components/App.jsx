@@ -1,5 +1,5 @@
 import React from "react";
-import { HashRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter,Router, Routes, Route } from "react-router-dom";
 import Header from "./Header";
 import HomePage from "./HomePage/HomePage";
 import ProductPage from "./ProductPage/ProductPage";
@@ -12,7 +12,7 @@ import ForgetPassword from "./ForgetPassword/ForgetPassword";
 function App() {
   return (
     <div>
-      <Router basename="/MarketPlace">
+      <BrowserRouter basename="/MarketPlace">
         <Routes>
           <Route path="/" element={<HeroPage />} />
           <Route path="/home" element={<HomePage />} />
@@ -23,7 +23,7 @@ function App() {
           <Route path="/upload" element={<UploadPage />} />
           <Route path="/detail" element={<ProductPage />} />
         </Routes>
-      </Router>
+      </BrowserRouter>
     </div>
   );
 }
