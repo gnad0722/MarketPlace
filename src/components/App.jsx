@@ -12,7 +12,7 @@ import ForgetPassword from "./ForgetPassword/ForgetPassword";
 function App() {
   return (
     <div>
-      <Router basename="/">
+      <Router basename="/MarketPlace">
         <Routes>
           <Route path="/" element={<HeroPage />} />
           <Route path="/home" element={<HomePage />} />
