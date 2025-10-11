@@ -830,3 +830,19 @@ img {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 30px;
 }
+
+.notifi-container{
+  position: absolute;
+  z-index: 1;
+  background-color: #FF9013;
+  color: white;
+  width: 100vw;
+  height: 60px;
+  left: 50%;
+   margin-left: -50vw;
+  top:0;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: 17px;
+  padding-left: 50px;
+}
