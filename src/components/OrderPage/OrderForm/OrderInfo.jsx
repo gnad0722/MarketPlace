@@ -5,7 +5,7 @@ function OrderInfo() {
     <div className="order-info">
       <span style={{ fontWeight: "500" }}>
         <MapPin color="#ff6a00" style={{ marginRight: "5px" }} />
-        Thông tin nhập hàng
+        Thông tin giao hàng
       </span>
       <span style={{ opacity: "0.5", marginLeft: "5px" }}>
         Nhập thông tin giao hàng của bạn
