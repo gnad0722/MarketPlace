@@ -15,8 +15,21 @@ function RatingItem(props) {
     }
   });
   return (
-    <div className="star-list" style={{ fontSize: "13px", cursor:"pointer" }}>
-      {starts} {rating!==5 && <span style={{paddingTop:"8px", marginLeft:"5px",fontSize:"14px"}}>trở lên</span>}
+    <div
+      className={`star-list ${props.selected === rating && "selected-rating"}`}
+      style={{ fontSize: "13px", cursor: "pointer" }}
+      onClick={() => {
+        props.onSelect(rating);
+      }}
+    >
+      {starts}
+      {rating !== 5 && (
+        <span
+          style={{ paddingTop: "8px", marginLeft: "5px", fontSize: "14px" }}
+        >
+          trở lên
+        </span>
+      )}
     </div>
   );
 }
