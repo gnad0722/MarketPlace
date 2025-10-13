@@ -41,13 +41,51 @@ function formatTime(dateData) {
   }
 }
 
- function extractWords(content, wordLimit) {
-    const words = content.trim().split(/\s+/);
-    const firstNWords = words.slice(0, wordLimit);
-    let excerpt = firstNWords.join(" ");
-    if (words.length > wordLimit) {
-      excerpt += "...";
-    }
-    return excerpt;
+function extractWords(content, wordLimit) {
+  const words = content.trim().split(/\s+/);
+  const firstNWords = words.slice(0, wordLimit);
+  let excerpt = firstNWords.join(" ");
+  if (words.length > wordLimit) {
+    excerpt += "...";
   }
-export { formatPriceByCode, getAvgRating, getTotalRating, formatTime, extractWords };
+  return excerpt;
+}
+function checkValidAccount(email, password, username, page) {
+  const valid = {
+    email: true,
+    password: true,
+    username: true,
+  };
+  const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const regexPassword =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-+=\[\]{};:'",.<>?/]).{8,}$/;
+  const regexUsername = /^(?![._-])[A-Za-zÀ-ỹ0-9\s._'&!-]{3,50}(?<![._-])$/;
+  if (page === "login") {
+    valid.username = true;
+    valid.password = true;
+    if (!regexEmail.test(email)) {
+      valid.email = false;
+      return valid;
+    }
+  } else if (page === "register") {
+    if ( email!== "" && !regexEmail.test(email)) {
+      valid.email = false;
+      return valid;
+    } else if (password!=="" && !regexPassword.test(password)) {
+      valid.password = false;
+      return valid;
+    } else if (username!=="" && !regexUsername.test(username)) {
+      valid.username=false;
+      return valid;
+    }
+  }
+  return valid;
+}
+export {
+  formatPriceByCode,
+  getAvgRating,
+  getTotalRating,
+  formatTime,
+  extractWords,
+  checkValidAccount,
+};

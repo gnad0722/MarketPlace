@@ -5,6 +5,7 @@ import Trending from "./Trending/Trending";
 import RecommendSeller from "./RecommendSeller/RecommendSeller";
 import CreateProductPost from "./CreateProduct/CreateProductPost";
 import Notification from "./Notification";
+import AdvancedFilter from "./AdvancedFilter/AdvancedFilter";
 import Post from "./Post/Post";
 import {
   listTrending,
@@ -30,6 +31,7 @@ function HomePage() {
             ))}
           </div>
           <div className="col">
+            <AdvancedFilter/>
             <RecommendSeller listRecommendSeller={listRecommendSeller} />
           </div>
         </div>
