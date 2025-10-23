@@ -36,7 +36,10 @@ function FormRegister() {
             setUsername(e.target.value);
           }}
           onBlur={() => {
-            setValid({...checkValidAccount(email, password, username, "register"),confirm:true});
+            setValid({
+              ...checkValidAccount(email, password, username, "register"),
+              confirm: true,
+            });
           }}
         />
         <User className="search-icon" />
@@ -62,7 +65,10 @@ function FormRegister() {
             setEmail(e.target.value);
           }}
           onBlur={() => {
-            setValid({...checkValidAccount(email, password, username, "register"),confirm:true});
+            setValid({
+              ...checkValidAccount(email, password, username, "register"),
+              confirm: true,
+            });
           }}
         />
         <Mail className="search-icon" />
@@ -88,7 +94,10 @@ function FormRegister() {
             setPassword(e.target.value);
           }}
           onBlur={() => {
-           setValid({...checkValidAccount(email, password, username, "register"),confirm:true});
+            setValid({
+              ...checkValidAccount(email, password, username, "register"),
+              confirm: true,
+            });
           }}
         />
         <Lock className="search-icon" />
@@ -104,9 +113,10 @@ function FormRegister() {
           )}
         </div>
       </form>
-       {!valid.password && (
+      {!valid.password && (
         <span style={{ fontSize: "15px", color: "red" }}>
-          *Mật khẩu phải có ít nhất 8 ký tự, gồm chữ hoa, chữ thường, số và ký tự đặc biệt.
+          *Mật khẩu phải có ít nhất 8 ký tự, gồm chữ hoa, chữ thường, số và ký
+          tự đặc biệt.
         </span>
       )}
       <span style={{ fontWeight: "500", fontSize: "14px" }}>
@@ -171,28 +181,22 @@ function FormRegister() {
             });
           } else {
             setEmpty(false);
-            if (confirm !== password)
+            if (confirm !== password) {
               setValid({
                 email: true,
                 password: true,
                 username: true,
                 confirm: false,
               });
-            else {
+            } else {
               setValid({
                 email: true,
                 password: true,
                 username: true,
                 confirm: true,
               });
+                navigate("/home");
             }
-            if (
-              valid.email &&
-              valid.password &&
-              valid.username &&
-              valid.confirm
-            )
-              navigate("/home");
           }
         }}
       >

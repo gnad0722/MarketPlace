@@ -26,10 +26,6 @@ function FormLogin() {
           onChange={(e) => {
             setEmail(e.target.value);
           }}
-          onBlur={(e) => {
-            if (email !== "")
-              setValid(checkValidAccount(email, password, "", "login"));
-          }}
         />
         <User className="search-icon" />
       </form>
@@ -79,7 +75,12 @@ function FormLogin() {
         className="btn-create"
         style={{ width: "100%" }}
         onClick={() => {
-          navigate("/home")
+          if ((email==="" || password==="") || !checkValidAccount(email,password,"","login")) {
+            setValid(false)
+          }
+          else{
+             navigate("/home")
+          }
         }}
       >
         <span style={{ fontWeight: "500" }}>Đăng nhập</span>

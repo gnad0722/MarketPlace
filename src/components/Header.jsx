@@ -84,6 +84,9 @@ function Header(props) {
             type="button"
             className="btn btn-outline-secondary btn-custom btn-sm ms-3 position-relative"
             style={{ color: "black" }}
+            onClick={()=>{
+              navigate("/notification");
+            }}
           >
             <Bell className="icon-btn-size" />
             <div className="badge-container">
@@ -94,6 +97,9 @@ function Header(props) {
             type="button"
             className="btn btn-outline-secondary btn-custom btn-sm ms-3 position-relative d-none d-md-inline"
             style={{ color: "black" }}
+            onClick={()=>{
+              navigate("/ordered")
+            }}
           >
             <ShoppingBag className="icon-btn-size" />
           </button>

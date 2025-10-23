@@ -9,6 +9,8 @@ import HeroPage from "./HeroPage/HeroPage";
 import LoginPage from "./LoginPage/LoginPage";
 import RegisterPage from "./RegisterPage/RegisterPage";
 import ForgetPassword from "./ForgetPassword/ForgetPassword";
+import NotificationPage from "./NotificationPage/NotificationPage";
+import HistoryOrderPage from "./HistoryOrderPage/HistoryOrderPage";
 function App() {
   return (
     <div>
@@ -22,6 +24,8 @@ function App() {
           <Route path="/order" element={<OrderPage />} />
           <Route path="/upload" element={<UploadPage />} />
           <Route path="/detail" element={<ProductPage />} />
+          <Route path="/notification" element={<NotificationPage />} />
+          <Route path="/ordered" element={<HistoryOrderPage />} />
         </Routes>
       </BrowserRouter>
     </div>
