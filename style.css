@@ -729,6 +729,7 @@ img {
   width: 70px;
   height: 70px;
   overflow: hidden;
+  flex-shrink: 0;
 }
 .img-form {
   display: flex;
@@ -1019,4 +1020,63 @@ img {
   display: flex;
   flex-direction: column;
   gap: 20px;
+}
+.container-profile {
+  display: flex;
+  padding: 50px 40px;
+  margin: 0px 200px;
+  gap: 40px;
+  align-items: flex-start;
+}
+.profile-card {
+  display: flex;
+  width: 30%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(11, 18, 32, 0.1);
+  border-radius: 0.7rem;
+  height: auto;
+  padding: 20px;
+}
+.container-action {
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+}
+.about-me {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(11, 18, 32, 0.1);
+  border-radius: 0.7rem;
+  height: auto;
+  margin-top: 20px;
+  padding: 20px;
+  gap: 20px;
+}
+.form-switch .form-check-input:focus {
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='3' fill='%23ff9800'/></svg>") !important;
+}
+.cart-bar {
+  display: flex;
+  padding: 10px 20px;
+  width: 100%;
+  position: relative;
+  align-items: center;
+}
+.footer-cart {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index: 1000;
+  display: flex;
+  padding: 20px 250px;
+  background-color: white;
+  border: 1px solid rgba(11, 18, 32, 0.1);
+  font-size: 17px;
+}
+.footer-spacer {
+    height: 62px; 
+    width: 100%;
+    clear: both; 
 }
