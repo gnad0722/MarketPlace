@@ -42,7 +42,7 @@ function ProductCard(props) {
             if (count>1) handleCount("minus")
           }}
         >
-          <Minus className="icon-btn-size" name="Minus" />
+          <Minus className="icon-btn-size"  />
         </button>
         <div className="number">{count}</div>
         <button

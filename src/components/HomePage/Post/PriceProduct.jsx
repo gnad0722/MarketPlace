@@ -46,7 +46,7 @@ function PriceProduct(props) {
           <Eye size={20} />
           Chi tiết
         </button>
-        <div className="btn-create">
+       {props.showAddToCart && <div className="btn-create">
           <span style={{ fontWeight: "500" }}>
             <ShoppingCart
               color="white"
@@ -55,7 +55,7 @@ function PriceProduct(props) {
             />
             Thêm
           </span>
-        </div>
+        </div>}
       </div>
     </div>
   );

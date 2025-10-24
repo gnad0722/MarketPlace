@@ -1,5 +1,5 @@
 import React from "react";
-function TypeNotification(props) {
+function TypeAction(props) {
   const type = props.type;
   const chosen = props.chosen === type;
   return (
@@ -14,4 +14,4 @@ function TypeNotification(props) {
     </div>
   );
 }
-export default TypeNotification;
+export default TypeAction;

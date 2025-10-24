@@ -25,7 +25,7 @@ function Post(props) {
      <img src={myPicture} onClick={()=>{
       navigate("/detail")
     }}/>
-     <InforProduct postInfo={postInfo}/>
+     <InforProduct postInfo={postInfo} showAddToCart={props.showAddToCart}/>
     </div>
   );
 }

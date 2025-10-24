@@ -77,6 +77,9 @@ function Header(props) {
               color: "black",
            
             }}
+            onClick={()=>{
+              navigate("/home")
+            }}
           >
             <Home className="icon-btn-size" />
           </button>
@@ -107,10 +110,15 @@ function Header(props) {
             type="button"
             className="btn btn-outline-secondary btn-custom btn-sm ms-3 position-relative d-none d-md-inline"
             style={{ color: "black" }}
+            onClick={()=>{
+              navigate("/cart")
+            }}
           >
             <ShoppingCart className="icon-btn-size" />
           </button>
-          <button className="btn btn-outline-secondary btn-custom ms-3  btn-avt">
+          <button className="btn btn-outline-secondary btn-custom ms-3  btn-avt" onClick={()=>{
+            navigate("/profile")
+          }}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="16"
@@ -132,25 +140,6 @@ function Header(props) {
             }}
           >
             <LogOut className="icon-btn-size" />
-          </button>
-          <button
-            type="button"
-            className="btn btn-outline-secondary btn-custom btn-sm ms-3 d-inline d-md-none"
-            style={{ color: "black" }}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              fill="currentColor"
-              className="bi bi-list icon-btn-size"
-              viewBox="0 0 16 16"
-            >
-              <path
-                fillRule="evenodd"
-                d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"
-              />
-            </svg>
           </button>
         </div>
       </div>

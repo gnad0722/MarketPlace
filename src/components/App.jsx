@@ -11,6 +11,8 @@ import RegisterPage from "./RegisterPage/RegisterPage";
 import ForgetPassword from "./ForgetPassword/ForgetPassword";
 import NotificationPage from "./NotificationPage/NotificationPage";
 import HistoryOrderPage from "./HistoryOrderPage/HistoryOrderPage";
+import ProfilePage from "./ProfilePage/ProfilePage";
+import CartPage from "./CartPage/CartPage";
 function App() {
   return (
     <div>
@@ -26,6 +28,8 @@ function App() {
           <Route path="/detail" element={<ProductPage />} />
           <Route path="/notification" element={<NotificationPage />} />
           <Route path="/ordered" element={<HistoryOrderPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+           <Route path="/cart" element={<CartPage/>} />
         </Routes>
       </BrowserRouter>
     </div>

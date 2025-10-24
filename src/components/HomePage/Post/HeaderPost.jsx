@@ -30,13 +30,7 @@ function HeaderPost(props) {
             ? formatTime(createAt)
             : `Đã chỉnh sửa ${formatTime(parseISO(headerInfo.updateAt))}`}
         </span>
-      </div>
-      <div className="follow-container">
-        <span>
-          • <span className="follow-tag" style={{color:followed ?"#B0B3B8":"#0046FF"}} onClick={handleFollow}>{followed ? "Đang theo dõi" : "Theo dõi"}</span>
-        </span>
-      </div>
-      
+      </div>  
     </div>
   );
 }

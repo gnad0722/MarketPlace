@@ -15,7 +15,7 @@ import {
 } from "../dataDemo";
 function HomePage() {
   return (
-    <div style={{overflowX: "hidden"}}>
+    <div >
       <Header pageName="Home" />
       <div className="container py-4 position-relative">
         {/* <Notification /> */}
@@ -27,7 +27,7 @@ function HomePage() {
           <div className="col-6">
             <CreateProductPost />
             {listPosts.map((post, index) => (
-              <Post key={index} postInfo={post} />
+              <Post key={index} postInfo={post} showAddToCart={true}/>
             ))}
           </div>
           <div className="col">
