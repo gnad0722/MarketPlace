@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.js": "/MarketPlace/static/js/main.efe15d96.js",
+    "main.js": "/MarketPlace/static/js/main.55676c48.js",
     "static/media/marketplace-hero-2.jpg": "/MarketPlace/static/media/marketplace-hero-2.9a5a49338f44f153330b.jpg",
     "static/media/marketplace-hero-3.jpg": "/MarketPlace/static/media/marketplace-hero-3.a7fd54165750fe405f97.jpg",
     "static/media/marketplace-hero-1.jpg": "/MarketPlace/static/media/marketplace-hero-1.e7244a563f7e9362cd72.jpg",
     "static/media/iphone2.webp": "/MarketPlace/static/media/iphone2.fc4338c70449f5a6e5ff.webp",
     "static/media/iphone.webp": "/MarketPlace/static/media/iphone.707477ea51dac85d1a10.webp",
     "index.html": "/MarketPlace/index.html",
-    "main.efe15d96.js.map": "/MarketPlace/static/js/main.efe15d96.js.map"
+    "main.55676c48.js.map": "/MarketPlace/static/js/main.55676c48.js.map"
   },
   "entrypoints": [
-    "static/js/main.efe15d96.js"
+    "static/js/main.55676c48.js"
   ]
 }
