@@ -86,6 +86,14 @@ function Setting() {
         >
           <span style={{ fontWeight: "490" }}>Xóa tài khoản</span>
         </div>
+         <div
+          className="btn-add-cart"
+          onClick={() => {
+            navigate("/forgetpassword");
+          }}
+        >
+          <span style={{ fontWeight: "490" }}>Đổi mật khẩu</span>
+        </div>
         <div
           className="btn-create"
           style={{ width: "100%" }}

@@ -25,7 +25,7 @@ function ForgetPassword() {
             </span>
           </div>
           <span style={{ fontSize: "22px", marginTop: "20px" }}>
-            Quên mật khẩu
+            Đặt lại mật khẩu
           </span>
           <span style={{ fontSize: "15px", marginTop: "5px", opacity: "0.7" }}>
             Nhập email của bạn để nhận liên kết đặt lại mật khẩu
