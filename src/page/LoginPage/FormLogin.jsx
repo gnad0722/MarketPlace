@@ -1,0 +1,139 @@
+import React from "react";
+import { User, Lock, Eye, EyeClosed } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { checkValidAccount } from "../../utils/utils";
+import { login } from "../../services/authService";
+function FormLogin() {
+  const [show, setShow] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [user, setUser] = useState({});
+  const [message, setMessage] = useState({
+    email: "",
+    password: "",
+    error: "",
+  });
+  const navigate = useNavigate();
+  async function handleLogin(e) {
+    e.preventDefault();
+    try {
+      const data = await login(email, password);
+      const userInfo = {
+        id: data.id,
+        username: data.username,
+        email: data.email,
+      };
+      setUser(userInfo);
+      localStorage.setItem("token", data.accessToken);
+      navigate("/home");
+    } catch (err) {
+      if (err.response) {
+        if (err.response.status === 400) {
+          const listError = err.response.data.errors;
+          const msg = {};
+          listError.forEach((error) => {
+            msg[error.param] = error.msg;
+          });
+          setMessage(msg);
+        } else if (err.response.status === 401) {
+          const msg = {
+            email: "",
+            password: "",
+            error: err.response.data.message,
+          };
+          setMessage(msg);
+        }
+      }
+    }
+  }
+  return (
+    <div className="form-login">
+      <span style={{ fontWeight: "500", fontSize: "14px" }}>Email Address</span>
+      <form className="input-group position-relative">
+        <input
+          type="email"
+          className="form-control"
+          placeholder="Nhập email"
+          value={email}
+          style={{
+            paddingLeft: "2.5rem",
+            borderRadius: "0.5rem",
+            fontSize: "14px",
+          }}
+          onChange={(e) => {
+            setEmail(e.target.value);
+          }}
+        />
+        <User className="search-icon" />
+      </form>
+      <span style={{ color: "red" }}>{message.email}</span>
+      <span style={{ fontWeight: "500", fontSize: "14px" }}>Mật khẩu</span>
+      <form className="input-group position-relative">
+        <input
+          type={show ? "text" : "password"}
+          className="form-control"
+          value={password}
+          placeholder="Nhập mật khẩu"
+          style={{
+            paddingLeft: "2.5rem",
+            borderRadius: "0.5rem",
+            fontSize: "14px",
+          }}
+          onChange={(e) => {
+            setPassword(e.target.value);
+          }}
+        />
+        <Lock className="search-icon" />
+        <div
+          onClick={() => {
+            setShow(!show);
+          }}
+        >
+          {show ? (
+            <Eye className="eye-icon" />
+          ) : (
+            <EyeClosed className="eye-icon" />
+          )}
+        </div>
+      </form>
+      <span style={{ color: "red" }}>
+        {message.password === "" ? message.error : message.password}
+      </span>
+      <span
+        className="underline-text"
+        onClick={() => {
+          navigate("/forgetpassword");
+        }}
+      >
+        Quên mật khẩu?
+      </span>
+      <div
+        className="btn-create"
+        style={{ width: "100%" }}
+        onClick={handleLogin}
+      >
+        <span style={{ fontWeight: "500" }}>Đăng nhập</span>
+      </div>
+      <span
+        style={{
+          alignSelf: "center",
+          paddingTop: "15px",
+          opacity: "0.7",
+          fontSize: "15px",
+        }}
+      >
+        Chưa có tài khoản?
+        <span
+          className="underline-text"
+          onClick={() => {
+            navigate("/register");
+          }}
+        >
+          Đăng ký ngay
+        </span>
+      </span>
+    </div>
+  );
+}
+export default FormLogin;
