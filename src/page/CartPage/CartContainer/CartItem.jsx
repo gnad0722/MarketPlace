@@ -1,14 +1,31 @@
 import React from "react";
 import myPicture from "../../../img/iphone.webp";
 import { Minus, Plus, X } from "lucide-react";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { updateItemQuantity,removeItem } from "../../../services/cartService";
 function CartItem(props) {
-  const name = "iPhone 15 Pro Max 256GB - Chính hãng VN/A";
+  const item=props.item;
+  const name=item.name;
+  const price=Number(item.price);
   const navigate = useNavigate();
-  const [count, setCount] = useState(1);
+  const [count, setCount] = useState(item.quantity);
+  const [total,setTotal]=useState(price*count);
   function handleCount(action) {
     setCount(action === "plus" ? count + 1 : count - 1);
+    setTotal(action === "plus" ? price*(count + 1) : price*(count - 1))
+  }
+  useEffect(()=>{
+    updateItemQuantity(item.product_id,count)
+  },[count]);
+  async function removeItemCart() {
+    navigate(0);
+    try{
+      const data=removeItem(item.product_id);
+    }
+    catch(err){
+      console.error(err);
+    }
   }
   return (
     <div className="cart-bar" style={{ padding: "20px 20px", gap: "7px" }}>
@@ -46,7 +63,7 @@ function CartItem(props) {
             width: "100%",
           }}
         >
-          <span>iPhone 15 Pro Max 256GB - Chính hãng VN/A</span>
+          <span>{name}</span>
         </div>
       </div>
       <div
@@ -61,7 +78,7 @@ function CartItem(props) {
           fontWeight: "500",
         }}
       >
-        <span style={{ width: "25%", color: "#ff6a00" }}>15.000.000 ₫</span>
+        <span style={{ width: "25%", color: "#ff6a00" }}>{price} ₫</span>
         <div style={{ width: "25%" }}>
           <div className="product-count">
             <button
@@ -90,7 +107,7 @@ function CartItem(props) {
             </button>
           </div>
         </div>
-        <span style={{ width: "25%", color: "#ff6a00" }}>15.000.000 ₫</span>
+        <span style={{ width: "25%", color: "#ff6a00" }}>{total} ₫</span>
         <div
           className="btn-create"
           onClick={() => {
@@ -107,6 +124,7 @@ function CartItem(props) {
             position: "absolute",
             cursor: "pointer",
           }}
+          onClick={removeItemCart}
         >
           <X size={15} />
         </div>

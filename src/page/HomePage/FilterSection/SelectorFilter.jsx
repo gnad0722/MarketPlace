@@ -3,7 +3,7 @@ import { useState } from "react";
 import SelectBox from "./SelectBox";
 import OptionList from "./OptionList";
 function SelectorFilter() {
-  const listOption=["Mới nhất","Bán chạy","Phổ biến"];
+  const listOption=["Mới nhất","Bán chạy","Cũ nhất"];
   const [isOpen,setIsOpen]=useState(false);
   const [option,setOption]=useState("Mới nhất");
   function toggleDropdown(){

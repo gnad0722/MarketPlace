@@ -10,7 +10,6 @@ function ProfileAction() {
   function handleCurrent(chosen) {
     setCurrent(chosen);
   }
-  console.log(current);
   return (
     <div className="container-action">
       <ActionBar onCurrent={handleCurrent} />

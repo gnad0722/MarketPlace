@@ -3,22 +3,21 @@ import PriceProduct from "./PriceProduct";
 import Hashtag from "../../../component/Hashtag";
 import { extractWords } from "../../../utils/utils";
 function InforProduct(props) {
-  const postInfo = props.postInfo;
-  const product = props.postInfo.product;
+  const productInfo=props.productInfo;
   return (
     <div className="info-product">
       <div className="name-seller">
-        <span style={{ fontSize: "1.1rem" }}>{postInfo.title}</span>
+        <span style={{ fontSize: "1.1rem" }}>{productInfo.name}</span>
         <span
           style={{ fontSize: "0.9rem", opacity: "0.5", marginTop: "0.3rem" }}
         >
-          {extractWords(postInfo.content,15)}
+          {extractWords(productInfo.description,15)}
         </span>
       </div>
-      <div className="hashtag-product">
+      {/* <div className="hashtag-product">
        {product.hashtag.map((hashtag,index)=><Hashtag hashtag={hashtag} key={index}/>)}
-      </div>
-      <PriceProduct price={product.price} quantity={product.quantity} currencyCode={product.currencyCode} showAddToCart={props.showAddToCart}/>
+      </div> */}
+      <PriceProduct idProduct={productInfo.id} price={productInfo.price} quantity={productInfo.stock} currencyCode={"USD"} showAddToCart={props.showAddToCart}/>
     </div>
   );
 }

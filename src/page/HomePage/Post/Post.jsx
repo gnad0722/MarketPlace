@@ -5,27 +5,24 @@ import myPicture from "../../../img/iphone.webp";
 import InforProduct from "./InforProduct";
 function Post(props) {
   const navigate=useNavigate();
+  const product=props.productInfo;
   const headerInfo={
-    author:props.postInfo.author,
-    createAt:props.postInfo.createAt,
-    updateAt:props.postInfo.updateAt,
+    author:{
+      name: product.sellerName || "Test",
+      avatar: product.avatarSeller || "",
+    },
+    createAt:product.created_at || "",
+    updateAt:product.updated_at || "",
   }
-  const postInfo={
-    product:props.postInfo.product,
-    title:props.postInfo.title,
-    content:props.postInfo.content,
-    imageURL:props.postInfo.imageURL,
-    upVotes:props.postInfo.upVotes,
-    downVotes:props.postInfo.downVotes,
-    comments:props.postInfo.comments,
-  };
   return (
     <div className="post-container" >
-     <HeaderPost headerInfo={headerInfo}/>
+     <HeaderPost idProduct={product.id} headerInfo={headerInfo} showAction={props.showAction}/>
      <img src={myPicture} onClick={()=>{
-      navigate("/detail")
+      navigate("/detail",{state:{
+        id: product.id
+      }})
     }}/>
-     <InforProduct postInfo={postInfo} showAddToCart={props.showAddToCart}/>
+     <InforProduct productInfo={product} showAddToCart={props.showAddToCart}/>
     </div>
   );
 }

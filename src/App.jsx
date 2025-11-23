@@ -13,6 +13,7 @@ import NotificationPage from "./page/NotificationPage/NotificationPage";
 import HistoryOrderPage from "./page/HistoryOrderPage/HistoryOrderPage";
 import ProfilePage from "./page/ProfilePage/ProfilePage";
 import CartPage from "./page/CartPage/CartPage";
+import EditPage from "./page/EditPage/EditPage";
 function App() {
   return (
     <div>
@@ -25,6 +26,7 @@ function App() {
           <Route path="/forgetpassword" element={<ForgetPassword />} />
           <Route path="/order" element={<OrderPage />} />
           <Route path="/upload" element={<UploadPage />} />
+           <Route path="/edit" element={<EditPage />} />
           <Route path="/detail" element={<ProductPage />} />
           <Route path="/notification" element={<NotificationPage />} />
           <Route path="/ordered" element={<HistoryOrderPage />} />

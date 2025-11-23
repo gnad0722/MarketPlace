@@ -5,7 +5,9 @@ function CreateProductPost() {
   const navigate=useNavigate();
   return (
     <div className="create-card" onClick={()=>{
-      navigate("/upload")
+      navigate("/upload",{state:{
+        update:false
+      }})
     }}>
       <div className="btn-add">
         <Plus className="icon-btn-size" style={{color:"#ff6a00"}}/>

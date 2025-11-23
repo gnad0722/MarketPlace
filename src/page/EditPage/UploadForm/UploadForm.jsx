@@ -5,9 +5,27 @@ import { useNavigate } from "react-router-dom";
 import SelectBox from "../../HomePage/FilterSection/SelectBox";
 import OptionList from "../../HomePage/FilterSection/OptionList";
 import ImageForm from "./ImageForm";
-import { createProduct } from "../../../services/productService";
+import {
+  updateProduct,
+  getProductById,
+} from "../../../services/productService";
 import { de } from "date-fns/locale";
-function UploadForm() {
+import { useRef, useEffect } from "react";
+function UploadForm(props) {
+  const id=props.id;
+  async function getProduct(id) {
+    try {
+      const data = await getProductById(id);
+      setName(data.name);
+      setCategory(data.category);
+      setPrice(data.price);
+      setStock(data.stock);
+      setDesc(data.description);
+      setOption(data.category)
+    } catch (err) {
+      console.error(err);
+    }
+  }
   const navigate = useNavigate();
   const listOption = [
     "Điện thoại",
@@ -46,21 +64,21 @@ function UploadForm() {
     if (option !== "Danh mục") setCategory(option);
     setIsOpen(!isOpen);
   }
-  async function handleCreate(e) {
+  async function handleUpdate(e) {
     e.preventDefault();
-    const msg={}
+    const msg = {};
     try {
-      const data = await createProduct(
+      const data = await updateProduct(
         nameProduct,
         description,
         price,
         stock,
-        category
+        category,
+        id
       );
-      navigate("/home",{
-        state:{show:true}
-      }
-      );
+      navigate("/home", {
+        state: { show: true },
+      });
     } catch (err) {
       if (err.response && err.response.status === 400) {
         const listError = err.response.data.errors;
@@ -71,6 +89,9 @@ function UploadForm() {
     }
     setMessage(msg);
   }
+  useEffect(() => {
+    getProduct(id);
+  }, []);
   return (
     <div className="order-info">
       <span style={{ fontWeight: "500" }}>
@@ -186,7 +207,7 @@ function UploadForm() {
             <div
               className="btn-create"
               style={{ marginLeft: "15px" }}
-              onClick={handleCreate}
+              onClick={handleUpdate}
             >
               <span style={{ fontWeight: "500" }}>
                 <Upload
