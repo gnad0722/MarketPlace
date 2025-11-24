@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import myPicture from "../../../img/iphone.webp";
 import InforProduct from "./InforProduct";
 function Post(props) {
+
   const navigate=useNavigate();
   const product=props.productInfo;
   const headerInfo={

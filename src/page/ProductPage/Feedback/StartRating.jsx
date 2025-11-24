@@ -2,7 +2,7 @@ import React from "react";
 import Start from "./Start";
 function StartRating(props) {
   const rating = props.rating;
-  const number = Math.floor(props.number / 1000);
+  const number =props.number>=1000 ?  Math.floor(props.number / 1000) : props.number;
   const fullStarts = Math.floor(rating);
   const partialStartWidth = (rating - fullStarts) * 100;
   const starts = Array.from({ length: 5 }, (_, index) => {
@@ -24,7 +24,7 @@ function StartRating(props) {
       </span>
       <div className="star-list">{starts}</div>
       <span style={{ fontSize: "12px", opacity: "0.5" }}>
-        {number}N bài đánh giá
+        {props.number >=1000 ? number + "N đánh giá" : number + " đánh giá"} 
       </span>
     </div>
   );
