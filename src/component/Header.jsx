@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Search,
   Camera,
@@ -17,21 +17,35 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../services/authService";
+import { getNotification } from "../services/notficationService";
 function Header(props) {
   const navigate = useNavigate();
-  const pageName = props.pageName;
+  const [notifications, setList] = useState([]);
+  const [numberNoti, setNumber] = useState(0);
   async function handleLogout() {
-    try{
+    try {
       await logout();
-    }
-    catch(err){
+    } catch (err) {
       console.error(err);
-    }
-    finally{
-      localStorage.removeItem('token');
+    } finally {
+      localStorage.removeItem("token");
       navigate("/");
     }
   }
+  async function fetchNotificationForHeader() {
+    try {
+      const data = await getNotification();
+      setList(data);
+      setNumber(data.filter((noti) => !noti.is_read).length);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+  useEffect(() => {
+    fetchNotificationForHeader();
+    const interval = setInterval(fetchNotificationForHeader, 500);
+    return () => clearInterval(interval);
+  }, []);
   return (
     <header className="header-sticky">
       <div className="py-2 d-flex justify-content-between align-items-center px-4">
@@ -77,8 +91,8 @@ function Header(props) {
             type="button"
             className="btn btn-outline-secondary btn-custom btn-sm d-none d-md-inline"
             style={{ color: "black" }}
-            onClick={()=>{
-              navigate("/upload")
+            onClick={() => {
+              navigate("/upload");
             }}
           >
             Đăng bán
@@ -88,10 +102,9 @@ function Header(props) {
             className="btn btn-outline-secondary btn-custom btn-sm ms-3 "
             style={{
               color: "black",
-           
             }}
-            onClick={()=>{
-              navigate("/home")
+            onClick={() => {
+              navigate("/home");
             }}
           >
             <Home className="icon-btn-size" />
@@ -100,21 +113,23 @@ function Header(props) {
             type="button"
             className="btn btn-outline-secondary btn-custom btn-sm ms-3 position-relative"
             style={{ color: "black" }}
-            onClick={()=>{
+            onClick={() => {
               navigate("/notification");
             }}
           >
             <Bell className="icon-btn-size" />
-            <div className="badge-container">
-              <p style={{ margin: "0" }}>3</p>
-            </div>
+            {numberNoti > 0 && (
+              <div className="badge-container">
+                <p style={{ margin: "0" }}>{numberNoti}</p>
+              </div>
+            )}
           </button>
-           <button
+          <button
             type="button"
             className="btn btn-outline-secondary btn-custom btn-sm ms-3 position-relative d-none d-md-inline"
             style={{ color: "black" }}
-            onClick={()=>{
-              navigate("/ordered")
+            onClick={() => {
+              navigate("/ordered");
             }}
           >
             <ShoppingBag className="icon-btn-size" />
@@ -123,15 +138,18 @@ function Header(props) {
             type="button"
             className="btn btn-outline-secondary btn-custom btn-sm ms-3 position-relative d-none d-md-inline"
             style={{ color: "black" }}
-            onClick={()=>{
-              navigate("/cart")
+            onClick={() => {
+              navigate("/cart");
             }}
           >
             <ShoppingCart className="icon-btn-size" />
           </button>
-          <button className="btn btn-outline-secondary btn-custom ms-3  btn-avt" onClick={()=>{
-            navigate("/profile")
-          }}>
+          <button
+            className="btn btn-outline-secondary btn-custom ms-3  btn-avt"
+            onClick={() => {
+              navigate("/profile");
+            }}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="16"
@@ -144,7 +162,7 @@ function Header(props) {
               <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z" />
             </svg>
           </button>
-           <button
+          <button
             type="button"
             className="btn btn-outline-secondary btn-custom btn-sm ms-3 position-relative d-none d-md-inline"
             style={{ color: "black" }}

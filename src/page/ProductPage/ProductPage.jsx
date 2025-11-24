@@ -12,23 +12,21 @@ function ProductPage() {
   async function getProduct(id) {
      try {
           const data = await getProductById(id);
-          console.log(data);
           setProduct(data);
         } catch (err) {
           console.error(err);
         }
   }
   useEffect(()=>{
-    getProduct(id)
+    getProduct(id);
   },[]);
   return (
     <div>
-      <Header />
       <div className="container py-3 px-5">
         <div className="cotainer-product-page">
             <BreadcrumnNavigation title={product.name}/>
             <ProductDetail product={product}/>
-            <Feedback/>
+            <Feedback id={id}/>
         </div>
       </div>
     </div>

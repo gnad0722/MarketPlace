@@ -22,7 +22,6 @@ function CartPage() {
   },[])
   return (
     <div>
-      <Header />
       <div
         className="container px-5 py-3 d-flex flex-column gap-4"
         style={{ width: "1000px" }}

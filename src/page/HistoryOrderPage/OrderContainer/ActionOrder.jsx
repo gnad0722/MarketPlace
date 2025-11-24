@@ -21,14 +21,6 @@ function ActionOrder(props){
           >
             Mua lại
           </button>
-           <button
-            type="button"
-            className="btn btn-outline-secondary btn-custom btn-sm d-none d-md-inline"
-            style={{ color: "black" }}
-            onClick={props.onOpenFeedBack}
-          >
-            Đánh giá
-          </button>
     </div>
 }
 export default ActionOrder;

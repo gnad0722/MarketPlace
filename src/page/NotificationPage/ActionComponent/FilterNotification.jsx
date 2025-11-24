@@ -1,10 +1,11 @@
 import React from "react";
 import TypeAction from "./TypeAction";
 import { useState } from "react";
-function FilterNotification() {
+function FilterNotification(props) {
     const [chosen,setChosen]=useState("Tất cả");
     function handleChoose(chosen){
         setChosen(chosen);
+        props.onChange(chosen);
     }
   return (
     <div className="filter-bar row">

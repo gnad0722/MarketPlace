@@ -43,7 +43,6 @@ function HomePage() {
   }, []);
   return (
     <div>
-      <Header pageName="Home" />
       <div className="container py-4 position-relative">
         <Notification show={show} />
         <div className="row">

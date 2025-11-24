@@ -68,19 +68,69 @@ function checkValidAccount(email, password, username, page) {
       return valid;
     }
   } else if (page === "register") {
-    if ( email!== "" && !regexEmail.test(email)) {
+    if (email !== "" && !regexEmail.test(email)) {
       valid.email = false;
       return valid;
-    } else if (password!=="" && !regexPassword.test(password)) {
+    } else if (password !== "" && !regexPassword.test(password)) {
       valid.password = false;
       return valid;
-    } else if (username!=="" && !regexUsername.test(username)) {
-      valid.username=false;
+    } else if (username !== "" && !regexUsername.test(username)) {
+      valid.username = false;
       return valid;
     }
   }
   return valid;
 }
+function groupNotifications(notifications) {
+  const groups = {};
+
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const yesterday = new Date(today);
+  yesterday.setDate(today.getDate() - 1);
+
+  notifications.forEach((item) => {
+    const createdAt = new Date(item.created_at);
+    const itemDate = new Date(
+      createdAt.getFullYear(),
+      createdAt.getMonth(),
+      createdAt.getDate()
+    );
+
+    let key;
+
+    if (itemDate.getTime() === today.getTime()) {
+      key = "Hôm nay";
+    } else if (itemDate.getTime() === yesterday.getTime()) {
+      key = "Hôm qua";
+    } else {
+      key = `${itemDate.getDate()}/${
+        itemDate.getMonth() + 1
+      }/${itemDate.getFullYear()}`;
+    }
+
+    if (!groups[key]) groups[key] = [];
+    groups[key].push(item);
+  });
+
+  return groups;
+}
+function countRating(feedback) {
+  const ratingCount = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+  feedback.forEach((item) => {
+    if (item.rating >= 1 && item.rating <= 5) {
+      ratingCount[item.rating]++;
+    }
+  });
+  return [
+     { number: 5, rate: ratingCount[5] },
+    { number: 4, rate: ratingCount[4] },
+    { number: 3, rate: ratingCount[3] },
+    { number: 2, rate: ratingCount[2] },
+    { number: 1, rate: ratingCount[1] },
+  ]
+}
+
 export {
   formatPriceByCode,
   getAvgRating,
@@ -88,4 +138,6 @@ export {
   formatTime,
   extractWords,
   checkValidAccount,
+  groupNotifications,
+  countRating
 };

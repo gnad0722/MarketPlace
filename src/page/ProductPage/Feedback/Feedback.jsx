@@ -1,76 +1,63 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import HeaderFeedback from "./HeaderFeedback";
 import RatingInfo from "./RatingInfo";
 import Comment from "./Comment";
-function Feedback() {
-  const rateList = [
-    {
-      number: 5,
-      rate: 5000,
-    },
-    {
-      number: 4,
-      rate: 4000,
-    },
-    {
-      number: 3,
-      rate: 3000,
-    },
-    {
-      number: 2,
-      rate: 4000,
-    },
-    {
-      number: 1,
-      rate: 1000,
-    },
-  ];
-  const commentList = [
-    {
-      author: "Nguyễn Văn A",
-      createAt: "2025-09-27T09:40:12.345+07:00",
-      content: "Sản phẩm chất lượng, giao hàng nhanh. Recommend!",
-      rating: 5,
-      avatar: "",
-    },
-    {
-      author: "Nguyễn Văn B",
-      createAt: "2025-09-27T09:40:12.345+07:00",
-      content: "Sản phẩm chất lượng, giao hàng nhanh. Recommend!",
-      rating: 4,
-      avatar: "",
-    },
-    {
-      author: "Nguyễn Văn C",
-      createAt: "2025-09-27T09:40:12.345+07:00",
-      content: "Sản phẩm chất lượng, giao hàng nhanh. Recommend!",
-      rating: 3,
-      avatar: "",
-    },
-    {
-      author: "Nguyễn Văn D",
-      createAt: "2025-09-27T09:40:12.345+07:00",
-      content: "Sản phẩm chất lượng, giao hàng nhanh. Recommend!",
-      rating: 5,
-      avatar: "",
-    },
-  ];
+import { countRating } from "../../../utils/utils";
+import { reviewProduct } from "../../../services/reviewService";
+function Feedback(props) {
+  const [feedbacks, setFeedback] = useState([]);
+  const [rateList, setRateList] = useState([]);
+  async function getReview(id) {
+    try {
+      const data = await reviewProduct(id);
+      setFeedback(data);
+      setRateList(countRating(data));
+    } catch (err) {
+      console.error(err);
+    }
+  }
+  useEffect(() => {
+    getReview(props.id);
+    const interval = setInterval(() => {
+      getReview(props.id);
+    }, 500);
+    return () => clearInterval(interval);
+  }, []);
   return (
     <div className="feedback-container">
       <HeaderFeedback />
       <RatingInfo rateList={rateList} />
-      {commentList.map((comment, index) => {
+      {feedbacks.map((feedback, index) => {
         return (
-          <>
+          <div key={index}>
             <Comment
-              rating={comment.rating}
-              author={comment.author}
-              createAt={comment.createAt}
-              avatar={comment.avatar}
-              content={comment.content}
+              id={feedback.id}
+              rating={feedback.rating}
+              author={feedback.username}
+              createAt={feedback.created_at}
+              avatar={feedback.avatar_url || ""}
+              content={feedback.comment}
+              replies={false}
+              numberReplies={feedback.replies.length}
             />
+            {feedback.replies.map((reply,index)=>{
+              return (
+                 <div style={{ marginLeft: "50px", width: "100%" }}>
+              <Comment
+                id={feedback.id}
+                rating={0}
+                author={reply.username}
+                createAt={reply.created_at}
+                avatar={reply.avatar_url || ""}
+                content={reply.comment}
+                replies={true}
+              />
+            </div>
+              )
+            })}
+           
             <hr style={{ alignSelf: "center", width: "95%", color: "gray" }} />
-          </>
+          </div>
         );
       })}
     </div>

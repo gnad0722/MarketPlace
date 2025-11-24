@@ -4,7 +4,6 @@ import ProfileCard from "./ProfileCard/ProfileCard";
 import ProfileAction from "./ProfileAction/ProfileAction";
 function ProfilePage(){
     return <div>
-        <Header/>
         <div className="container-profile">
             <ProfileCard/>
             <ProfileAction/>

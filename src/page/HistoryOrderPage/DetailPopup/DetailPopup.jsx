@@ -36,7 +36,7 @@ function DetailPopup(props) {
         <div className="popup-body">
           <InfoOrderPopup/>
           <InfoSellerPopup/>
-          <ProductContainer/>
+          <ProductContainer onOpenFeedBack={props.onOpenFeedBack} onClose={props.onClose}/>
           <InfoDelivery/>
           <InfoPayment/>
           <StateOrder/>
