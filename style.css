@@ -641,7 +641,7 @@ img {
 }
 .comment-container {
   display: flex;
-  padding: 24px 24px 24px 30px;
+  padding: 15px 24px 15px 30px;
   gap: 10px;
   align-items: flex-start;
 }
@@ -1080,4 +1080,26 @@ img {
     height: 62px; 
     width: 100%;
     clear: both; 
+}
+.change-page{
+  display: flex;
+  opacity: 0.5;
+  font-weight: 500;
+  font-size: 15px;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 10px;
+}
+.chevron-box{
+  border: 1px solid black;
+  border-radius: 0.5rem;
+  padding: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.3 ease-in-out;
+}
+.chevron-box:hover{
+  background-color: #EEEEEE;
 }
