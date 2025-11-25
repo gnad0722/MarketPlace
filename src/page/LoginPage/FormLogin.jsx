@@ -103,7 +103,7 @@ function FormLogin() {
       <span
         className="underline-text"
         onClick={() => {
-          navigate("/forgetpassword");
+          navigate("/verify-email");
         }}
       >
         Quên mật khẩu?

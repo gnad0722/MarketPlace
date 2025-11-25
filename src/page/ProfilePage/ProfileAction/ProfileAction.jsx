@@ -5,7 +5,7 @@ import MyOrder from "./MyOrder";
 import AboutMe from "./AboutMe";
 import Setting from "./Setting";
 import { useState } from "react";
-function ProfileAction() {
+function ProfileAction(props) {
   const [current, setCurrent] = useState("Sản phẩm của tôi");
   function handleCurrent(chosen) {
     setCurrent(chosen);
@@ -13,7 +13,7 @@ function ProfileAction() {
   return (
     <div className="container-action">
       <ActionBar onCurrent={handleCurrent} />
-      {current === "Sản phẩm của tôi" && <MyProduct />}
+      {current === "Sản phẩm của tôi" && <MyProduct/>}
       {current === "Đơn hàng của tôi" && <MyOrder />}
       {current === "Giới thiệu" && <AboutMe />}
       {current === "Cài đặt" && <Setting />}

@@ -4,7 +4,7 @@ import FilterSection from "./FilterSection/FilterSection";
 import Trending from "./Trending/Trending";
 import RecommendSeller from "./RecommendSeller/RecommendSeller";
 import CreateProductPost from "./CreateProduct/CreateProductPost";
-import Notification from "./Notification";
+import Notification from "../../component/Notification";
 import AdvancedFilter from "./AdvancedFilter/AdvancedFilter";
 import Post from "./Post/Post";
 import ChangePage from "./Post/ChangePage";
@@ -21,7 +21,10 @@ import {
 function HomePage() {
   const location = useLocation();
   const { show } = location.state || false;
+  const { message } = location.state || "";
+  const { color } = location.state || "#ff9013";
   const [showNotifi, setShow] = useState(show);
+  const closeNotifi = () => setShow(false);
   const [search, setSearch] = useState("");
   const [page, setPage] = useState("1");
   const [category, setCategory] = useState("");
@@ -44,7 +47,7 @@ function HomePage() {
   return (
     <div>
       <div className="container py-4 position-relative">
-        <Notification show={show} />
+        {showNotifi && <Notification message={message} color={color} onClose={closeNotifi}/>}
         <div className="row">
           <div className="col">
             <FilterSection listCategories={listCategories} />

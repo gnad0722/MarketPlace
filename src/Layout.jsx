@@ -15,9 +15,10 @@ import HistoryOrderPage from "./page/HistoryOrderPage/HistoryOrderPage";
 import ProfilePage from "./page/ProfilePage/ProfilePage";
 import CartPage from "./page/CartPage/CartPage";
 import EditPage from "./page/EditPage/EditPage";
+import EmailVerify from "./page/EmailVerify/EmailVerify";
 function Layout() {
    const location = useLocation();
-   const showHeader = location.pathname !== "/" && location.pathname !== "/login" && location.pathname !== "/register" && location.pathname !== "/forgetpassword";
+   const showHeader = location.pathname !== "/" && location.pathname !== "/login" && location.pathname !== "/register" && location.pathname !== "/reset-password" && location.pathname !== "/verify-email";
   return (
     <div>
           {showHeader && <Header />}
@@ -26,7 +27,8 @@ function Layout() {
           <Route path="/home" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
-          <Route path="/forgetpassword" element={<ForgetPassword />} />
+          <Route path="/reset-password" element={<ForgetPassword />} />
+           <Route path="/verify-email" element={<EmailVerify />} />
           <Route path="/order" element={<OrderPage />} />
           <Route path="/upload" element={<UploadPage />} />
           <Route path="/edit" element={<EditPage />} />

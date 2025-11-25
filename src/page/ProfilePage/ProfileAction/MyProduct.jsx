@@ -3,7 +3,11 @@ import Post from "../../HomePage/Post/Post";
 import { getProduct } from "../../../services/productService";
 import { useEffect, useState } from "react";
 import ChangePage from "../../HomePage/Post/ChangePage";
-function MyProduct() {
+import Notification from "../../../component/Notification";
+function MyProduct(props) {
+  const [showNotifi, setShow] = useState(false);
+  const openNotifi = () => setShow(true);
+  const closeNotifi = () => setShow(false);
   const [listProduct, setList] = useState([]);
   const [search, setSearch] = useState("");
   const [page, setPage] = useState("1");
@@ -15,7 +19,6 @@ function MyProduct() {
         category,
         page,
       });
-      console.log(data);
       setList(data);
     } catch (err) {
       console.error(err);
@@ -23,6 +26,10 @@ function MyProduct() {
   }
   useEffect(() => {
     getListProduct();
+    const interval = setInterval(() => {
+      getListProduct();
+    }, 500);
+    return () => clearInterval(interval);
   }, []);
   return (
     <div
@@ -33,9 +40,23 @@ function MyProduct() {
         Sản phẩm của tôi
       </span>
       {listProduct.map((product, index) => (
-        <Post key={index} productInfo={product} showAddToCart={false}  showAction={true}/>
+        <Post
+          key={index}
+          productInfo={product}
+          showAddToCart={false}
+          showAction={true}
+          openNotifi={openNotifi}
+        />
       ))}
-       <ChangePage page={page}/>
+      <ChangePage page={page} />
+      {showNotifi && (
+        <Notification
+          show={true}
+          message={"Sản phẩm của bạn đã xóa thành công"}
+          color={"#BF092F"}
+          onClose={closeNotifi}
+        />
+      )}
     </div>
   );
 }

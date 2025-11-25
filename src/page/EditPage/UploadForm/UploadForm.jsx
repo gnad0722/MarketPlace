@@ -77,7 +77,10 @@ function UploadForm(props) {
         id
       );
       navigate("/home", {
-        state: { show: true },
+        state: { show: true,
+          message: "Sản phẩm của bạn đã được cập nhật thành công!",
+          color: "#3F7D58"
+         },
       });
     } catch (err) {
       if (err.response && err.response.status === 400) {

@@ -1,29 +1,23 @@
 import React, { useState } from "react";
-import { EyeClosed, Lock, Eye } from "lucide-react";
+import {User} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useSearchParams } from "react-router-dom";
-import { resetPassword } from "../../services/authService";
-function ForgetPassword() {
-  const [param] = useSearchParams();
-  const resetToken = param.get("token");
+import { requestPasswordReset } from "../../services/authService";
+function EmailVerify() {
   const [message, setMessage] = useState({
-    password: "",
+    email: "",
+    verify: ""
   });
   const navigate = useNavigate();
-  const [show, setShow] = useState(false);
-  const [password, setPassword] = useState("");
-  async function handleResetPassword(e) {
-    e.preventDefault();
+  const [email, setEmail] = useState("");
+  async function handleRequestPasswordReset(e) {
+    e.preventDefault(); 
     try{
-      await resetPassword(resetToken, password);
-      navigate("/home",{state:{
-        show: true,
-        message: "Đặt lại mật khẩu thành công!",
-        color:"#11224E"
-      }});
+      const data = await requestPasswordReset(email);
+      setMessage({verify: data.message})
     }
     catch(err){
-      if (err.response) {
+       if (err.response) {
         if (err.response.status === 400) {
           const listError = err.response.data.errors;
           const msg = {};
@@ -57,53 +51,40 @@ function ForgetPassword() {
             </span>
           </div>
           <span style={{ fontSize: "22px", marginTop: "20px" }}>
-            Đặt lại mật khẩu
+            Xác thực email để đặt lại mật khẩu
           </span>
           <span style={{ fontSize: "15px", marginTop: "5px", opacity: "0.7" }}>
-            Nhập mật khẩu mới của bạn
+            Nhập email của bạn
           </span>
         </div>
         <div className="form-login">
           <span style={{ fontWeight: "500", fontSize: "14px" }}>
-            Mật khẩu mới
+            Email Address
           </span>
           <form className="input-group position-relative">
             <input
-              type={show ? "text" : "password"}
-              value={password}
+              type="email"
               className="form-control"
-              placeholder="Nhập mật khẩu"
+              placeholder="Nhập email"
+              value={email}
               style={{
                 paddingLeft: "2.5rem",
                 borderRadius: "0.5rem",
                 fontSize: "14px",
               }}
               onChange={(e) => {
-                setPassword(e.target.value);
+                setEmail(e.target.value);
               }}
             />
-            <Lock className="search-icon" />
-            <div
-              onClick={() => {
-                setShow(!show);
-              }}
-            >
-              {show ? (
-                <Eye className="eye-icon" />
-              ) : (
-                <EyeClosed className="eye-icon" />
-              )}
-            </div>
+            <User className="search-icon" />
           </form>
-          <span style={{ color: "red" }}>{message.password}</span>
+          <span style={{ color: "red" }}>{message.email}</span>
+           <span style={{ color: "green" }}>{message.verify}</span>
         </div>
         <div
           className="btn-create"
           style={{ width: "100%", marginTop: "20px" }}
-          onClick={() => {
-            handleResetPassword(event);
-            
-          }}
+          onClick={handleRequestPasswordReset}
         >
           <span style={{ fontWeight: "500" }}>Xác nhận</span>
         </div>
@@ -111,4 +92,4 @@ function ForgetPassword() {
     </div>
   );
 }
-export default ForgetPassword;
+export default EmailVerify;

@@ -48,7 +48,7 @@ function UploadForm() {
   }
   async function handleCreate(e) {
     e.preventDefault();
-    const msg={}
+    const msg = {};
     try {
       const data = await createProduct(
         nameProduct,
@@ -57,10 +57,13 @@ function UploadForm() {
         stock,
         category
       );
-      navigate("/home",{
-        state:{show:true}
-      }
-      );
+      navigate("/home", {
+        state: {
+          show: true,
+          message: "Sản phẩm của bạn đã được đăng bán thành công!",
+          color: "#ff9013"
+        },
+      });
     } catch (err) {
       if (err.response && err.response.status === 400) {
         const listError = err.response.data.errors;

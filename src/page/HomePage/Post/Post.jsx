@@ -17,7 +17,7 @@ function Post(props) {
   }
   return (
     <div className="post-container" >
-     <HeaderPost idProduct={product.id} headerInfo={headerInfo} showAction={props.showAction}/>
+     <HeaderPost idProduct={product.id} headerInfo={headerInfo} showAction={props.showAction} openNotifi={props.openNotifi||null}/>
      <img src={myPicture} onClick={()=>{
       navigate("/detail",{state:{
         id: product.id

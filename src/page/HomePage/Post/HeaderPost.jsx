@@ -12,7 +12,6 @@ function HeaderPost(props) {
   const [isCanclePopupOpen, setIsCanclePopupOpen] = useState(false);
   const openCanclePopup = () => setIsCanclePopupOpen(true);
   const closeCanclePopup = () => setIsCanclePopupOpen(false);
-  console.log(isCanclePopupOpen);
   const navigate = useNavigate();
   function handleFollow() {
     setFollowed(!followed);
@@ -23,7 +22,6 @@ function HeaderPost(props) {
   async function deleteProductById() {
     try {
       const data = deleteProduct(props.idProduct);
-      navigate(0);
     } catch (err) {
       console.error(err);
     }
@@ -68,7 +66,12 @@ function HeaderPost(props) {
           />
         </div>
       )}
-      <PopupCancle isOpen={isCanclePopupOpen} onClose={closeCanclePopup} onDelete={deleteProductById} />
+      <PopupCancle
+        isOpen={isCanclePopupOpen}
+        onClose={closeCanclePopup}
+        onDelete={deleteProductById}
+        onShowNotifi={props.openNotifi}
+      />
     </div>
   );
 }

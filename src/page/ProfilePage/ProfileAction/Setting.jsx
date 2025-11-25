@@ -1,9 +1,20 @@
 import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {handleLogout} from "../../../services/authService";
 function Setting() {
   const [isOpen, setOpen] = useState([false, false, false]);
   const navigate = useNavigate();
+  async function handleLogout() {
+    try {
+      await logout();
+    } catch (err) {
+      console.error(err);
+    } finally {
+      localStorage.removeItem("token");
+      navigate("/");
+    }
+  }
   function handleOpen(index) {
     setOpen((prev) => {
       const newState = [...prev];
@@ -78,18 +89,10 @@ function Setting() {
       </div>
       <div className="about-me">
         <span style={{ fontWeight: "500" }}>Tài khoản</span>
-        <div
-          className="btn-add-cart"
-          onClick={() => {
-            navigate("/");
-          }}
-        >
-          <span style={{ fontWeight: "490" }}>Xóa tài khoản</span>
-        </div>
          <div
           className="btn-add-cart"
           onClick={() => {
-            navigate("/forgetpassword");
+            navigate("/verify-email");
           }}
         >
           <span style={{ fontWeight: "490" }}>Đổi mật khẩu</span>
@@ -98,6 +101,7 @@ function Setting() {
           className="btn-create"
           style={{ width: "100%" }}
           onClick={() => {
+            handleLogout();
             navigate("/");
           }}
         >

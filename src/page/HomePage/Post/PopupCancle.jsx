@@ -15,7 +15,7 @@ function PopupCancle(props) {
             <span
               style={{ fontWeight: "500", color: "#ff6600", fontSize: "20px" }}
             >
-             Bạn có chắc muốn hủy đăng sản phẩm này?
+             Bạn có chắc muốn hủy bán sản phẩm này?
             </span>
             <span style={{ opacity: "0.5" }}>
               Sản phẩm sẽ bị xóa khỏi danh sách của bạn và không thể khôi phục lại.
@@ -33,6 +33,7 @@ function PopupCancle(props) {
               onClick={()=>{
                 props.onDelete();
                 props.onClose();
+                props.onShowNotifi && props.onShowNotifi();
               }}
             >
               <span style={{ fontWeight: "500" }}>Xác nhận</span>
