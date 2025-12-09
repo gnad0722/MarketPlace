@@ -1,7 +1,7 @@
 import React from "react";
 import { User, Lock, Eye, EyeClosed } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { checkValidAccount } from "../../utils/utils";
 import { login } from "../../services/authService";
 function FormLogin() {
@@ -47,6 +47,7 @@ function FormLogin() {
       }
     }
   }
+
   return (
     <div className="form-login">
       <span style={{ fontWeight: "500", fontSize: "14px" }}>Email Address</span>
@@ -63,6 +64,9 @@ function FormLogin() {
           }}
           onChange={(e) => {
             setEmail(e.target.value);
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") handleLogin(e);
           }}
         />
         <User className="search-icon" />
@@ -82,6 +86,9 @@ function FormLogin() {
           }}
           onChange={(e) => {
             setPassword(e.target.value);
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") handleLogin(e);
           }}
         />
         <Lock className="search-icon" />

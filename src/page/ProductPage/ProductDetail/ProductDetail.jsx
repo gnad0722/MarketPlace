@@ -6,18 +6,17 @@ import ImageProduct from "./ImageProduct";
 import Feedback from "../Feedback/Feedback";
 function ProductDetail(props) {
   const product=props.product;
-  const infoSellerDemo={
-    name: "Demo",
-    avatar: "",
-    ratingAvg: 3,
-    follower: 1000
+  const infoSeller={
+    name: product.seller_name,
+    avatar: product.seller_avatar || "",
+    ratingAvg: product.seller_average_rating,
+    follower: product.seller_followers_count
   }
-  const infoSeller=product.infoSeller || infoSellerDemo;
   const hashtag=product.hashtag || ["Demo", "Demo"];
   return (
     <div className="row mt-3 ">
       <div className="col-8 gap-4 d-flex flex-column">
-        <ImageProduct />
+        <ImageProduct images={product.images}/>
         <DescriptionProduct content={product.description} hashtag={hashtag} />
       </div>
       <div className="col-4 ">

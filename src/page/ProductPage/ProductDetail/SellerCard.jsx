@@ -27,7 +27,7 @@ function SellerCard(props) {
           <span style={{ display: "flex", alignItems: "center", gap: "3px" }}>
             ⭐
             <span style={{ opacity: "0.5", fontSize: "15px" }}>
-              {`${infoSeller.ratingAvg.toFixed(1)} (${Intl.NumberFormat("vi-VN").format(infoSeller.feedback)} bài đánh giá)`}
+              {`${Number(infoSeller.ratingAvg).toFixed(1)} `}
             </span>
           </span>
           <span style={{ display: "flex", alignItems: "center", gap: "3px" }}>

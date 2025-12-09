@@ -38,6 +38,7 @@ function UploadForm() {
   const [price, setPrice] = useState("");
   const [stock, setStock] = useState("");
   const [category, setCategory] = useState("");
+  const [files, setFiles] = useState([]);
   function toggleDropdown() {
     setIsOpen(!isOpen);
   }
@@ -46,25 +47,34 @@ function UploadForm() {
     if (option !== "Danh mục") setCategory(option);
     setIsOpen(!isOpen);
   }
+  function getFirstWord(productName) {
+    if (!productName) return "";
+    return productName.trim().split(/\s+/)[0];
+  }
   async function handleCreate(e) {
     e.preventDefault();
     const msg = {};
     try {
-      const data = await createProduct(
-        nameProduct,
-        description,
-        price,
-        stock,
-        category
-      );
+      const formData = new FormData();
+      formData.append("name", nameProduct);
+      formData.append("description", description);
+      formData.append("price", price);
+      formData.append("stock", stock);
+      formData.append("category", category);
+      formData.append("hashtags", [category, getFirstWord(nameProduct)]);
+      files.forEach((file) => {
+        formData.append("images", file); 
+      });
+      const data = await createProduct(formData);
       navigate("/home", {
         state: {
           show: true,
           message: "Sản phẩm của bạn đã được đăng bán thành công!",
-          color: "#ff9013"
+          color: "#ff9013",
         },
       });
     } catch (err) {
+      console.log(err.response.data.errors);
       if (err.response && err.response.status === 400) {
         const listError = err.response.data.errors;
         listError.forEach((error) => {
@@ -90,6 +100,7 @@ function UploadForm() {
               Tên sản phẩm*
             </label>
             <input
+              name="nameProduct"
               type="text"
               id="InputNameProduct"
               className="form-control"
@@ -106,7 +117,7 @@ function UploadForm() {
               Giá sản phẩm*
             </label>
             <input
-              type="text"
+              type="number"
               id="InputPrice"
               className="form-control"
               placeholder="Nhập giá sản phẩm"
@@ -183,7 +194,7 @@ function UploadForm() {
             >
               Hình ảnh sản phẩm*
             </label>
-            <ImageForm />
+            <ImageForm onUpload={setFiles} />
           </div>
           <div className="col-12  mt-3 d-flex flex-row-reverse">
             <div

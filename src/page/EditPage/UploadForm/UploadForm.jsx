@@ -12,20 +12,8 @@ import {
 import { de } from "date-fns/locale";
 import { useRef, useEffect } from "react";
 function UploadForm(props) {
-  const id=props.id;
-  async function getProduct(id) {
-    try {
-      const data = await getProductById(id);
-      setName(data.name);
-      setCategory(data.category);
-      setPrice(data.price);
-      setStock(data.stock);
-      setDesc(data.description);
-      setOption(data.category)
-    } catch (err) {
-      console.error(err);
-    }
-  }
+  const id = props.id;
+  const product = props.product;
   const navigate = useNavigate();
   const listOption = [
     "Điện thoại",
@@ -51,11 +39,13 @@ function UploadForm(props) {
   });
   const [isOpen, setIsOpen] = useState(false);
   const [option, setOption] = useState("Danh mục");
-  const [nameProduct, setName] = useState("");
-  const [description, setDesc] = useState("");
-  const [price, setPrice] = useState("");
-  const [stock, setStock] = useState("");
-  const [category, setCategory] = useState("");
+  const [nameProduct, setName] = useState(product.name);
+  const [description, setDesc] = useState(product.description);
+  const [price, setPrice] = useState(product.price);
+  const [stock, setStock] = useState(product.stock);
+  const [category, setCategory] = useState(product.category);
+  const [files, setFiles] = useState([]);
+  const [images, setImages] = useState(product.images);
   function toggleDropdown() {
     setIsOpen(!isOpen);
   }
@@ -68,21 +58,26 @@ function UploadForm(props) {
     e.preventDefault();
     const msg = {};
     try {
-      const data = await updateProduct(
-        nameProduct,
-        description,
-        price,
-        stock,
-        category,
-        id
-      );
+      const formData = new FormData();
+      formData.append("name", nameProduct);
+      formData.append("description", description);
+      formData.append("price", price);
+      formData.append("stock", stock);
+      formData.append("category", category);
+      files.forEach((file) => {
+        formData.append("images", file);
+      });
+      
+      const data = await updateProduct(formData, id);
       navigate("/home", {
-        state: { show: true,
+        state: {
+          show: true,
           message: "Sản phẩm của bạn đã được cập nhật thành công!",
-          color: "#3F7D58"
-         },
+          color: "#3F7D58",
+        },
       });
     } catch (err) {
+      console.log(err)
       if (err.response && err.response.status === 400) {
         const listError = err.response.data.errors;
         listError.forEach((error) => {
@@ -92,9 +87,6 @@ function UploadForm(props) {
     }
     setMessage(msg);
   }
-  useEffect(() => {
-    getProduct(id);
-  }, []);
   return (
     <div className="order-info">
       <span style={{ fontWeight: "500" }}>
@@ -204,7 +196,7 @@ function UploadForm(props) {
             >
               Hình ảnh sản phẩm*
             </label>
-            <ImageForm />
+            <ImageForm onUpload={setFiles} oldImage={images}/>
           </div>
           <div className="col-12  mt-3 d-flex flex-row-reverse">
             <div

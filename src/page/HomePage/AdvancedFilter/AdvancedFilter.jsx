@@ -13,7 +13,6 @@ function AdvancedFilter() {
       </span>
       <PriceSorter />
       <PriceRangeSelect/>
-      <BrandFilter/>
       <PopularTag/>  
       <RatingFilter/>
     </div>

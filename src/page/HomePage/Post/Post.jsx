@@ -3,14 +3,15 @@ import HeaderPost from "./HeaderPost";
 import { useNavigate } from "react-router-dom";
 import myPicture from "../../../img/iphone.webp";
 import InforProduct from "./InforProduct";
+import { API_BASE } from "../../../api/axiosClient";
 function Post(props) {
 
   const navigate=useNavigate();
   const product=props.productInfo;
   const headerInfo={
     author:{
-      name: product.sellerName || "Test",
-      avatar: product.avatarSeller || "",
+      name: product.seller_name,
+      avatar: product.seller_avatar || "",
     },
     createAt:product.created_at || "",
     updateAt:product.updated_at || "",
@@ -18,7 +19,7 @@ function Post(props) {
   return (
     <div className="post-container" >
      <HeaderPost idProduct={product.id} headerInfo={headerInfo} showAction={props.showAction} openNotifi={props.openNotifi||null}/>
-     <img src={myPicture} onClick={()=>{
+     <img src={`${API_BASE}${product.first_image}`} onClick={()=>{
       navigate("/detail",{state:{
         id: product.id
       }})
