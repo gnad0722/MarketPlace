@@ -3,11 +3,24 @@ export const createProduct = async (formData) => {
   const response = await axiosClient.post("/products", formData);
   return response.data;
 };
+export const getMyProduct = async (page = 1) => {
+  console.log(page);
+  const response = await axiosClient.get("/products/my-products", {
+    params: {
+      page: page
+    }
+  });
+  return response.data.data;
+};
 export const getProduct = async ({
-  search = "",
-  category = "",
+  search,
+  category,
   page = 1,
   limit = 10,
+  rating_min,
+  rating_max = 5,
+  price_min,
+  price_max,
 } = {}) => {
   const response = await axiosClient.get("/products", {
     params: {
@@ -15,6 +28,10 @@ export const getProduct = async ({
       category,
       page,
       limit,
+      rating_min,
+      rating_max,
+      price_min,
+      price_max,
     },
   });
 
@@ -25,14 +42,21 @@ export const getProductById = async (id) => {
   const response = await axiosClient.get(`/products/${id}`);
   return response.data.data;
 };
-export const updateProduct = async (formData,id) => {
-  for (let pair of formData.entries()) {
-  console.log(pair[0] + ": ", pair[1]);
-}
+export const updateProduct = async (formData, id) => {
   const response = await axiosClient.put(`/products/${id}`, formData);
   return response.data;
 };
 export const deleteProduct = async (id) => {
   const response = await axiosClient.delete(`/products/${id}`);
   return response.data;
+};
+export const deleteProductImage = async (id, idImages) => {
+  const response = await axiosClient.delete(
+    `/products/${id}/images/${idImages}`
+  );
+  return response.data;
+};
+export const getProductImageById = async (id) => {
+  const response = await axiosClient.get(`/products/${id}/images`);
+  return response.data.data;
 };

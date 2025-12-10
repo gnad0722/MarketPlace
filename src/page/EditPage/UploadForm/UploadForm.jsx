@@ -8,6 +8,7 @@ import ImageForm from "./ImageForm";
 import {
   updateProduct,
   getProductById,
+  deleteProductImage
 } from "../../../services/productService";
 import { de } from "date-fns/locale";
 import { useRef, useEffect } from "react";
@@ -45,7 +46,7 @@ function UploadForm(props) {
   const [stock, setStock] = useState(product.stock);
   const [category, setCategory] = useState(product.category);
   const [files, setFiles] = useState([]);
-  const [images, setImages] = useState(product.images);
+  const [removeImgList,setList]=useState([]);
   function toggleDropdown() {
     setIsOpen(!isOpen);
   }
@@ -67,8 +68,10 @@ function UploadForm(props) {
       files.forEach((file) => {
         formData.append("images", file);
       });
-      
-      const data = await updateProduct(formData, id);
+      for (const img of removeImgList){
+        await deleteProductImage(id,img);
+      }
+       await updateProduct(formData,id);
       navigate("/home", {
         state: {
           show: true,
@@ -77,7 +80,6 @@ function UploadForm(props) {
         },
       });
     } catch (err) {
-      console.log(err)
       if (err.response && err.response.status === 400) {
         const listError = err.response.data.errors;
         listError.forEach((error) => {
@@ -196,7 +198,7 @@ function UploadForm(props) {
             >
               Hình ảnh sản phẩm*
             </label>
-            <ImageForm onUpload={setFiles} oldImage={images}/>
+            <ImageForm onUpload={setFiles} onRemove={setList} oldImages={product.images}/>
           </div>
           <div className="col-12  mt-3 d-flex flex-row-reverse">
             <div

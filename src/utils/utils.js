@@ -123,12 +123,64 @@ function countRating(feedback) {
     }
   });
   return [
-     { number: 5, rate: ratingCount[5] },
+    { number: 5, rate: ratingCount[5] },
     { number: 4, rate: ratingCount[4] },
     { number: 3, rate: ratingCount[3] },
     { number: 2, rate: ratingCount[2] },
     { number: 1, rate: ratingCount[1] },
-  ]
+  ];
+}
+function makeHashtag(productName) {
+  if (!productName) return "";
+
+  const firstWord = productName.trim().split(/\s+/)[0];
+  return firstWord.charAt(0).toUpperCase() + firstWord.slice(1);
+}
+function sortByPrice(products, type) {
+  const sorted = [...products];
+  sorted.sort((a, b) => {
+    const priceA = parseFloat(a.price);
+    const priceB = parseFloat(b.price);
+    if (type === "Giá: Thấp đến cao") {
+      if (priceA !== priceB) return priceA - priceB;
+      return new Date(b.created_at) - new Date(a.created_at);
+    }
+    if (type === "Giá: Cao đến thấp") {
+      if (priceA !== priceB) return priceB - priceA;
+      return new Date(b.created_at) - new Date(a.created_at);
+    }
+    return 0;
+  });
+
+  return sorted;
+}
+function sortByCriteria(products, type) {
+  const sorted = [...products];
+
+  sorted.sort((a, b) => {
+    const dateA = new Date(a.created_at);
+    const dateB = new Date(b.created_at);
+
+    const ratingA = parseFloat(a.average_rating);
+    const ratingB = parseFloat(b.average_rating);
+
+    if (type === "Mới nhất") {
+      return dateB - dateA;
+    }
+    if (type === "Cũ nhất") {
+      return dateA - dateB;
+    }
+    if (type === "Tốt nhất") {
+      if (ratingB !== ratingA) {
+        return ratingB - ratingA;
+      }
+      return dateB - dateA;
+    }
+
+    return 0;
+  });
+
+  return sorted;
 }
 
 export {
@@ -139,5 +191,8 @@ export {
   extractWords,
   checkValidAccount,
   groupNotifications,
-  countRating
+  countRating,
+  makeHashtag,
+  sortByPrice,
+  sortByCriteria,
 };

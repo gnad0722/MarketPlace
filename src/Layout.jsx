@@ -24,7 +24,7 @@ function Layout() {
           {showHeader && <Header />}
         <Routes>
           <Route path="/" element={<HeroPage />} />
-          <Route path="/home" element={<HomePage />} />
+          <Route path="/home" element={<HomePage key={location.search}/>} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/reset-password" element={<ForgetPassword />} />

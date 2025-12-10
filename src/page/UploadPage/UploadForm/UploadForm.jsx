@@ -7,6 +7,7 @@ import OptionList from "../../HomePage/FilterSection/OptionList";
 import ImageForm from "./ImageForm";
 import { createProduct } from "../../../services/productService";
 import { de } from "date-fns/locale";
+import { makeHashtag } from "../../../utils/utils";
 function UploadForm() {
   const navigate = useNavigate();
   const listOption = [
@@ -47,23 +48,20 @@ function UploadForm() {
     if (option !== "Danh mục") setCategory(option);
     setIsOpen(!isOpen);
   }
-  function getFirstWord(productName) {
-    if (!productName) return "";
-    return productName.trim().split(/\s+/)[0];
-  }
+
   async function handleCreate(e) {
     e.preventDefault();
     const msg = {};
     try {
       const formData = new FormData();
       formData.append("name", nameProduct);
-      formData.append("description", description);
-      formData.append("price", price);
       formData.append("stock", stock);
+      formData.append("price", price);
+      formData.append("description", description);
       formData.append("category", category);
-      formData.append("hashtags", [category, getFirstWord(nameProduct)]);
+      formData.append("hashtags", [category, makeHashtag(nameProduct)]);
       files.forEach((file) => {
-        formData.append("images", file); 
+        formData.append("images", file);
       });
       const data = await createProduct(formData);
       navigate("/home", {

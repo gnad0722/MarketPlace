@@ -2,14 +2,15 @@ import React from "react";
 import { useState } from "react";
 import SelectBox from "./SelectBox";
 import OptionList from "./OptionList";
-function SelectorFilter() {
-  const listOption=["Mới nhất","Bán chạy","Cũ nhất"];
+function SelectorFilter(props) {
+  const listOption=["Mới nhất","Tốt nhất","Cũ nhất"];
   const [isOpen,setIsOpen]=useState(false);
-  const [option,setOption]=useState("Mới nhất");
+  const [option,setOption]=useState(props.sortBy);
   function toggleDropdown(){
     setIsOpen(!isOpen);
   }
   function handleOptionSelect(option){
+    props.onSort({sortBy:option});
     setOption(option);
     setIsOpen(!isOpen);
   }

@@ -285,6 +285,7 @@
   white-space: nowrap;
   overflow: hidden;
   transition: background-color 0.3 ease-in-out;
+  font-size: 14px;
 }
 .btn-follow:hover {
   background-color: #ffc69a;

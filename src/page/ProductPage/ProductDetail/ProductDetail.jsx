@@ -7,17 +7,18 @@ import Feedback from "../Feedback/Feedback";
 function ProductDetail(props) {
   const product=props.product;
   const infoSeller={
+    id: product.seller_id,
     name: product.seller_name,
     avatar: product.seller_avatar || "",
     ratingAvg: product.seller_average_rating,
     follower: product.seller_followers_count
   }
-  const hashtag=product.hashtag || ["Demo", "Demo"];
+  const hashtags=product.hashtags;
   return (
     <div className="row mt-3 ">
       <div className="col-8 gap-4 d-flex flex-column">
         <ImageProduct images={product.images}/>
-        <DescriptionProduct content={product.description} hashtag={hashtag} />
+        <DescriptionProduct content={product.description} hashtags={hashtags} />
       </div>
       <div className="col-4 ">
         <div className="position-sticky" style={{ top: "80px" }}>

@@ -2,15 +2,16 @@ import React from "react";
 import { useState } from "react";
 import SelectBox from "../FilterSection/SelectBox";
 import OptionList from "../FilterSection/OptionList";
-function PriceSorter() {
+function PriceSorter(props) {
   const listOption = ["Giá: Thấp đến cao", "Giá: Cao đến thấp"];
   const [isOpen, setIsOpen] = useState(false);
-  const [option, setOption] = useState(listOption[0]);
+  const [option, setOption] = useState(props.sortBy);
   function toggleDropdown() {
     setIsOpen(!isOpen);
   }
   function handleOptionSelect(option) {
     setOption(option);
+    props.onSort({sortByPrice:option})
     setIsOpen(!isOpen);
   }
 

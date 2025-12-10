@@ -5,16 +5,17 @@ import BrandFilter from "./BrandFilter";
 import PopularTag from "./PopularTag";
 import RatingFilter from "./RatingFilter";
 import { Filter } from "lucide-react";
-function AdvancedFilter() {
+function AdvancedFilter(props) {
+  const filter=props.filter;
   return (
     <div className="filter-container">
       <span className="title-filter">
         <Filter className="icon-btn-size" /> Bộ lọc
       </span>
-      <PriceSorter />
-      <PriceRangeSelect/>
-      <PopularTag/>  
-      <RatingFilter/>
+      <PriceSorter sortBy={filter.sortByPrice} onSort={props.onFilter}/>
+      <PriceRangeSelect prince_min={filter.prince_min} prince_max={filter.prince_max} onRange={props.onFilter}/>
+      <PopularTag  tag={filter.keyword} onTag={props.onFilter}/>  
+      <RatingFilter ratingMin={filter.rating_min} onRating={props.onFilter}/>
     </div>
   );
 }

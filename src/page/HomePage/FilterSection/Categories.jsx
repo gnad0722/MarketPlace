@@ -4,7 +4,6 @@ import { useState } from "react";
 function Categories(props){
     
     const listCategories=props.listCategories;
-    
     return <div className="categories-container">
           <span
         style={{
@@ -14,7 +13,7 @@ function Categories(props){
       >
         Danh mục
       </span>
-        <CategoryList listCategories={listCategories}/>
+        <CategoryList filtBy={props.filtBy}  listCategories={listCategories} onFilter={props.onFilter}/>
     </div>
 }
 export default Categories;

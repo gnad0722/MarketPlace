@@ -14,10 +14,10 @@ function InforProduct(props) {
           {extractWords(productInfo.description,15)}
         </span>
       </div>
-      {/* <div className="hashtag-product">
-       {product.hashtag.map((hashtag,index)=><Hashtag hashtag={hashtag} key={index}/>)}
-      </div> */}
-      <PriceProduct idProduct={productInfo.id} price={productInfo.price} quantity={productInfo.stock} currencyCode={"USD"} showAddToCart={props.showAddToCart}/>
+      <div className="hashtag-product">
+       {productInfo.hashtags.map((hashtag,index)=><Hashtag hashtag={hashtag.tag} key={index}/>)}
+      </div>
+      <PriceProduct idProduct={productInfo.id} price={productInfo.price} quantity={productInfo.stock} currencyCode={"VND"} showAddToCart={props.showAddToCart}/>
     </div>
   );
 }

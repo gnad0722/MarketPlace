@@ -1,25 +1,64 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
+import { getFollowersCount, followUser, unfollowUser } from "../../../services/followService";
 function Recommend(props) {
-  const [followed, setFollowed] = useState(false);
-  function handleFollow() {
-    setFollowed(!followed);
+  const [follow,setFollowed] =useState(true);
+  const avatar=props.avatar ?? "";
+  const name=props.name;
+  const id=props.id;
+  const [loading,setLoading]= useState(true);
+  const [followers,setFollowers]=useState(0);
+  async function getFollowersNumber(id) {
+      try{
+        const data=await getFollowersCount(id);
+        setFollowers(data.follower_count);
+      }
+      catch(err){
+        console.log(err);
+      }
+      finally{
+        setLoading(false);
+      }
   }
+  async function handleFollow(){
+      if (!follow){
+        try{
+          await followUser(id);
+        }
+        catch(err){
+          console.log(err);
+        }
+      }
+      else{
+        try{
+          await unfollowUser(id);
+        }
+        catch(err){
+          console.log(err);
+        }
+      }
+      setFollowed(!follow);
+    }
+  useEffect(()=>{
+    getFollowersNumber(id);
+  },[]);
+  if (loading) return <div>Loading...</div>
   return (
     <div className="recommend">
       <div className="avt-container">
         <span className="avt-mini">
-          {props.avatar === "" ? (
-            props.name[0]
+          {avatar ==="" ? (
+            name[0]
           ) : (
             <img src={props.avatar} alt="avatar" />
           )}
         </span>
       </div>
       <div className="info-recommend">
-        <span style={{ fontSize: "1rem" }}>{props.name}</span>
+        <span style={{ fontSize: "1rem" }}>{name}</span>
         <span style={{ fontSize: "0.8rem", opacity: "0.5" }}>
-          {(props.followers / 1000).toFixed(1)}K người theo dõi
+          {followers>1000 ?   `${(followers / 1000).toFixed(1)}K người theo dõi` : `${followers} người theo dõi`}
+        
         </span>
       </div>
       <button
@@ -27,7 +66,7 @@ function Recommend(props) {
         className=" btn-sm btn-follow"
         onClick={handleFollow}
       >
-        {followed ? "Bỏ theo dõi" : "Theo dõi"}
+        {follow? "Bỏ theo dõi" : "Theo dõi"}
       </button>
     </div>
   );

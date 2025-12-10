@@ -1,6 +1,6 @@
 import React from "react";
 import Post from "../../HomePage/Post/Post";
-import { getProduct } from "../../../services/productService";
+import { getMyProduct } from "../../../services/productService";
 import { useEffect, useState } from "react";
 import ChangePage from "../../HomePage/Post/ChangePage";
 import Notification from "../../../component/Notification";
@@ -10,15 +10,11 @@ function MyProduct(props) {
   const closeNotifi = () => setShow(false);
   const [listProduct, setList] = useState([]);
   const [search, setSearch] = useState("");
-  const [page, setPage] = useState("1");
+  const [page, setPage] = useState(1);
   const [category, setCategory] = useState("");
   async function getListProduct(e) {
     try {
-      const data = await getProduct({
-        search,
-        category,
-        page,
-      });
+      const data = await getMyProduct(page);
       setList(data);
     } catch (err) {
       console.error(err);
@@ -30,7 +26,7 @@ function MyProduct(props) {
       getListProduct();
     }, 500);
     return () => clearInterval(interval);
-  }, []);
+  }, [page]);
   return (
     <div
       className="d-flex flex-column gap-2 align-items-start"
@@ -48,7 +44,7 @@ function MyProduct(props) {
           openNotifi={openNotifi}
         />
       ))}
-      <ChangePage page={page} />
+      <ChangePage page={page} onChange={setPage}/>
       {showNotifi && (
         <Notification
           show={true}

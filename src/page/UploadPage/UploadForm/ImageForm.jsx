@@ -33,7 +33,7 @@ function ImageForm(props) {
     newPreviews.splice(index, 1);
     setFiles(newFiles);
     setPreview(newPreviews);
-    props.onUpload((prev) => [...prev, ...validImages]);
+    props.onUpload((prev) => [...prev, ...newFiles]);
   }
   return (
     <div className="img-form" onClick={openFileDialog}>

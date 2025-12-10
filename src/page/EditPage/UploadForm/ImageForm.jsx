@@ -1,8 +1,10 @@
 import React, { useRef, useState } from "react";
+import { API_BASE } from "../../../api/axiosClient";
 function ImageForm(props) {
   const inputRef = useRef(null);
   const [previews, setPreview] = useState([]);
   const [files, setFiles] = useState([]);
+  const [oldImages, setOldImages] = useState(props.oldImages);
   function openFileDialog() {
     if (inputRef.current) inputRef.current.click();
   }
@@ -33,7 +35,14 @@ function ImageForm(props) {
     newPreviews.splice(index, 1);
     setFiles(newFiles);
     setPreview(newPreviews);
-    props.onUpload((prev) => [...prev, ...validImages]);
+    props.onUpload((prev) => [...prev, ...newFiles]);
+  }
+  function removeOldImage(index,id,e,){
+      e.stopPropagation();
+      const newImages=[...oldImages];
+      newImages.splice(index,1);
+      setOldImages(newImages);
+      props.onRemove((prev)=>[...prev,id]);
   }
   return (
     <div className="img-form" onClick={openFileDialog}>
@@ -44,15 +53,16 @@ function ImageForm(props) {
         className="d-none"
         onChange={handleFile}
       ></input>
-      <div className="d-flex flex-wrap w-100 justify-content-center">
-        {previews.length > 0 ? (
-          previews.map((p, index) => {
+      <div>
+        {previews.length > 0 || oldImages.length > 0 ? (
+          <div className="d-flex flex-wrap w-100 justify-content-center">
+         { oldImages.map((image, index) => {
             return (
               <div key={index} className="img-preview-container">
-                <img src={p.url} className="img-preview" />
+                <img src={`${API_BASE}${image.image_url}`} className="img-preview" />
                 <div
                   className="remove-img"
-                  onClick={(e) => removeImage(index, e)}
+                  onClick={(e) => removeOldImage(index,image.id,e)}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -68,6 +78,33 @@ function ImageForm(props) {
               </div>
             );
           })
+        }
+           { previews.map((p, index) => {
+              return (
+                <div className="d-flex flex-wrap w-100 justify-content-center">
+                   <div key={index} className="img-preview-container">
+                  <img src={p.url} className="img-preview" />
+                  <div
+                    className="remove-img"
+                    onClick={(e) => removeImage(index, e)}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      className="bi bi-x-lg"
+                      viewBox="0 0 16 16"
+                    >
+                      <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z" />
+                    </svg>
+                  </div>
+                </div>
+                </div>
+              );
+            })
+          }
+          </div>
         ) : (
           <div className="d-flex flex-column align-items-center">
             <svg

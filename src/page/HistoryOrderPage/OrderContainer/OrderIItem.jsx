@@ -14,7 +14,6 @@ function OrderItem() {
   const [isDetailPopupOpen, setIsDetailPopupOpen] = useState(false);
   const openDetailPopup = () => setIsDetailPopupOpen(true);
   const closeDetailPopup = () => setIsDetailPopupOpen(false);
-  console.log(isFeedBackPopupOpen);
   return (
     <div>
       <div className="order-container">

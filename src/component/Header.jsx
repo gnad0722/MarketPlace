@@ -22,6 +22,7 @@ function Header(props) {
   const navigate = useNavigate();
   const [notifications, setList] = useState([]);
   const [numberNoti, setNumber] = useState(0);
+  const [keyword,setKeyword]=useState("");
   async function handleLogout() {
     try {
       await logout();
@@ -80,10 +81,14 @@ function Header(props) {
             <input
               type="text"
               className="form-control"
-              placeholder="Tìm kiếm #hashtag, @seller, sản phẩm..."
+              placeholder="Tìm kiếm sản phẩm theo mô tả ..."
               style={{ paddingLeft: "2.5rem", borderRadius: "0.5rem" }}
+              value={keyword}
+              onChange={(e)=>setKeyword(e.target.value)}
             />
-            <Search className="search-icon" />
+            <Search style={{cursor:"pointer"}} onClick={()=>{
+              navigate(`/home?search=${keyword}`)
+            }} className="search-icon" />
           </form>
         </div>
         <div className="d-flex align-items-center">

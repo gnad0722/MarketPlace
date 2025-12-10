@@ -1,12 +1,46 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { MessageCircle } from "lucide-react";
+import { followUser,checkFollowing,unfollowUser } from "../../../services/followService";
 function SellerCard(props) {
   const infoSeller=props.infoSeller;
-  const [follow,setFollowed] =useState(true);
-  function handleFollow(){
+  const [follow,setFollowed] =useState(false);
+  const [loading,setLoading]=useState(true);
+  async function checkFollow(id) {
+    try{
+      const data= await checkFollowing(id);
+      setFollowed(data.is_following);
+    }
+    catch(err){
+      console.log(err);
+    }
+    finally{
+      setLoading(false);
+    }
+  }
+  async function handleFollow(){
+    if (!follow){
+      try{
+        await followUser(infoSeller.id);
+      }
+      catch(err){
+        console.log(err);
+      }
+    }
+    else{
+      try{
+        await unfollowUser(infoSeller.id);
+      }
+      catch(err){
+        console.log(err);
+      }
+    }
     setFollowed(!follow);
   }
+  useEffect(()=>{
+    checkFollow(infoSeller.id);
+  },[])
+  if (loading) return <div>Loading....</div>
   return (
     <div className="product-card">
       <span style={{ fontWeight: "500", marginBottom: "20px" }}>

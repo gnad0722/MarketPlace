@@ -4,13 +4,18 @@ import { Minus, Plus, X } from "lucide-react";
 import { useState,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { updateItemQuantity,removeItem } from "../../../services/cartService";
+import { getProductImageById } from "../../../services/productService";
+import { API_BASE } from "../../../api/axiosClient";
 function CartItem(props) {
   const item=props.item;
+  console.log(item);
   const name=item.name;
   const price=Number(item.price);
   const navigate = useNavigate();
   const [count, setCount] = useState(item.quantity);
-  const [total,setTotal]=useState(price*count);
+  const [total,setTotal]=useState(item.subtotal);
+  const [image,setImage]=useState('');
+  const [loading,setLoading]=useState(true);
   function handleCount(action) {
     setCount(action === "plus" ? count + 1 : count - 1);
     setTotal(action === "plus" ? price*(count + 1) : price*(count - 1))
@@ -18,6 +23,18 @@ function CartItem(props) {
   useEffect(()=>{
     updateItemQuantity(item.product_id,count)
   },[count]);
+  async function getImgProduct(id) {
+      try{
+        const data=await getProductImageById(id);
+        data.length>0 && setImage(data[0].image_url);
+      }
+      catch(err){
+        console.error(err);
+      } 
+      finally{
+        setLoading(false);
+      }
+  }
   async function removeItemCart() {
     navigate(0);
     try{
@@ -27,6 +44,10 @@ function CartItem(props) {
       console.error(err);
     }
   }
+ useEffect(() => {
+    getImgProduct(item.product_id);
+  }, []);
+  if(loading) return <div>Loading...</div>
   return (
     <div className="cart-bar" style={{ padding: "20px 20px", gap: "7px" }}>
       <div className="form-check">
@@ -53,7 +74,7 @@ function CartItem(props) {
         }}
       >
         <div className="mini-img">
-          <img src={myPicture} />
+          <img src={`${API_BASE}${image}`} />
         </div>
         <div
           style={{
