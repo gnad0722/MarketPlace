@@ -136,51 +136,67 @@ function makeHashtag(productName) {
   const firstWord = productName.trim().split(/\s+/)[0];
   return firstWord.charAt(0).toUpperCase() + firstWord.slice(1);
 }
-function sortByPrice(products, type) {
+function multiSort(products, options) {
   const sorted = [...products];
+
   sorted.sort((a, b) => {
     const priceA = parseFloat(a.price);
     const priceB = parseFloat(b.price);
-    if (type === "Giá: Thấp đến cao") {
-      if (priceA !== priceB) return priceA - priceB;
-      return new Date(b.created_at) - new Date(a.created_at);
-    }
-    if (type === "Giá: Cao đến thấp") {
-      if (priceA !== priceB) return priceB - priceA;
-      return new Date(b.created_at) - new Date(a.created_at);
-    }
-    return 0;
-  });
 
-  return sorted;
-}
-function sortByCriteria(products, type) {
-  const sorted = [...products];
-
-  sorted.sort((a, b) => {
     const dateA = new Date(a.created_at);
     const dateB = new Date(b.created_at);
 
     const ratingA = parseFloat(a.average_rating);
     const ratingB = parseFloat(b.average_rating);
 
-    if (type === "Mới nhất") {
-      return dateB - dateA;
-    }
-    if (type === "Cũ nhất") {
-      return dateA - dateB;
-    }
-    if (type === "Tốt nhất") {
-      if (ratingB !== ratingA) {
-        return ratingB - ratingA;
-      }
-      return dateB - dateA;
+      
+    if (options.sortBy === "Mới nhất") {
+      if (dateA.getTime() !== dateB.getTime())
+        return dateB - dateA;
     }
 
+    if (options.sortBy === "Cũ nhất") {
+      if (dateA.getTime() !== dateB.getTime())
+        return dateA - dateB;
+    }
+
+    if (options.sortBy === "Tốt nhất") {
+      if (ratingA !== ratingB) return ratingB - ratingA;
+      if (dateA.getTime() !== dateB.getTime()) return dateB - dateA;
+    }
     return 0;
   });
 
   return sorted;
+}
+
+function getOrderStatus(status) {
+  switch (status) {
+    case "PENDING":
+      return "Đang chờ xử lý";
+    case "CONFIRMED":
+      return "Đã xác nhận";
+    case "SHIPPED":
+      return "Đang vận chuyển";
+    case "COMPLETED":
+      return "Hoàn thành";
+    default:
+      return "Không xác định";
+  }
+}
+function getStatusColor(status) {
+  switch (status) {
+    case "PENDING":
+      return "#f1c40f"; 
+    case "CONFIRMED":
+      return "#2ecc71"; 
+    case "SHIPPED":
+      return "#3498db"; 
+    case "COMPLETED":
+      return "#ff6600"; 
+    default:
+      return "#7f8c8d"; 
+  }
 }
 
 export {
@@ -193,6 +209,7 @@ export {
   groupNotifications,
   countRating,
   makeHashtag,
-  sortByPrice,
-  sortByCriteria,
+  multiSort,
+  getOrderStatus,
+  getStatusColor
 };

@@ -31,6 +31,7 @@ function UploadForm() {
     stock: "",
     description: "",
     category: "",
+    image: "",
   });
   const [isOpen, setIsOpen] = useState(false);
   const [option, setOption] = useState("Danh mục");
@@ -52,32 +53,41 @@ function UploadForm() {
   async function handleCreate(e) {
     e.preventDefault();
     const msg = {};
-    try {
-      const formData = new FormData();
-      formData.append("name", nameProduct);
-      formData.append("stock", stock);
-      formData.append("price", price);
-      formData.append("description", description);
-      formData.append("category", category);
-      formData.append("hashtags", [category, makeHashtag(nameProduct)]);
-      files.forEach((file) => {
-        formData.append("images", file);
-      });
-      const data = await createProduct(formData);
-      navigate("/home", {
-        state: {
-          show: true,
-          message: "Sản phẩm của bạn đã được đăng bán thành công!",
-          color: "#ff9013",
-        },
-      });
-    } catch (err) {
-      console.log(err.response.data.errors);
-      if (err.response && err.response.status === 400) {
-        const listError = err.response.data.errors;
-        listError.forEach((error) => {
-          msg[error.param] = error.msg;
+    if (
+      category === "" ||
+      nameProduct === "" ||
+      price === "" ||
+      stock ==="" ||
+      files.length === 0
+    ) {
+      msg["image"] = "Vui lòng nhập đầy đủ các thông tin yêu cầu!";
+    } else {
+      try {
+        const formData = new FormData();
+        formData.append("name", nameProduct);
+        formData.append("stock", stock);
+        formData.append("price", price);
+        formData.append("description", description);
+        formData.append("category", category);
+        formData.append("hashtags", [category, makeHashtag(nameProduct)]);
+        files.forEach((file) => {
+          formData.append("images", file);
         });
+        const data = await createProduct(formData);
+        navigate("/home", {
+          state: {
+            show: true,
+            message: "Sản phẩm của bạn đã được đăng bán thành công!",
+            color: "#ff9013",
+          },
+        });
+      } catch (err) {
+        if (err.response && err.response.status === 400) {
+          const listError = err.response.data.errors;
+          listError.forEach((error) => {
+            msg[error.path] = error.msg;
+          });
+        }
       }
     }
     setMessage(msg);
@@ -130,7 +140,7 @@ function UploadForm() {
               Số lượng*
             </label>
             <input
-              type="text"
+              type="number"
               id="InputQuantity"
               className="form-control"
               placeholder="Nhập số lượng"
@@ -192,7 +202,8 @@ function UploadForm() {
             >
               Hình ảnh sản phẩm*
             </label>
-            <ImageForm onUpload={setFiles} />
+            <ImageForm onUpload={setFiles} setMessage={setMessage} />
+            <span style={{ color: "red" }}>{message.image}</span>
           </div>
           <div className="col-12  mt-3 d-flex flex-row-reverse">
             <div

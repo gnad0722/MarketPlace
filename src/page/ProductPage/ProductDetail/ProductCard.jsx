@@ -28,7 +28,6 @@ function ProductCard(props) {
   return (
     <div className="product-card">
       <h5>{title}</h5>
-      <span style={{ fontSize: "1rem", opacity: "0.7" }}>Đã bán {sold}</span>
       <span
         style={{
           fontSize: "2rem",

@@ -4,10 +4,10 @@ export const createProduct = async (formData) => {
   return response.data;
 };
 export const getMyProduct = async (page = 1) => {
-  console.log(page);
   const response = await axiosClient.get("/products/my-products", {
     params: {
-      page: page
+      page: page,
+      limit: 5
     }
   });
   return response.data.data;
@@ -22,6 +22,7 @@ export const getProduct = async ({
   price_min,
   price_max,
 } = {}) => {
+  console.log(search)
   const response = await axiosClient.get("/products", {
     params: {
       search,

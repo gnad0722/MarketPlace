@@ -31,9 +31,10 @@ function FormLogin() {
       if (err.response) {
         if (err.response.status === 400) {
           const listError = err.response.data.errors;
+          console.log(listError);
           const msg = {};
           listError.forEach((error) => {
-            msg[error.param] = error.msg;
+            msg[error.path] = error.msg;
           });
           setMessage(msg);
         } else if (err.response.status === 401) {

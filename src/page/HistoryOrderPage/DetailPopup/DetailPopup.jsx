@@ -9,6 +9,8 @@ import InfoPayment from "./InfoPayment";
 import StateOrder from "./StateOrder";
 function DetailPopup(props) {
   const navigate = useNavigate();
+  const orderInfo=props.orderInfo;
+  const products=props.products;
   if (!props.isOpen) return null;
   return (
     <div className="popup-overlay " onClick={props.onClose}>
@@ -34,12 +36,11 @@ function DetailPopup(props) {
           </button>
         </div>
         <div className="popup-body">
-          <InfoOrderPopup/>
-          <InfoSellerPopup/>
-          <ProductContainer onOpenFeedBack={props.onOpenFeedBack} onClose={props.onClose}/>
-          <InfoDelivery/>
-          <InfoPayment/>
-          <StateOrder/>
+          <InfoOrderPopup id={orderInfo.id} createdAt={orderInfo.created_at}/>
+          <ProductContainer products={products} onOpenFeedBack={props.onOpenFeedBack} onClose={props.onClose}/>
+          <InfoDelivery phone={orderInfo.phone_number} address={orderInfo.shipping_address}/>
+          <InfoPayment payment={orderInfo.payment_method} total={orderInfo.total_amount}/>
+          <StateOrder status={orderInfo.status}/>
           <div className="d-flex flex-row-reverse">
             <div
               className="btn-create"

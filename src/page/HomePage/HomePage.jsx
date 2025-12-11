@@ -13,7 +13,7 @@ import { useLocation, useSearchParams } from "react-router-dom";
 import { useState } from "react";
 import { getProduct } from "../../services/productService";
 import { listCategories } from "../dataDemo";
-import { sortByPrice, sortByCriteria } from "../../utils/utils";
+import { multiSort } from "../../utils/utils";
 function HomePage() {
   const [searchParams] = useSearchParams();
   const location = useLocation();
@@ -24,44 +24,49 @@ function HomePage() {
   const closeNotifi = () => setShow(false);
   const [search, setSearch] = useState(searchParams.get("search") || "");
   const [page, setPage] = useState(1);
-  const [filter,setFilter] =useState({
-    category:"Tất cả",
-    sortBy:"Mới nhất"
-  })
-  const [advanFilter,setFilterAdvanced]=useState({
+  const [filter, setFilter] = useState({
+    category: "Tất cả",
+    sortBy: "Mới nhất",
+  });
+  const [advanFilter, setFilterAdvanced] = useState({
     rating_min: 0,
     price_min: 0,
     price_max: Infinity,
-    keyword:[],
-    sortByPrice: "Giá: Thấp đến cao"
-  })
-  function handleFilter(filtBy={}){
-    setFilter(prev=>({
+    keyword: [],
+    sortByPrice: "Giá: Thấp đến cao",
+  });
+  function handleFilter(filtBy = {}) {
+    setFilter((prev) => ({
       ...prev,
-      ...filtBy
-    }))
+      ...filtBy,
+    }));
   }
-  function handleAdvFilter(filtBy={}){
-    setFilterAdvanced(prev=>({
+  function handleAdvFilter(filtBy = {}) {
+    setFilterAdvanced((prev) => ({
       ...prev,
-      ...filtBy
-    }))
+      ...filtBy,
+    }));
   }
   const [listProduct, setList] = useState([]);
   const [loading, setLoading] = useState(true);
   async function getListProduct() {
     try {
       const data = await getProduct({
-        search: search + advanFilter.keyword.length>0 ? ` ${advanFilter.keyword.join()}` : "" ,
-        category: filter.category==="Tất cả" ? "" :filter.category,
+        search:
+          search +
+          (advanFilter.keyword.length > 0
+            ? ` ${advanFilter.keyword.join()}`
+            : ""),
+        category: filter.category === "Tất cả" ? "" : filter.category,
         rating_min: advanFilter.rating_min,
         price_min: advanFilter.price_min,
         price_max: advanFilter.price_max,
         page: page,
       });
-      let list=data;
-      list=sortByPrice(list,advanFilter.sortByPrice);
-      list=sortByCriteria(list,filter.sortBy);
+      const list = multiSort(data, {
+        sortBy: filter.sortBy,
+        sortByPrice: advanFilter.sortByPrice,
+      });
       setList(list);
     } catch (err) {
       console.error(err);
@@ -71,7 +76,7 @@ function HomePage() {
   }
   useEffect(() => {
     getListProduct();
-  }, [filter,advanFilter, page]);
+  }, [filter, advanFilter, page]);
   if (loading) return <div>Loading...</div>;
   return (
     <div>
@@ -81,7 +86,11 @@ function HomePage() {
         )}
         <div className="row">
           <div className="col">
-            <FilterSection filter={filter} onFilter={handleFilter} listCategories={listCategories} />
+            <FilterSection
+              filter={filter}
+              onFilter={handleFilter}
+              listCategories={listCategories}
+            />
           </div>
           <div className="col-6">
             <CreateProductPost />
@@ -93,10 +102,10 @@ function HomePage() {
                 showActionc={false}
               />
             ))}
-            <ChangePage page={page} onChange={setPage}/>
+            <ChangePage page={page} onChange={setPage} />
           </div>
           <div className="col">
-            <AdvancedFilter filter={advanFilter} onFilter={handleAdvFilter}/>
+            <AdvancedFilter filter={advanFilter} onFilter={handleAdvFilter} />
             <RecommendSeller />
           </div>
         </div>

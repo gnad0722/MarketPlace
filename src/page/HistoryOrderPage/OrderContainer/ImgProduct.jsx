@@ -1,8 +1,9 @@
 import React from "react";
 import myPicture from "../../../img/iphone.webp";
-function ImgProduct(){
+import { API_BASE } from "../../../api/axiosClient";
+function ImgProduct(props){
     return <div className="mini-img">
-          <img src={myPicture}/>
+          <img src={`${API_BASE}${props.src}`}/>
     </div>
 }
 export default ImgProduct;

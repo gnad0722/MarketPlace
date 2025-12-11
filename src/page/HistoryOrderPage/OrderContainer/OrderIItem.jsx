@@ -6,7 +6,9 @@ import ActionOrder from "./ActionOrder";
 import FeedBackPopup from "../FeedBackPopup/FeedBackPopup";
 import { useState } from "react";
 import DetailPopup from "../DetailPopup/DetailPopup";
-function OrderItem() {
+function OrderItem(props) {
+  const orderInfo=props.order;
+  const products=props.order.products;
   const [isFeedBackPopupOpen, setIsFeedBackPopupOpen] = useState(false);
   const openFeedBackPopup = () => setIsFeedBackPopupOpen(true);
   const closeFeedBackPopup = () => setIsFeedBackPopupOpen(false);
@@ -17,17 +19,17 @@ function OrderItem() {
   return (
     <div>
       <div className="order-container">
-        <InfoOrder />
-        <InfoSeller />
+        <InfoOrder id={orderInfo.id} totalAmount={orderInfo.total_amount} status={orderInfo.status} created_at={orderInfo.created_at}/>
         <hr style={{ marginTop: "0", opacity: "0.1" }} />
         <div className="d-flex gap-2">
-          <ImgProduct />
-          <ImgProduct />
+          {products.map((product,index)=>{
+            return <ImgProduct key={index} src={product.image_url}/>
+          })}
         </div>
         <ActionOrder onOpenFeedBack={openFeedBackPopup} onOpenDetail={openDetailPopup}/>
       </div>
       <FeedBackPopup isOpen={isFeedBackPopupOpen} onClose={closeFeedBackPopup}/>
-      <DetailPopup isOpen={isDetailPopupOpen} onClose={closeDetailPopup} onOpenFeedBack={openFeedBackPopup}/>
+      <DetailPopup orderInfo={orderInfo} products={products} isOpen={isDetailPopupOpen} onClose={closeDetailPopup} onOpenFeedBack={openFeedBackPopup}/>
     </div>
   );
 }

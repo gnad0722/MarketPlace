@@ -1,11 +1,13 @@
 import React, { use } from "react";
 import myPicture from "../../../img/iphone.webp";
 import { useNavigate } from "react-router-dom";
+import { API_BASE } from "../../../api/axiosClient";
 function ProductItem(props) {
   const navigate = useNavigate();
   const nameProduct = props.nameProduct;
   const quantity = props.quantity;
   const price = props.price;
+  const img=props.img;
   return (
     <div
       style={{
@@ -22,7 +24,7 @@ function ProductItem(props) {
           navigate("/detail");
         }}
       >
-        <img src={myPicture} />
+        <img src={`${API_BASE}${img}`} />
       </div>
       <div
         className="d-flex flex-column"

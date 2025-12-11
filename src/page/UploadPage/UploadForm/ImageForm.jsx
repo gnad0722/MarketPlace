@@ -18,7 +18,8 @@ function ImageForm(props) {
       }
     });
     if (!validImages.length) {
-      console.log("Vui lòng chọn file ảnh");
+      const newMessage={"image":"Vui lòng chọn file ảnh"}
+      props.setMessage(prev=>({...prev,...newMessage}))
     }
     setPreview((prev) => [...prev, ...newPreviews]);
     setFiles((prev) => [...prev, ...validImages]);

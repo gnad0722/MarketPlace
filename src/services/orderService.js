@@ -1,4 +1,5 @@
 import axiosClient from "../api/axiosClient";
-export const placeOrder=({})=>{
-    
+export const getOrderHistory= async ()=>{
+    const response =await axiosClient.get("/orders");
+    return response.data.data;
 }

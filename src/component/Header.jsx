@@ -22,7 +22,7 @@ function Header(props) {
   const navigate = useNavigate();
   const [notifications, setList] = useState([]);
   const [numberNoti, setNumber] = useState(0);
-  const [keyword,setKeyword]=useState("");
+  const [keyword, setKeyword] = useState("");
   async function handleLogout() {
     try {
       await logout();
@@ -77,18 +77,25 @@ function Header(props) {
           className="flex-grow-1 mx-4 relative"
           style={{ maxWidth: "28rem", minWidth: "130px" }}
         >
-          <form className="input-group position-relative">
+          <form className="input-group position-relative" onSubmit={(e) => e.preventDefault()}>
             <input
               type="text"
               className="form-control"
               placeholder="Tìm kiếm sản phẩm theo mô tả ..."
               style={{ paddingLeft: "2.5rem", borderRadius: "0.5rem" }}
               value={keyword}
-              onChange={(e)=>setKeyword(e.target.value)}
+              onChange={(e) => setKeyword(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") navigate(`/home?search=${keyword}`);
+              }}
             />
-            <Search style={{cursor:"pointer"}} onClick={()=>{
-              navigate(`/home?search=${keyword}`)
-            }} className="search-icon" />
+            <Search
+              style={{ cursor: "pointer" }}
+              onClick={() => {
+                navigate(`/home?search=${keyword}`);
+              }}
+              className="search-icon"
+            />
           </form>
         </div>
         <div className="d-flex align-items-center">

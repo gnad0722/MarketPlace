@@ -6,9 +6,9 @@ import { useNavigate } from "react-router-dom";
 import { updateItemQuantity,removeItem } from "../../../services/cartService";
 import { getProductImageById } from "../../../services/productService";
 import { API_BASE } from "../../../api/axiosClient";
+import { formatPriceByCode } from "../../../utils/utils";
 function CartItem(props) {
   const item=props.item;
-  console.log(item);
   const name=item.name;
   const price=Number(item.price);
   const navigate = useNavigate();
@@ -99,7 +99,7 @@ function CartItem(props) {
           fontWeight: "500",
         }}
       >
-        <span style={{ width: "25%", color: "#ff6a00" }}>{price} ₫</span>
+        <span style={{ width: "25%", color: "#ff6a00" }}>{formatPriceByCode(price,"VND")}</span>
         <div style={{ width: "25%" }}>
           <div className="product-count">
             <button
@@ -128,7 +128,7 @@ function CartItem(props) {
             </button>
           </div>
         </div>
-        <span style={{ width: "25%", color: "#ff6a00" }}>{total} ₫</span>
+        <span style={{ width: "25%", color: "#ff6a00" }}>{formatPriceByCode(total,"VND")}</span>
         <div
           className="btn-create"
           onClick={() => {

@@ -38,7 +38,7 @@ function FormRegister() {
         const listError = err.response.data.errors;
         const msg = {};
         listError.forEach((error) => {
-          msg[error.param] = error.msg;
+          msg[error.path] = error.msg;
         });
         setMessage(msg);
       }

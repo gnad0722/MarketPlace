@@ -8,7 +8,7 @@ import ImageForm from "./ImageForm";
 import {
   updateProduct,
   getProductById,
-  deleteProductImage
+  deleteProductImage,
 } from "../../../services/productService";
 import { de } from "date-fns/locale";
 import { useRef, useEffect } from "react";
@@ -37,6 +37,7 @@ function UploadForm(props) {
     stock: "",
     description: "",
     category: "",
+    image: "",
   });
   const [isOpen, setIsOpen] = useState(false);
   const [option, setOption] = useState("Danh mục");
@@ -46,7 +47,7 @@ function UploadForm(props) {
   const [stock, setStock] = useState(product.stock);
   const [category, setCategory] = useState(product.category);
   const [files, setFiles] = useState([]);
-  const [removeImgList,setList]=useState([]);
+  const [removeImgList, setList] = useState([]);
   function toggleDropdown() {
     setIsOpen(!isOpen);
   }
@@ -58,33 +59,43 @@ function UploadForm(props) {
   async function handleUpdate(e) {
     e.preventDefault();
     const msg = {};
-    try {
-      const formData = new FormData();
-      formData.append("name", nameProduct);
-      formData.append("description", description);
-      formData.append("price", price);
-      formData.append("stock", stock);
-      formData.append("category", category);
-      files.forEach((file) => {
-        formData.append("images", file);
-      });
-      for (const img of removeImgList){
-        await deleteProductImage(id,img);
-      }
-       await updateProduct(formData,id);
-      navigate("/home", {
-        state: {
-          show: true,
-          message: "Sản phẩm của bạn đã được cập nhật thành công!",
-          color: "#3F7D58",
-        },
-      });
-    } catch (err) {
-      if (err.response && err.response.status === 400) {
-        const listError = err.response.data.errors;
-        listError.forEach((error) => {
-          msg[error.param] = error.msg;
+    if (
+      category === "" ||
+      nameProduct === "" ||
+      price === "" ||
+      stock === "" ||
+      (files.length === 0 && removeImgList.length === product.images.length)
+    ) {
+      msg["image"] = "Vui lòng nhập đầy đủ các thông tin yêu cầu!";
+    } else {
+      try {
+        const formData = new FormData();
+        formData.append("name", nameProduct);
+        formData.append("description", description);
+        formData.append("price", price);
+        formData.append("stock", stock);
+        formData.append("category", category);
+        files.forEach((file) => {
+          formData.append("images", file);
         });
+        for (const img of removeImgList) {
+          await deleteProductImage(id, img);
+        }
+        await updateProduct(formData, id);
+        navigate("/home", {
+          state: {
+            show: true,
+            message: "Sản phẩm của bạn đã được cập nhật thành công!",
+            color: "#3F7D58",
+          },
+        });
+      } catch (err) {
+        if (err.response && err.response.status === 400) {
+          const listError = err.response.data.errors;
+          listError.forEach((error) => {
+            msg[error.path] = error.msg;
+          });
+        }
       }
     }
     setMessage(msg);
@@ -198,7 +209,13 @@ function UploadForm(props) {
             >
               Hình ảnh sản phẩm*
             </label>
-            <ImageForm onUpload={setFiles} onRemove={setList} oldImages={product.images}/>
+            <ImageForm
+              onUpload={setFiles}
+              onRemove={setList}
+              oldImages={product.images}
+              setMessage={setMessage}
+            />
+            <span style={{ color: "red" }}>{message.image}</span>
           </div>
           <div className="col-12  mt-3 d-flex flex-row-reverse">
             <div
