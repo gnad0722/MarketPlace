@@ -5,7 +5,7 @@ function BreadcrumnNavigation (props){
     const navigate=useNavigate();
     return <div className="container-breadcrumb">
         <span className="rootpage" onClick={()=>{
-            navigate("/")
+            navigate("/home")
         }}>Trang chủ</span>
         <span><ChevronRight size={14}/></span>
         <span style={{color:"black"}}>{props.title}</span>

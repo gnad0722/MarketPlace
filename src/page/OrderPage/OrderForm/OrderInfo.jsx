@@ -1,6 +1,27 @@
-import React from "react";
+import React, { use, useState } from "react";
 import { MapPin } from "lucide-react";
-function OrderInfo() {
+function OrderInfo(props) {
+  const [phone, setPhone] = useState("");
+  const [address, setAddress] = useState("");
+  const [note, setNote] = useState("");
+  function handleChange(target, e) {
+    if (target === "phone") {
+      setPhone(e.target.value);
+      props.onEnter({
+        phone: e.target.value,
+      });
+    } else if (target === "address") {
+      setAddress(e.target.value);
+      props.onEnter({
+        address: e.target.value,
+      });
+    } else {
+      setNote(e.target.value);
+      props.onEnter({
+        note: e.target.value,
+      });
+    }
+  }
   return (
     <div className="order-info">
       <span style={{ fontWeight: "500" }}>
@@ -12,18 +33,6 @@ function OrderInfo() {
       </span>
       <form>
         <div className="row mt-3">
-          <div className="col-6 ">
-            <label htmlFor="InputName" className="form-label">
-              Họ và tên*
-            </label>
-            <input
-              type="text"
-              id="InputName"
-              className="form-control"
-              placeholder="Ví dụ: Nguyễn Văn A"
-              style={{ borderRadius: "0.5rem" }}
-            />
-          </div>
           <div className="col-6">
             <label htmlFor="InputPhone" className="form-label">
               Số điện thoại*
@@ -34,18 +43,7 @@ function OrderInfo() {
               className="form-control"
               placeholder="Nhập số điện thoại của bạn"
               style={{ borderRadius: "0.5rem" }}
-            />
-          </div>
-          <div className="col-12 mt-3">
-            <label htmlFor="InputEmail" className="form-label">
-              Email
-            </label>
-            <input
-              type="text"
-              id="InputEmail"
-              className="form-control"
-              placeholder="example@gmail.com"
-              style={{ borderRadius: "0.5rem" }}
+              onChange={(e) => handleChange("phone", e)}
             />
           </div>
           <div className="col-12 mt-3">
@@ -56,35 +54,12 @@ function OrderInfo() {
               type="text"
               id="InputAddress"
               className="form-control"
-              placeholder="Số nhà, tên đường"
+              placeholder="Số nhà, tên đường, phường/xã, quận/huyện, tỉnh/thành phố"
               style={{ borderRadius: "0.5rem" }}
+              onChange={(e) => handleChange("address", e)}
             />
           </div>
-           <div className="col-6 mt-3">
-            <label htmlFor="InputCity" className="form-label">
-              Tỉnh/Thành phố*
-            </label>
-            <input
-              type="text"
-              id="InputCity"
-              className="form-control"
-              placeholder="Nhập tên tỉnh/thành phố"
-              style={{ borderRadius: "0.5rem" }}
-            />
-          </div>
-           <div className="col-6 mt-3">
-            <label htmlFor="InputDistrict" className="form-label">
-              Phường/Xã/Thị trấn*
-            </label>
-            <input
-              type="text"
-              id="InputDistrict"
-              className="form-control"
-              placeholder="Nhập tên phường/xã/thị trấn"
-              style={{ borderRadius: "0.5rem" }}
-            />
-          </div>
-           <div className="col-12 mt-3 mb-3">
+          <div className="col-12 mt-3 mb-3">
             <label htmlFor="InputNote" className="form-label">
               Ghi chú
             </label>
@@ -94,6 +69,7 @@ function OrderInfo() {
               className="form-control"
               placeholder="Ghi chú thêm về địa chỉ (tùy chọn)"
               style={{ borderRadius: "0.5rem" }}
+              onChange={(e) => handleChange("note", e)}
             />
           </div>
         </div>

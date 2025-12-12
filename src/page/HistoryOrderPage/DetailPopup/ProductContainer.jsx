@@ -16,6 +16,7 @@ function ProductContainer(props) {
             onClose={props.onClose}
             price={formatPriceByCode(product.price_at_purchase,"VND")}
             img={product.image_url}
+            showFeedback={true}
           />
         );
       })}

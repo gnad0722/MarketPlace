@@ -7,11 +7,12 @@ import { Minus, Plus, ShoppingCart, Truck, Shield } from "lucide-react";
 import { addItemToCart } from "../../../services/cartService";
 function ProductCard(props) {
   const navigate=useNavigate();
-  const id=props.id
-  const title = props.title;
-  const sold = props.sold;
-  const quantity = props.quantity;
-  const price = props.price;
+  const product=props.product;
+  const id=product.id
+  const title = product.name;
+  const sold = product.sold;
+  const quantity = product.quantity;
+  const price = product.price;
   const currencyCode = props.currencyCode;
   const [count, setCount] = useState(1);
   function handleCount(action) {
@@ -64,8 +65,9 @@ function ProductCard(props) {
         </button>
       </div>
       <div className="action-buy">
-        <div className="btn-create" style={{ width: "100%" }} onClick={()=>{
-            navigate("/order")
+        <div className="btn-create" style={{ width: "100%" }} onClick={async()=>{
+           await handleCart();
+            navigate("/cart")
         }}>
           <span style={{ fontWeight: "490" }}>Mua ngay</span>
         </div>

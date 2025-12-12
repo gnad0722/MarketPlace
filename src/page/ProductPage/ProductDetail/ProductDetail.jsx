@@ -23,7 +23,7 @@ function ProductDetail(props) {
       <div className="col-4 ">
         <div className="position-sticky" style={{ top: "80px" }}>
           <div className="d-flex flex-column gap-4">
-            <ProductCard id={product.id} title={product.name} quantity={product.stock}  sold={0} price={product.price} currencyCode={"VND"}/>
+            <ProductCard product={product} currencyCode={"VND"}/>
             <SellerCard infoSeller={infoSeller}/>
           </div>
         </div>

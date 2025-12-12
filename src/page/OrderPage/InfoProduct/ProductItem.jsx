@@ -21,7 +21,11 @@ function ProductItem(props) {
       <div
         className="mini-img"
         onClick={() => {
-          navigate("/detail");
+          navigate("/detail",{
+            state:{
+              id:props.id
+            }
+          });
         }}
       >
         <img src={`${API_BASE}${img}`} />
@@ -36,7 +40,7 @@ function ProductItem(props) {
         </span>
         <div className="d-flex justify-content-between">
           <span style={{ color: "#ff6a00" }}>{price}</span>
-          <span
+          {props.showFeedback &&  <span
             style={{
               opacity: "0.5",
               textDecorationLine: "underline",
@@ -48,7 +52,7 @@ function ProductItem(props) {
             }}
           >
             Đánh giá
-          </span>
+          </span>}
         </div>
       </div>
     </div>

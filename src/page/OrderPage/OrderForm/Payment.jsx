@@ -2,9 +2,11 @@ import React from "react";
 import PaymentMethod from "./PaymentMethod";
 import { useState } from "react";
 import { CreditCard } from "lucide-react";
-function Payment() {
+function Payment(props) {
   const [selected, setSelect] = useState(1);
   function hanldeSelect(id){
+    if (id===1) props.onSelect({paymentMethod:"COD"});
+    else props.onSelect({paymentMethod:"ONLINE"});
     setSelect(id);
   }
   return (

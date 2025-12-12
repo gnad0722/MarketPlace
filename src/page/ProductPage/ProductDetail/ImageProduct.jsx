@@ -13,8 +13,8 @@ function ImageProduct(props) {
         {images.map((image, index) => {
           if (index > 0) {
             return (
-              <div className="carousel-item">
-                <img key={index} src={`${API_BASE}${image.image_url}`} />
+              <div key={index} className="carousel-item">
+                <img  src={`${API_BASE}${image.image_url}`} />
               </div>
             );
           }

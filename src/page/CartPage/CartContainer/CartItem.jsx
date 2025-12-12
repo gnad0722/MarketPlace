@@ -132,7 +132,11 @@ function CartItem(props) {
         <div
           className="btn-create"
           onClick={() => {
-            navigate("/order");
+            navigate("/order",{
+              state:{
+                listItem:[item]
+              }
+            });
           }}
         >
           <span style={{ fontWeight: "500" }}>Mua ngay</span>

@@ -4,7 +4,7 @@ import CartHeader from "./CartHeader/CartHeader";
 import CartContainer from "./CartContainer/CartContainer";
 import FooterCart from "./FooterCart/FooterCart";
 import { getCartItems } from "../../services/cartService";
-function CartPage() {
+function CartPage(props) {
   const [cart,setCart] =useState({});
   const [items,setList]=useState([])
   async function getCart() {

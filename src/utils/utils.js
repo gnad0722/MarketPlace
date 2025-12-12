@@ -198,7 +198,11 @@ function getStatusColor(status) {
       return "#7f8c8d"; 
   }
 }
-
+function calculateTotal(items) {
+  return items.reduce((total, item) => {
+    return total + Number(item.subtotal);
+  }, 0);
+}
 export {
   formatPriceByCode,
   getAvgRating,
@@ -211,5 +215,6 @@ export {
   makeHashtag,
   multiSort,
   getOrderStatus,
-  getStatusColor
+  getStatusColor,
+  calculateTotal
 };
