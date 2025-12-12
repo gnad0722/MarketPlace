@@ -1,65 +1,71 @@
 import React from "react";
 import myPicture from "../../../img/iphone.webp";
 import { Minus, Plus, X } from "lucide-react";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { updateItemQuantity,removeItem } from "../../../services/cartService";
+import { updateItemQuantity, removeItem } from "../../../services/cartService";
 import { getProductImageById } from "../../../services/productService";
 import { API_BASE } from "../../../api/axiosClient";
 import { formatPriceByCode } from "../../../utils/utils";
 function CartItem(props) {
-  const item=props.item;
-  const name=item.name;
-  const price=Number(item.price);
+  const item = props.item;
+  const checkAll = props.checked;
+  const id = item.product_id;
+  const name = item.name;
+  const price = Number(item.price);
   const navigate = useNavigate();
   const [count, setCount] = useState(item.quantity);
-  const [total,setTotal]=useState(item.subtotal);
-  const [image,setImage]=useState('');
-  const [loading,setLoading]=useState(true);
+  const [total, setTotal] = useState(item.subtotal);
+  const [image, setImage] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [checked,setChecked]=useState(checkAll);
+  function handleCheck(e){
+    const isChecked=e.target.checked;
+    props.onSelect(id,isChecked);
+    setChecked(isChecked);
+  }
   function handleCount(action) {
     setCount(action === "plus" ? count + 1 : count - 1);
-    setTotal(action === "plus" ? price*(count + 1) : price*(count - 1))
+    setTotal(action === "plus" ? price * (count + 1) : price * (count - 1));
   }
-  useEffect(()=>{
-    updateItemQuantity(item.product_id,count)
-  },[count]);
+  useEffect(() => {
+    updateItemQuantity(item.product_id, count);
+  }, [count]);
   async function getImgProduct(id) {
-      try{
-        const data=await getProductImageById(id);
-        data.length>0 && setImage(data[0].image_url);
-      }
-      catch(err){
-        console.error(err);
-      } 
-      finally{
-        setLoading(false);
-      }
+    try {
+      const data = await getProductImageById(id);
+      data.length > 0 && setImage(data[0].image_url);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
   }
   async function removeItemCart() {
     navigate(0);
-    try{
-      const data=removeItem(item.product_id);
-    }
-    catch(err){
+    try {
+      const data = removeItem(item.product_id);
+    } catch (err) {
       console.error(err);
     }
   }
- useEffect(() => {
+  useEffect(() => {
     getImgProduct(item.product_id);
   }, []);
-  if(loading) return <div>Loading...</div>
+  useEffect(()=>{
+    setChecked(checkAll)
+  },[checkAll])
+  if (loading) return <div>Loading...</div>;
   return (
     <div className="cart-bar" style={{ padding: "20px 20px", gap: "7px" }}>
       <div className="form-check">
         <input
           className="form-check-input"
           type="checkbox"
-          value={name}
-          id={`check-${name}`}
-          checked={props.checked}
-          // onChange={() => {
-          //   props.onCheck(name);
-          // }}
+          value={id}
+          checked={checked}
+          id={`check-${id}`}
+          onChange={handleCheck}
         />
       </div>
       <div
@@ -99,7 +105,9 @@ function CartItem(props) {
           fontWeight: "500",
         }}
       >
-        <span style={{ width: "25%", color: "#ff6a00" }}>{formatPriceByCode(price,"VND")}</span>
+        <span style={{ width: "25%", color: "#ff6a00" }}>
+          {formatPriceByCode(price, "VND")}
+        </span>
         <div style={{ width: "25%" }}>
           <div className="product-count">
             <button
@@ -128,14 +136,16 @@ function CartItem(props) {
             </button>
           </div>
         </div>
-        <span style={{ width: "25%", color: "#ff6a00" }}>{formatPriceByCode(total,"VND")}</span>
+        <span style={{ width: "25%", color: "#ff6a00" }}>
+          {formatPriceByCode(total, "VND")}
+        </span>
         <div
           className="btn-create"
           onClick={() => {
-            navigate("/order",{
-              state:{
-                listItem:[item]
-              }
+            navigate("/order", {
+              state: {
+                listItem: [item],
+              },
             });
           }}
         >

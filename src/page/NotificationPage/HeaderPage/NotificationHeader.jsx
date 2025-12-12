@@ -1,5 +1,5 @@
 import React from "react";
-function NotificationHeader(){
+function NotificationHeader(props){
     return <div
       style={{
         display: "flex",
@@ -10,7 +10,7 @@ function NotificationHeader(){
         Thông báo
       </span>
       <span style={{ opacity: "0.5" }}>
-      Bạn có 3 thông báo mới
+        {props.numberNoti>0? `Bạn có ${props.numberNoti} thông báo mới` : "Bạn không có thông báo mới"}
       </span>
     </div>
 }

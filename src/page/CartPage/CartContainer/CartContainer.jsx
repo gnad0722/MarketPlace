@@ -1,8 +1,9 @@
-import React from "react";
+import React,{useState} from "react";
 import CartBar from "./CartBar";
 import CartItem from "./CartItem";
 function CartContainer(props) {
   const items = props.items;
+  const checkAll=props.checkAll;
   return (
     <div
       className="d-flex flex-column gap-3"
@@ -15,8 +16,8 @@ function CartContainer(props) {
       {items.map((item, index) => {
         if (index !== items.length-1){
            return (
-            <div>
-              <CartItem item={item} key={index} />
+            <div key={index}>
+              <CartItem item={item} checked={checkAll} onSelect={props.onSelect}/>
               <hr
                 style={{
                   margin: "5px",
@@ -30,7 +31,7 @@ function CartContainer(props) {
           );
         }
         else {
-          return <CartItem item={item} key={index} />;
+          return <CartItem item={item} key={index} checked={checkAll} onSelect={props.onSelect}/>;
         }
       })}
     </div>

@@ -1,6 +1,7 @@
 import React, { use, useState } from "react";
 import { MapPin } from "lucide-react";
 function OrderInfo(props) {
+  const message=props.message;
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
   const [note, setNote] = useState("");
@@ -46,6 +47,7 @@ function OrderInfo(props) {
               onChange={(e) => handleChange("phone", e)}
             />
           </div>
+           <span style={{ color: "red" }}>{message.phone}</span>
           <div className="col-12 mt-3">
             <label htmlFor="InputAddress" className="form-label">
               Địa chỉ*
@@ -59,6 +61,7 @@ function OrderInfo(props) {
               onChange={(e) => handleChange("address", e)}
             />
           </div>
+           <span style={{ color: "red" }}>{message.address}</span>
           <div className="col-12 mt-3 mb-3">
             <label htmlFor="InputNote" className="form-label">
               Ghi chú
@@ -72,6 +75,7 @@ function OrderInfo(props) {
               onChange={(e) => handleChange("note", e)}
             />
           </div>
+           <span style={{ color: "red" }}>{message.note}</span>
         </div>
       </form>
     </div>

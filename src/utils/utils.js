@@ -203,6 +203,19 @@ function calculateTotal(items) {
     return total + Number(item.subtotal);
   }, 0);
 }
+function getInfoCheckout(items,listSelected){
+  const info={
+    total:0,
+    quantity:0,
+  }
+  items.forEach((item)=>{
+      if (listSelected.includes(item.product_id)){
+        info.total+=Number(item.subtotal);
+        info.quantity+=Number(item.quantity);
+      }
+  })
+  return info;
+}
 export {
   formatPriceByCode,
   getAvgRating,
@@ -216,5 +229,6 @@ export {
   multiSort,
   getOrderStatus,
   getStatusColor,
-  calculateTotal
+  calculateTotal,
+  getInfoCheckout
 };

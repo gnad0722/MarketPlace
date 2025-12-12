@@ -22,7 +22,6 @@ export const getProduct = async ({
   price_min,
   price_max,
 } = {}) => {
-  console.log(search)
   const response = await axiosClient.get("/products", {
     params: {
       search,

@@ -1,20 +1,61 @@
-import React,{useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import ProductItem from "./ProductItem";
 import { ShoppingCart, Package } from "lucide-react";
-import { formatPriceByCode,calculateTotal } from "../../../utils/utils";
+import { formatPriceByCode, calculateTotal } from "../../../utils/utils";
 import { getProductImageById } from "../../../services/productService";
+import { placeOrder } from "../../../services/orderService";
+import { useNavigate } from "react-router-dom";
 function InfoProduct(props) {
+  const navigate=useNavigate();
   const products = props.products;
-  const [image,setImage]=useState('');
-   async function getImgProduct(id) {
-        try{
-          const data=await getProductImageById(id);
-          data.length>0 && setImage(data[0].image_url);
-        }
-        catch(err){
-          console.error(err);
-        } 
+  const infoOrder = props.infoOrder;
+  const [listImg,setListImg]=useState([]);
+  const [loading,setLoading]=useState(true);
+  const [listProductId, setList] = useState(
+    products.map((product) => product.product_id)
+  );
+  async function getImgProduct(id) {
+    try {
+      const data = await getProductImageById(id);
+      if (data.length>0) {
+        setListImg(prev=>[...prev,{
+          id:id,
+          img_url:data[0].image_url
+        }])
+      }
+    } catch (err) {
+       console.error(err);
+    } finally{
+      setLoading(false)
     }
+  }
+  async function handleOrder(infoOrder, listProductId) {
+    const msg={};
+    try {
+      await placeOrder(infoOrder, listProductId);
+      navigate("/home", {
+          state: {
+            show: true,
+            message: "Đơn hàng của bạn đã được tạo thành công!",
+            color: "#001F3D",
+          },
+        });
+    } catch (err) {
+       if (err.response && err.response.status === 400) {
+          const listError = err.response.data.errors;
+          listError.forEach((error) => {
+            msg[error.path] = error.msg;
+          });
+        }
+    }
+    props.onError(msg);
+  }
+  useEffect(()=>{
+    listProductId.forEach((id)=>{
+      getImgProduct(id);
+    })
+  },[listProductId])
+  if (loading) return <div>Loading...</div>
   return (
     <div className="order-info">
       <span style={{ fontWeight: "500", marginBottom: "20px" }}>
@@ -26,7 +67,6 @@ function InfoProduct(props) {
         Đơn hàng của bạn
       </span>
       {products.map( (product, index) => {
-        getImgProduct(product.product_id);
         return (
           <ProductItem
             id={product.product_id}
@@ -36,7 +76,7 @@ function InfoProduct(props) {
             onOpenFeedBack={props.onOpenFeedBack}
             onClose={props.onClose}
             price={formatPriceByCode(product.price, "VND")}
-            img={image}
+            img={listImg.find(obj => obj.id === product.product_id)?.img_url || ""}
             showFeedback={false}
           />
         );
@@ -47,7 +87,7 @@ function InfoProduct(props) {
         style={{ fontSize: "15px", fontWeight: "500", opacity: "0.5" }}
       >
         <span>Tạm tính</span>
-        <span>{formatPriceByCode(calculateTotal(products),"VND")}</span>
+        <span>{formatPriceByCode(calculateTotal(products), "VND")}</span>
       </div>
       <hr style={{ color: "gray", marginTop: "5px" }}></hr>
       <div
@@ -55,9 +95,17 @@ function InfoProduct(props) {
         style={{ fontSize: "18px", fontWeight: "500" }}
       >
         <span>Tổng cộng</span>
-        <span style={{ color: "#ff6a00" }}>{formatPriceByCode(calculateTotal(products),"VND")}</span>
+        <span style={{ color: "#ff6a00" }}>
+          {formatPriceByCode(calculateTotal(products), "VND")}
+        </span>
       </div>
-      <div className="btn-create" style={{ width: "100%", marginTop: "7px" }}>
+      <div
+        className="btn-create"
+        style={{ width: "100%", marginTop: "7px" }}
+        onClick={() => {
+          handleOrder(infoOrder, listProductId);
+        }}
+      >
         <span style={{ fontWeight: "500" }}>
           <Package color="white" style={{ marginRight: "10px" }} />
           Đặt hàng
