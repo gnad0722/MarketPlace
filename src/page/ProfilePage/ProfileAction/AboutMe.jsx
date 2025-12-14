@@ -1,13 +1,53 @@
-import React from "react";
-function AboutMe() {
+import React, { useEffect, useState } from "react";
+import { formatTime } from "../../../utils/utils";
+import { getMyProduct } from "../../../services/productService";
+import { getFollowersCount, getFollowingCount } from "../../../services/followService";
+function AboutMe(props) {
+  const user = props.user;
+  const [listProduct, setList] = useState([]);
+  const [follower,setFollower]=useState(0);
+  const [following,setFollowing]=useState(0);
+  async function getListProduct() {
+    try {
+      const data = await getMyProduct(1,Number.MAX_SAFE_INTEGER);
+      setList(data);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+  async function getFollower() {
+    try{
+      const data= await getFollowersCount(user.id);
+      setFollower(data.follower_count);
+    }
+    catch (err){
+      console.error(err);
+    }
+  }
+  async function getFollowing() {
+    try{
+      const data= await getFollowingCount();
+      setFollowing(data.following_count);
+    }
+    catch (err){
+      console.error(err);
+    }
+  }
+  useEffect(()=>{
+    getListProduct();
+    getFollower();
+    getFollowing();
+  },[])
   return (
     <div className="about-me">
       <span style={{ fontWeight: "500" }}>Thông tin cửa hàng</span>
       <div className="d-flex flex-column gap-2">
-        <span style={{ fontWeight: "500", fontSize: "15px" }}>Giới thiệu</span>
+        <span style={{ fontWeight: "500", fontSize: "15px" }}>
+          Cam kết với hệ thống
+        </span>
         <span style={{ opacity: "0.7", fontSize: "15px" }}>
-          Yêu thích công nghệ và thời trang. Bán hàng online từ 2020. Cam kết
-          chất lượng và dịch vụ tốt nhất cho khách hàng.
+          Sản phẩm được đăng bán phải đảm bảo chất lượng, đúng với mô tả, có
+          nguồn gốc hợp pháp và tuân thủ các quy định của pháp luật hiện hành.
         </span>
       </div>
       <hr style={{ margin: "0px", opacity: "0.2" }} />
@@ -18,32 +58,23 @@ function AboutMe() {
             className="d-flex justify-content-between"
             style={{ fontSize: "14px" }}
           >
-            <span>Tổng bài viết:</span>
-            <span>42</span>
+            <span>Tổng sản phẩm:</span>
+            <span>{listProduct.length}</span>
           </div>
           <div
             className="d-flex justify-content-between"
             style={{ fontSize: "14px" }}
           >
             <span>Người theo dõi:</span>
-            <span>1250</span>
+            <span>{follower}</span>
           </div>
           <div
             className="d-flex justify-content-between"
             style={{ fontSize: "14px" }}
           >
-            <span style={{ paddingTop: "5px" }}>Đánh giá:</span>
+            <span style={{ paddingTop: "5px" }}>Đang theo dõi </span>
             <span>
-              4.8/5
-              <span
-                style={{
-                  color: "#ff6600",
-                  fontSize: "20px",
-                  paddingBottom: "",
-                }}
-              >
-                ★
-              </span>
+              {following}
             </span>
           </div>
         </div>

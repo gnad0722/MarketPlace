@@ -15,6 +15,10 @@ export const getFollowingList=async ()=>{
     const response = await axiosClient.get(`/follow/me/following`);
     return response.data;
 }
+export const getFollowingCount=async ()=>{
+    const response = await axiosClient.get(`/follow/me/following-count`);
+    return response.data;
+}
 export const getFollowersCount = async (userId)=>{
     const response = await axiosClient.get(`/follow/${userId}/followers-count`);
     return response.data;

@@ -1,11 +1,19 @@
 import React from "react";
-function Avatar() {
+import { API_BASE } from "../../../api/axiosClient";
+function Avatar(props) {
+  const avatar=props.avatar;
+  const username=props.username;
+  console.log(username);
   return (
     <div
       className="avt-mini"
       style={{ width: "4.5rem", height: "4.5rem", fontSize: "20px", marginBottom:"10px" }}
     >
-      NVD
+      {avatar === "" ? (
+          username[0]
+        ) : (
+          <img src={`${API_BASE}${avatar}`} alt="avatar" />
+        )}
     </div>
   );
 }

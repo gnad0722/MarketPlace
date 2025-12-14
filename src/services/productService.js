@@ -3,11 +3,11 @@ export const createProduct = async (formData) => {
   const response = await axiosClient.post("/products", formData);
   return response.data;
 };
-export const getMyProduct = async (page = 1) => {
+export const getMyProduct = async (page = 1,limit=5) => {
   const response = await axiosClient.get("/products/my-products", {
     params: {
       page: page,
-      limit: 5
+      limit
     }
   });
   return response.data.data;

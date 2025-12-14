@@ -2,12 +2,13 @@ import React from "react";
 import Avatar from "./Avatar";
 import Information from "./Information";
 import FollowAndRating from "./FollowAndRating";
-function ProfileCard() {
+function ProfileCard(props) {
+  const user=props.user;
   return (
     <div className="profile-card">
-      <Avatar />
-      <Information/>
-      <FollowAndRating/>
+      <Avatar avatar={user.avatar} username={user.username}/>
+      <Information user={user}/>
+      <FollowAndRating user={user}/>
     </div>
   );
 }

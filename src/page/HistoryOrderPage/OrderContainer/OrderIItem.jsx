@@ -10,7 +10,11 @@ function OrderItem(props) {
   const orderInfo=props.order;
   const products=props.order.products;
   const [isFeedBackPopupOpen, setIsFeedBackPopupOpen] = useState(false);
-  const openFeedBackPopup = () => setIsFeedBackPopupOpen(true);
+  const [item,setItem]=useState({})
+  function openFeedBackPopup(idItem){
+      setIsFeedBackPopupOpen(true);
+      setItem(products.find(item=>item.order_item_id===idItem));
+  }
   const closeFeedBackPopup = () => setIsFeedBackPopupOpen(false);
 
   const [isDetailPopupOpen, setIsDetailPopupOpen] = useState(false);
@@ -26,9 +30,9 @@ function OrderItem(props) {
             return <ImgProduct key={index} src={product.image_url}/>
           })}
         </div>
-        <ActionOrder onOpenFeedBack={openFeedBackPopup} onOpenDetail={openDetailPopup}/>
+        <ActionOrder  orderInfo={orderInfo} onOpenFeedBack={openFeedBackPopup} onOpenDetail={openDetailPopup}/>
       </div>
-      <FeedBackPopup isOpen={isFeedBackPopupOpen} onClose={closeFeedBackPopup}/>
+      <FeedBackPopup orderInfo={orderInfo} item={item} isOpen={isFeedBackPopupOpen} onClose={closeFeedBackPopup}/>
       <DetailPopup orderInfo={orderInfo} products={products} isOpen={isDetailPopupOpen} onClose={closeDetailPopup} onOpenFeedBack={openFeedBackPopup}/>
     </div>
   );

@@ -17,7 +17,7 @@ function InforProduct(props) {
       <div className="hashtag-product">
        {productInfo.hashtags.map((hashtag,index)=><Hashtag hashtag={hashtag.tag} key={index}/>)}
       </div>
-      <PriceProduct idProduct={productInfo.id} price={productInfo.price} quantity={productInfo.stock} currencyCode={"VND"} showAddToCart={props.showAddToCart}/>
+      <PriceProduct idProduct={productInfo.id} price={productInfo.price} quantity={productInfo.stock} currencyCode={"VND"} showAddToCart={props.showAddToCart }/>
     </div>
   );
 }

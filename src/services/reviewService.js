@@ -6,6 +6,7 @@ export const reviewProduct = async (id, page = 1, limit = 10) => {
   return response.data.data;
 };
 export const submitReview = async (productId, orderItemId, comment, rating)=>{
+  console.log(productId, orderItemId, comment, rating);
   const response =await axiosClient.post(`/reviews`,{
     productId,
     orderItemId,

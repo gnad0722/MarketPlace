@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { formatPriceByCode } from "../../../utils/utils";
+import { removeItem } from "../../../services/cartService";
 function FooterCart(props) {
   const navigate = useNavigate();
   const infoCheckout = props.infoCheckout;
@@ -12,6 +13,14 @@ function FooterCart(props) {
     props.onCheckAll(isChecked);
     setChecked(isChecked);
   }
+  async function handleRemoveItem(id) {
+    try {
+      await removeItem(id);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   return (
     <div className="footer-cart">
       <div className="d-flex gap-2 align-items-center">
@@ -24,7 +33,13 @@ function FooterCart(props) {
           />
         </div>
         <span>Chọn tất cả</span>
-        <span style={{ marginLeft: "20px", cursor: "pointer" }}>Xóa</span>
+        <span style={{ marginLeft: "20px", cursor: "pointer" }} onClick={()=>{
+          listSelected.forEach((id)=>{
+            handleRemoveItem(id);
+          })
+          navigate(0);
+        }
+        }>Xóa</span>
       </div>
       <div
         className="d-flex gap-3 align-items-center"
@@ -39,10 +54,12 @@ function FooterCart(props) {
         <div
           className="btn-create"
           onClick={() => {
-            navigate("/order",{
-              state:{
-                listItem: items.filter(item=>listSelected.includes(item.product_id))
-              }
+            navigate("/order", {
+              state: {
+                listItem: items.filter((item) =>
+                  listSelected.includes(item.product_id)
+                ),
+              },
             });
           }}
         >

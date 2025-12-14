@@ -63,27 +63,6 @@ function Comment(props) {
         )}
 
         <span style={{ marginTop: "10px" }}>{content}</span>
-        {!replies && (
-          <div className="image-feedback">
-            <div style={{ height: "90px", width: "90px" }}>
-              <img
-                src={myPicture}
-                onClick={handleShow}
-                style={{ cursor: "pointer" }}
-              />
-            </div>
-            <div style={{ height: "90px", width: "90px" }}>
-              <img
-                src={myPicture2}
-                onClick={handleShow}
-                style={{ cursor: "pointer" }}
-              />
-            </div>
-            <div className="show-image" style={{ display: show ? "" : "none" }}>
-              <img src={source} />
-            </div>
-          </div>
-        )}
       </div>
       {!replies && numberReplies === 0 && (
         <div className="btn-create" onClick={openFeedBackPopup}>Phản hồi</div>

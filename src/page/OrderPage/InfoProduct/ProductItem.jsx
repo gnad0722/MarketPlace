@@ -8,6 +8,7 @@ function ProductItem(props) {
   const quantity = props.quantity;
   const price = props.price;
   const img=props.img;
+  const idItem=props.idItem || null;
   return (
     <div
       style={{
@@ -48,7 +49,7 @@ function ProductItem(props) {
             }}
             onClick={()=>{
                 props.onClose();
-                props.onOpenFeedBack();
+                props.onOpenFeedBack(idItem);
             }}
           >
             Đánh giá

@@ -13,8 +13,9 @@ import { useLocation, useSearchParams } from "react-router-dom";
 import { useState } from "react";
 import { getProduct } from "../../services/productService";
 import { listCategories } from "../dataDemo";
-import { multiSort } from "../../utils/utils";
+import { applySort } from "../../utils/utils";
 function HomePage() {
+  const user = JSON.parse(sessionStorage.getItem("user"));
   const [searchParams] = useSearchParams();
   const location = useLocation();
   const { show } = location.state || false;
@@ -28,6 +29,10 @@ function HomePage() {
     category: "Tất cả",
     sortBy: "Mới nhất",
   });
+  const [sortState,setOrder]=useState({
+    price:"Giá: Thấp đến cao",
+    type:"Mới nhất"
+  })
   const [advanFilter, setFilterAdvanced] = useState({
     rating_min: 0,
     price_min: 0,
@@ -63,10 +68,7 @@ function HomePage() {
         price_max: advanFilter.price_max,
         page: page,
       });
-      const list = multiSort(data, {
-        sortBy: filter.sortBy,
-        sortByPrice: advanFilter.sortByPrice,
-      });
+      const list = applySort(data,sortState)
       setList(list);
     } catch (err) {
       console.error(err);
@@ -76,7 +78,10 @@ function HomePage() {
   }
   useEffect(() => {
     getListProduct();
-  }, [filter, advanFilter, page]);
+  }, [filter.category, advanFilter.keyword,advanFilter.rating_min,advanFilter.price_min,advanFilter.price_max, page]);
+  useEffect(() => {
+    setList(applySort(listProduct,sortState));
+  }, [filter.sortBy,advanFilter.sortByPrice]);
   if (loading) return <div>Loading...</div>;
   return (
     <div>
@@ -90,6 +95,7 @@ function HomePage() {
               filter={filter}
               onFilter={handleFilter}
               listCategories={listCategories}
+              onSort={setOrder}
             />
           </div>
           <div className="col-6">
@@ -98,14 +104,14 @@ function HomePage() {
               <Post
                 key={index}
                 productInfo={product}
-                showAddToCart={true}
-                showActionc={false}
+                showAddToCart={user.id !== product.seller_id}
+                showAction={false}
               />
             ))}
             <ChangePage page={page} onChange={setPage} />
           </div>
           <div className="col">
-            <AdvancedFilter filter={advanFilter} onFilter={handleAdvFilter} />
+            <AdvancedFilter  onSort={setOrder} filter={advanFilter} onFilter={handleAdvFilter} />
             <RecommendSeller />
           </div>
         </div>

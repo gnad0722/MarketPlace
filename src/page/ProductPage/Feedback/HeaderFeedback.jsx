@@ -1,9 +1,10 @@
 import React from "react";
 import { useState } from "react";
-function HeaderFeedback() {
+function HeaderFeedback(props) {
   const [newest,setNewest] =useState(true);
   function hanldeNewest(){
     setNewest(!newest);
+    props.onSort(newest);
   }
   return (
     <div className="header-feedback">

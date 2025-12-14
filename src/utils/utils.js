@@ -136,39 +136,47 @@ function makeHashtag(productName) {
   const firstWord = productName.trim().split(/\s+/)[0];
   return firstWord.charAt(0).toUpperCase() + firstWord.slice(1);
 }
-function multiSort(products, options) {
-  const sorted = [...products];
+function applySort(list, options = {}) {
+  const { type, price } = options;
 
-  sorted.sort((a, b) => {
-    const priceA = parseFloat(a.price);
-    const priceB = parseFloat(b.price);
+  // clone để không mutate list gốc
+  let result = [...list];
 
-    const dateA = new Date(a.created_at);
-    const dateB = new Date(b.created_at);
+  /* ===== NHÓM: MỚI / CŨ / TỐT ===== */
+  if (type === "Mới nhất") {
+    result.sort(
+      (a, b) => new Date(b.created_at) - new Date(a.created_at)
+    );
+  }
 
-    const ratingA = parseFloat(a.average_rating);
-    const ratingB = parseFloat(b.average_rating);
+  if (type === "Cũ nhất") {
+    result.sort(
+      (a, b) => new Date(a.created_at) - new Date(b.created_at)
+    );
+  }
 
-      
-    if (options.sortBy === "Mới nhất") {
-      if (dateA.getTime() !== dateB.getTime())
-        return dateB - dateA;
-    }
+  if (type === "Tốt nhất") {
+    result.sort((a, b) => {
+      const ratingDiff =
+        parseFloat(b.average_rating) - parseFloat(a.average_rating);
 
-    if (options.sortBy === "Cũ nhất") {
-      if (dateA.getTime() !== dateB.getTime())
-        return dateA - dateB;
-    }
+      if (ratingDiff !== 0) return ratingDiff;
 
-    if (options.sortBy === "Tốt nhất") {
-      if (ratingA !== ratingB) return ratingB - ratingA;
-      if (dateA.getTime() !== dateB.getTime()) return dateB - dateA;
-    }
-    return 0;
-  });
+      return b.review_count - a.review_count;
+    });
+  }
 
-  return sorted;
+  /* ===== NHÓM: GIÁ ===== */
+  if (price === "Giá: Thấp đến cao") {
+    result.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
+  }
+
+  if (price === "Giá: Cao đến thấp") {
+    result.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
+  }
+  return result;
 }
+
 
 function getOrderStatus(status) {
   switch (status) {
@@ -216,6 +224,11 @@ function getInfoCheckout(items,listSelected){
   })
   return info;
 }
+function sortByNewest(feedbacks) {
+  return [...feedbacks].sort(
+    (a, b) => new Date(b.created_at) - new Date(a.created_at)
+  );
+}
 export {
   formatPriceByCode,
   getAvgRating,
@@ -226,9 +239,10 @@ export {
   groupNotifications,
   countRating,
   makeHashtag,
-  multiSort,
+  applySort,
   getOrderStatus,
   getStatusColor,
   calculateTotal,
-  getInfoCheckout
+  getInfoCheckout,
+  sortByNewest
 };

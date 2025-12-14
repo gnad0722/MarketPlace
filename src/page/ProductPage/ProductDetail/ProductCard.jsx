@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Hashtag from "../../../component/Hashtag";
 import { formatPriceByCode } from "../../../utils/utils";
 import { Minus, Plus, ShoppingCart, Truck, Shield } from "lucide-react";
-import { addItemToCart } from "../../../services/cartService";
+import { addItemToCart,getCartItems } from "../../../services/cartService";
 function ProductCard(props) {
   const navigate=useNavigate();
   const product=props.product;
@@ -18,9 +18,16 @@ function ProductCard(props) {
   function handleCount(action) {
      setCount(action === "plus" ? count + 1 : count - 1);
   }
-  async function handleCart(e) {
+  async function handleCart() {
       try{
-        const data=await addItemToCart(id,count);
+        const data=await getCartItems();
+        if (data.items.length>0){
+          const items=data.items;
+          if (!(items.some(item=>item.product_id===id))) await addItemToCart(id,count);
+        }
+        else{
+          await addItemToCart(id,count);
+        }
       }
       catch(err){
         console.error(err);
@@ -67,7 +74,11 @@ function ProductCard(props) {
       <div className="action-buy">
         <div className="btn-create" style={{ width: "100%" }} onClick={async()=>{
            await handleCart();
-            navigate("/cart")
+            navigate("/cart",{
+              state:{
+                idFromProductPage: [id]
+              }
+            })
         }}>
           <span style={{ fontWeight: "490" }}>Mua ngay</span>
         </div>

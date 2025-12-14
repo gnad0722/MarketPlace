@@ -1,8 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
 import { X } from "lucide-react";
 import RatingForm from "./RatingForm";
 import FeedBackForm from "./FeedBackForm";
+import { submitReview } from "../../../services/reviewService";
 function FeedBackPopup(props) {
+  const item = props.item || null;
+  const orderInfo = props.orderInfo;
+  const [rate, setRate] = useState(0);
+  const [comment, setComment] = useState("");
+  const [message,setMessage]=useState({
+    rating:"",
+    other:""
+  })
+  async function handleSubmit() {
+    const msg={};
+    try {
+      await submitReview(item.id, item.order_item_id, comment, rate);
+      props.onClose();
+    } catch (err) {
+       if (err.response && err.response.status === 400) {
+          const listError = err.response.data.errors;
+          listError.forEach((error) => {
+            msg[error.path] = error.msg;
+          });
+        }
+        else if (err.response && err.response.status === 500){
+          msg["other"]="You have already reviewed this item."
+        }
+    }
+    setMessage(msg);
+  }
   if (!props.isOpen) return null;
   return (
     <div className="popup-overlay " onClick={props.onClose}>
@@ -37,16 +64,19 @@ function FeedBackPopup(props) {
               borderRadius: "0.7rem",
             }}
           >
-            <span style={{ fontWeight: "500" }}>iPhone 15 Pro Max</span>
-            <span style={{ opacity: "0.5" }}>Đơn hàng: #ORD12345</span>
+            <span style={{ fontWeight: "500" }}>{item.name}</span>
+            <span style={{ opacity: "0.5" }}>Đơn hàng: #ORD{orderInfo.id}</span>
           </div>
-          <RatingForm />
-          <FeedBackForm />
+          <RatingForm onRate={setRate} message={message} />
+          <FeedBackForm onComment={setComment} />
+           <span style={{ color: "red" }}>{message.other}</span>
           <div className="d-flex flex-row-reverse">
             <div
               className="btn-create"
               style={{ marginLeft: "15px" }}
-              onClick={props.onClose}
+              onClick={() => {
+                handleSubmit();
+              }}
             >
               <span style={{ fontWeight: "500" }}>Gửi đánh giá</span>
             </div>

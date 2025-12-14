@@ -12,6 +12,7 @@ function PriceSorter(props) {
   function handleOptionSelect(option) {
     setOption(option);
     props.onSort({sortByPrice:option})
+    props.onOrder(prev => ({...prev,price:option}));
     setIsOpen(!isOpen);
   }
 

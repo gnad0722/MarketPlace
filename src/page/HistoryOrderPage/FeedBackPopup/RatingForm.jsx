@@ -1,13 +1,15 @@
 import React from "react";
 import { Star } from "lucide-react";
 import { useState } from "react";
-function RatingForm() {
+function RatingForm(props) {
   const [rating, setRating] = useState(0);
   function handleClick(index) {
     if (index === rating) {
       setRating(0);
+      props.onRate(0);
     } else {
       setRating(index);
+       props.onRate(index);
     }
   }
   return (
@@ -26,6 +28,7 @@ function RatingForm() {
           />
         ))}
       </div>
+        <span style={{ color: "red" }}>{props.message.rating}</span>
     </div>
   );
 }

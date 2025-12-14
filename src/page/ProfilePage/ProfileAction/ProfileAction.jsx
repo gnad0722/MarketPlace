@@ -15,7 +15,7 @@ function ProfileAction(props) {
       <ActionBar onCurrent={handleCurrent} />
       {current === "Sản phẩm của tôi" && <MyProduct/>}
       {current === "Đơn hàng của tôi" && <MyOrder />}
-      {current === "Giới thiệu" && <AboutMe />}
+      {current === "Giới thiệu" && <AboutMe user={props.user}/>}
       {current === "Cài đặt" && <Setting />}
     </div>
   );

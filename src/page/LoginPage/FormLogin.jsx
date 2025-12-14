@@ -23,8 +23,11 @@ function FormLogin() {
         id: data.id,
         username: data.username,
         email: data.email,
+        createdAt: data.created_at,
+        avatar: data.avatar_url || "",
       };
       setUser(userInfo);
+      sessionStorage.setItem("user", JSON.stringify(userInfo));
       localStorage.setItem("token", data.accessToken);
       navigate("/home");
     } catch (err) {

@@ -5,10 +5,12 @@ import CartContainer from "./CartContainer/CartContainer";
 import FooterCart from "./FooterCart/FooterCart";
 import { getCartItems } from "../../services/cartService";
 import { getInfoCheckout } from "../../utils/utils";
+import { useLocation } from "react-router-dom";
 function CartPage(props) {
-  const [cart, setCart] = useState({});
+  const location=useLocation();
+  const {idFromProductPage}=location.state || []
   const [items, setList] = useState([]);
-  const [listSelected, setListSelected] = useState([]);
+  const [listSelected, setListSelected] = useState(idFromProductPage || []);
   const [checkAll, setAll] = useState(false);
   function handleSelect(id, checked) {
     if (checked) {
@@ -26,18 +28,7 @@ function CartPage(props) {
       setListSelected([]);
     }
   }
-  async function getCart() {
-    try {
-      const data = await getCartItems();
-      setCart(data);
-      setList(data.items);
-    } catch (err) {
-      console.error(err);
-    }
-  }
-  useEffect(() => {
-    getCart();
-  }, []);
+ 
   return (
     <div>
       <div
@@ -45,7 +36,7 @@ function CartPage(props) {
         style={{ width: "1000px" }}
       >
         <CartHeader />
-        <CartContainer items={items} onSelect={handleSelect} checkAll={checkAll}/>
+        <CartContainer onGetItem={setList} onSelect={handleSelect} listSelected={listSelected}/>
       </div>
       <div class="footer-spacer"></div>
       <FooterCart

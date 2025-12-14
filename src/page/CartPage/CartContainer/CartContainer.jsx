@@ -1,9 +1,46 @@
-import React,{useState} from "react";
+import React, { useState, useEffect } from "react";
 import CartBar from "./CartBar";
 import CartItem from "./CartItem";
+import {
+  getCartItems,
+  updateItemQuantity,
+  removeItem,
+} from "../../../services/cartService";
 function CartContainer(props) {
-  const items = props.items;
-  const checkAll=props.checkAll;
+  const [items, setList] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const listSelected=props.listSelected;
+  async function getCart() {
+    try {
+      const data = await getCartItems();
+      setList(data.items);
+      props.onGetItem(data.items);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  }
+  async function handleItemQuantity(id, quantity) {
+    try {
+      await updateItemQuantity(id, quantity);
+      getCart();
+    } catch (err) {
+      console.err(err);
+    }
+  }
+  async function handleRemoveItem(id) {
+    try {
+      await removeItem(id);
+      getCart();
+    } catch (err) {
+      console.error(err);
+    }
+  }
+  useEffect(() => {
+    getCart();
+  }, []);
+  if (loading) return <div>Loading...</div>;
   return (
     <div
       className="d-flex flex-column gap-3"
@@ -14,10 +51,16 @@ function CartContainer(props) {
     >
       <CartBar />
       {items.map((item, index) => {
-        if (index !== items.length-1){
-           return (
+        if (index !== items.length - 1) {
+          return (
             <div key={index}>
-              <CartItem item={item} checked={checkAll} onSelect={props.onSelect}/>
+              <CartItem
+                item={item}
+                listSelected={listSelected}
+                onSelect={props.onSelect}
+                onUpdate={handleItemQuantity}
+                onRemove={handleRemoveItem}
+              />
               <hr
                 style={{
                   margin: "5px",
@@ -29,9 +72,17 @@ function CartContainer(props) {
               />
             </div>
           );
-        }
-        else {
-          return <CartItem item={item} key={index} checked={checkAll} onSelect={props.onSelect}/>;
+        } else {
+          return (
+            <CartItem
+              item={item}
+              key={index}
+              listSelected={listSelected}
+              onSelect={props.onSelect}
+              onUpdate={handleItemQuantity}
+              onRemove={handleRemoveItem}
+            />
+          );
         }
       })}
     </div>

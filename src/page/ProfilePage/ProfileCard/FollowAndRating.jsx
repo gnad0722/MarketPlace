@@ -1,19 +1,56 @@
-import React from "react";
-
-function FollowAndRating() {
+import React, { useEffect, useState } from "react";
+import { formatTime } from "../../../utils/utils";
+import { getMyProduct } from "../../../services/productService";
+import { getFollowersCount, getFollowingCount } from "../../../services/followService";
+function FollowAndRating(props) {
+  const user = props.user;
+  const [listProduct, setList] = useState([]);
+  const [follower,setFollower]=useState(0);
+  const [following,setFollowing]=useState(0);
+  async function getListProduct() {
+    try {
+      const data = await getMyProduct(1,Number.MAX_SAFE_INTEGER);
+      setList(data);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+  async function getFollower() {
+    try{
+      const data= await getFollowersCount(user.id);
+      setFollower(data.follower_count);
+    }
+    catch (err){
+      console.error(err);
+    }
+  }
+  async function getFollowing() {
+    try{
+      const data= await getFollowingCount();
+      setFollowing(data.following_count);
+    }
+    catch (err){
+      console.error(err);
+    }
+  }
+  useEffect(()=>{
+    getListProduct();
+    getFollower();
+    getFollowing();
+  },[])
   return (
     <div className="d-flex flex-column px-2 align-items-center">
       <div className="row  text-center" style={{ marginTop: "10px" }}>
         <div className="col-4 d-flex flex-column">
-          <span style={{ fontWeight: "500" }}>42</span>
+          <span style={{ fontWeight: "500" }}>{listProduct.length}</span>
           <span
             style={{ opacity: "0.7", fontSize: "13px", textAlign: "center" }}
           >
-            Bài viết
+            Sản phẩm
           </span>
         </div>
         <div className="col-4 d-flex flex-column">
-          <span style={{ fontWeight: "500" }}>1250</span>
+          <span style={{ fontWeight: "500" }}>{follower}</span>
           <span
             style={{ opacity: "0.7", fontSize: "13px", textAlign: "center" }}
           >
@@ -21,7 +58,7 @@ function FollowAndRating() {
           </span>
         </div>
         <div className="col-4 d-flex flex-column">
-          <span style={{ fontWeight: "500" }}>389</span>
+          <span style={{ fontWeight: "500" }}>{following}</span>
           <span
             style={{ opacity: "0.7", fontSize: "13px", textAlign: "center" }}
           >
@@ -29,12 +66,9 @@ function FollowAndRating() {
           </span>
         </div>
       </div>
-      <div className="d-flex align-items-center gap-1">
-        <span style={{color:"#ff6600",fontSize:"20px",paddingBottom:"2px"}}>★</span>
-        <span style={{fontWeight:"500",fontSize:"15px"}}>4.8</span>
-        <span style={{opacity:"0.7",fontSize:"13px", marginLeft:"5px"}}>(156 đánh giá)</span> 
-      </div>
-      <span style={{opacity:"0.7",fontSize:"13px"}}>Tham gia từ tháng 3, 2020</span> 
+      <span style={{ marginTop: "10px", fontWeight: "500", fontSize: "13px" }}>
+        Tham gia từ {formatTime(user.createdAt)}
+      </span>
     </div>
   );
 }

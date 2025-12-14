@@ -9,8 +9,8 @@ import InfoPayment from "./InfoPayment";
 import StateOrder from "./StateOrder";
 function DetailPopup(props) {
   const navigate = useNavigate();
-  const orderInfo=props.orderInfo;
-  const products=props.products;
+  const orderInfo = props.orderInfo;
+  const products = props.products;
   if (!props.isOpen) return null;
   return (
     <div className="popup-overlay " onClick={props.onClose}>
@@ -36,22 +36,35 @@ function DetailPopup(props) {
           </button>
         </div>
         <div className="popup-body">
-          <InfoOrderPopup id={orderInfo.id} createdAt={orderInfo.created_at}/>
-          <ProductContainer products={products} onOpenFeedBack={props.onOpenFeedBack} onClose={props.onClose}/>
-          <InfoDelivery phone={orderInfo.phone_number} address={orderInfo.shipping_address}/>
-          <InfoPayment payment={orderInfo.payment_method} total={orderInfo.total_amount}/>
-          <StateOrder status={orderInfo.status}/>
-          <div className="d-flex flex-row-reverse">
-            <div
-              className="btn-create"
-              style={{ marginLeft: "15px" }}
-              onClick={() => {
-                navigate("/order");
-              }}
-            >
-              <span style={{ fontWeight: "500" }}>Mua Lại</span>
+          <InfoOrderPopup id={orderInfo.id} createdAt={orderInfo.created_at} />
+          <ProductContainer
+            orderStatus={orderInfo.status}
+            products={products}
+            onOpenFeedBack={props.onOpenFeedBack}
+            onClose={props.onClose}
+          />
+          <InfoDelivery
+            phone={orderInfo.phone_number}
+            address={orderInfo.shipping_address}
+          />
+          <InfoPayment
+            payment={orderInfo.payment_method}
+            total={orderInfo.total_amount}
+          />
+          <StateOrder status={orderInfo.status} />
+          {orderInfo.status === "COMPLETED" && (
+            <div className="d-flex flex-row-reverse">
+              <div
+                className="btn-create"
+                style={{ marginLeft: "15px" }}
+                onClick={() => {
+                  navigate("/order");
+                }}
+              >
+                <span style={{ fontWeight: "500" }}>Mua Lại</span>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div>

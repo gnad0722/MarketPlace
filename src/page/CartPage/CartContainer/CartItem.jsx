@@ -9,7 +9,7 @@ import { API_BASE } from "../../../api/axiosClient";
 import { formatPriceByCode } from "../../../utils/utils";
 function CartItem(props) {
   const item = props.item;
-  const checkAll = props.checked;
+  const listSelected=props.listSelected;
   const id = item.product_id;
   const name = item.name;
   const price = Number(item.price);
@@ -18,7 +18,7 @@ function CartItem(props) {
   const [total, setTotal] = useState(item.subtotal);
   const [image, setImage] = useState("");
   const [loading, setLoading] = useState(true);
-  const [checked,setChecked]=useState(checkAll);
+  const [checked, setChecked] = useState(false);
   function handleCheck(e){
     const isChecked=e.target.checked;
     props.onSelect(id,isChecked);
@@ -29,7 +29,7 @@ function CartItem(props) {
     setTotal(action === "plus" ? price * (count + 1) : price * (count - 1));
   }
   useEffect(() => {
-    updateItemQuantity(item.product_id, count);
+    props.onUpdate(item.product_id, count);
   }, [count]);
   async function getImgProduct(id) {
     try {
@@ -41,20 +41,12 @@ function CartItem(props) {
       setLoading(false);
     }
   }
-  async function removeItemCart() {
-    navigate(0);
-    try {
-      const data = removeItem(item.product_id);
-    } catch (err) {
-      console.error(err);
-    }
-  }
   useEffect(() => {
     getImgProduct(item.product_id);
   }, []);
   useEffect(()=>{
-    setChecked(checkAll)
-  },[checkAll])
+    setChecked(listSelected.includes(id));
+  },[listSelected])
   if (loading) return <div>Loading...</div>;
   return (
     <div className="cart-bar" style={{ padding: "20px 20px", gap: "7px" }}>
@@ -159,7 +151,9 @@ function CartItem(props) {
             position: "absolute",
             cursor: "pointer",
           }}
-          onClick={removeItemCart}
+          onClick={()=>{
+            props.onRemove(item.product_id)
+          }}
         >
           <X size={15} />
         </div>
