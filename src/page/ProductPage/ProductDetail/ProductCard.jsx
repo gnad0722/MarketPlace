@@ -11,28 +11,40 @@ function ProductCard(props) {
   const id=product.id
   const title = product.name;
   const sold = product.sold;
-  const quantity = product.quantity;
+  const quantity = product.stock;
   const price = product.price;
   const currencyCode = props.currencyCode;
   const [count, setCount] = useState(1);
   function handleCount(action) {
-     setCount(action === "plus" ? count + 1 : count - 1);
-  }
-  async function handleCart() {
-      try{
-        const data=await getCartItems();
-        if (data.items.length>0){
-          const items=data.items;
-          if (!(items.some(item=>item.product_id===id))) await addItemToCart(id,count);
-        }
-        else{
-          await addItemToCart(id,count);
-        }
+    if (action === "plus") {
+      if (count < quantity) {
+        setCount(count + 1);
       }
-      catch(err){
-        console.error(err);
+    } else { // action === "minus"
+      if (count > 1) {
+        setCount(count - 1);
       }
     }
+  }
+  async function handleCart() {
+    if (count > quantity) {
+      alert(`Số lượng sản phẩm không đủ. Chỉ còn ${quantity} sản phẩm.`);
+      return;
+    }
+    try {
+      const data = await getCartItems();
+      if (data.items.length > 0) {
+        const items = data.items;
+        if (!(items.some(item => item.product_id === id))) await addItemToCart(id, count);
+      }
+      else {
+        await addItemToCart(id, count);
+      }
+    }
+    catch (err) {
+      console.error(err);
+    }
+  }
   return (
     <div className="product-card">
       <h5>{title}</h5>
@@ -55,11 +67,10 @@ function ProductCard(props) {
           type="button"
           className="btn btn-outline-secondary btn-custom btn-sm ms-3 "
           style={{ color: "black" }}
-          onClick={() => {
-            if (count>1) handleCount("minus")
-          }}
+          onClick={() => handleCount("minus")}
+          disabled={count <= 1}
         >
-          <Minus className="icon-btn-size"  />
+          <Minus className="icon-btn-size" />
         </button>
         <div className="number">{count}</div>
         <button
@@ -67,18 +78,19 @@ function ProductCard(props) {
           className="btn btn-outline-secondary btn-custom btn-sm ms-3 "
           style={{ color: "black", marginLeft: "10px" }}
           onClick={() => handleCount("plus")}
+          disabled={count >= quantity}
         >
           <Plus className="icon-btn-size" />
         </button>
       </div>
       <div className="action-buy">
-        <div className="btn-create" style={{ width: "100%" }} onClick={async()=>{
-           await handleCart();
-            navigate("/cart",{
-              state:{
-                idFromProductPage: [id]
-              }
-            })
+        <div className="btn-create" style={{ width: "100%" }} onClick={async () => {
+          await handleCart();
+          navigate("/cart", {
+            state: {
+              idFromProductPage: [id]
+            }
+          })
         }}>
           <span style={{ fontWeight: "490" }}>Mua ngay</span>
         </div>

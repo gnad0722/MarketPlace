@@ -2,59 +2,90 @@ import React, { useState, useEffect } from "react";
 import ProductItem from "./ProductItem";
 import { ShoppingCart, Package } from "lucide-react";
 import { formatPriceByCode, calculateTotal } from "../../../utils/utils";
-import { getProductImageById } from "../../../services/productService";
+import { getProductImageById, getProductById } from "../../../services/productService";
 import { placeOrder } from "../../../services/orderService";
 import { useNavigate } from "react-router-dom";
 function InfoProduct(props) {
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const products = props.products;
   const infoOrder = props.infoOrder;
-  const [listImg,setListImg]=useState([]);
-  const [loading,setLoading]=useState(true);
+  const [listImg, setListImg] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [listProductId, setList] = useState(
     products.map((product) => product.product_id)
   );
   async function getImgProduct(id) {
     try {
       const data = await getProductImageById(id);
-      if (data.length>0) {
-        setListImg(prev=>[...prev,{
-          id:id,
-          img_url:data[0].image_url
+      if (data.length > 0) {
+        setListImg(prev => [...prev, {
+          id: id,
+          img_url: data[0].image_url
         }])
       }
     } catch (err) {
-       console.error(err);
-    } finally{
+      console.error(err);
+    } finally {
       setLoading(false)
     }
   }
-  async function handleOrder(infoOrder, listProductId) {
-    const msg={};
-    try {
-      await placeOrder(infoOrder, listProductId);
-      navigate("/home", {
-          state: {
-            show: true,
-            message: "Đơn hàng của bạn đã được tạo thành công!",
-            color: "#001F3D",
-          },
-        });
-    } catch (err) {
-       if (err.response && err.response.status === 400) {
-          const listError = err.response.data.errors;
-          listError.forEach((error) => {
-            msg[error.path] = error.msg;
+  async function checkStock(products) {
+    for (const product of products) {
+      try {
+        const productDetail = await getProductById(product.product_id);
+        if (product.quantity > productDetail.stock) {
+          props.onError({
+            order: `Sản phẩm ${product.name} không đủ số lượng. Hiện tại chỉ còn ${productDetail.stock} sản phẩm.`
           });
+          return false;
         }
+      } catch (error) {
+        console.error("Lỗi kiểm tra số lượng:", error);
+        props.onError({
+          order: "Lỗi khi kiểm tra số lượng sản phẩm."
+        });
+        return false;
+      }
+    }
+    return true;
+  }
+  async function handleOrder(infoOrder, products) {
+    const msg = {};
+    const stockAvailable = await checkStock(products);
+    if (!stockAvailable) {
+      return;
+    }
+    try {
+      // const listProductId = products.map((product) => ({
+      //   product_id: product.product_id,
+      //   quantity: product.quantity,
+      // }));
+      await placeOrder(infoOrder, products);
+      navigate("/home", {
+        state: {
+          show: true,
+          message: "Đơn hàng của bạn đã được tạo thành công!",
+          color: "#001F3D",
+        },
+      });
+    } catch (err) {
+      if (err.response && err.response.status === 400) {
+        const listError = err.response.data.errors;
+        listError.forEach((error) => {
+          msg[error.path] = error.msg;
+        });
+      }
+      else {
+        msg.order = "Đã có lỗi xảy ra. Vui lòng thử lại sau.";
+      }
     }
     props.onError(msg);
   }
-  useEffect(()=>{
-    listProductId.forEach((id)=>{
+  useEffect(() => {
+    listProductId.forEach((id) => {
       getImgProduct(id);
     })
-  },[listProductId])
+  }, [listProductId])
   if (loading) return <div>Loading...</div>
   return (
     <div className="order-info">
@@ -66,7 +97,7 @@ function InfoProduct(props) {
         />
         Đơn hàng của bạn
       </span>
-      {products.map( (product, index) => {
+      {products.map((product, index) => {
         return (
           <ProductItem
             id={product.product_id}
@@ -103,7 +134,7 @@ function InfoProduct(props) {
         className="btn-create"
         style={{ width: "100%", marginTop: "7px" }}
         onClick={() => {
-          handleOrder(infoOrder, listProductId);
+          handleOrder(infoOrder, products);
         }}
       >
         <span style={{ fontWeight: "500" }}>

@@ -11,7 +11,6 @@ function Feedback(props) {
   async function getReview(id) {
     try {
       const data = await reviewProduct(id);
-      // console.log('feedbacks: ', data.reviews)
       if (sort){
           setFeedback(sortByNewest(data.reviews));
       }
@@ -19,7 +18,6 @@ function Feedback(props) {
          setFeedback(data.reviews);
       }
       setRateList(countRating(data.reviews));
-      // console.log(countRating(data.reviews))
     } catch (err) {
       console.error(err);
     }

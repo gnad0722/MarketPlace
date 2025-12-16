@@ -76,6 +76,7 @@ function OrderInfo(props) {
             />
           </div>
            <span style={{ color: "red" }}>{message.note}</span>
+           <span style={{ color: "red" }}>{message.order}</span>
         </div>
       </form>
     </div>
