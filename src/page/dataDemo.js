@@ -25,25 +25,6 @@ const listTrending = [
     countnumber: 87,
   },
 ];
-const listCategories = [
-  "Tất cả",
-  "Điện thoại",
-  "Máy tính bảng",
-  "Laptop",
-  "Phụ kiện",
-  "Đồng hồ",
-  "Thời trang",
-  "Giày dép",
-  "Túi xách",
-  "Mỹ phẩm",
-  "Sức khỏe",
-  "Thể thao",
-  "Nội thất",
-  "Đồ gia dụng",
-  "Đồ điện tử",
-  "Đồ chơi",
-  "Sách vở",
-];
 const listRecommendSeller = [
   {
     avatar:
@@ -150,4 +131,4 @@ const listPosts = [
     ],
   },
 ];
-export { listTrending, listCategories, listRecommendSeller, listPosts };
+export { listTrending, listRecommendSeller, listPosts };

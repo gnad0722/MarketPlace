@@ -1,36 +1,38 @@
 import React from "react";
 import { Package, Upload } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import SelectBox from "../../HomePage/FilterSection/SelectBox";
 import OptionList from "../../HomePage/FilterSection/OptionList";
 import ImageForm from "./ImageForm";
 import {
   updateProduct,
-  getProductById,
   deleteProductImage,
+  getCategories,
 } from "../../../services/productService";
-import { de } from "date-fns/locale";
-import { useRef, useEffect } from "react";
+
 function UploadForm(props) {
   const id = props.id;
   const product = props.product;
   const navigate = useNavigate();
-  const listOption = [
-    "Điện thoại",
-    "Đồ điện tử",
-    "Laptop",
-    "Thời trang",
-    "Máy tính bảng",
-    "Phụ kiện",
-    "Đồng hồ",
-    "Giày dép",
-    "Túi xách",
-    "Mỹ phẩm",
-    "Sức khỏe",
-    "Thể thao",
-    "Nội thất",
-  ];
+  const [listOption, setListOption] = useState([]);
+
+  useEffect(() => {
+    async function fetchCategories() {
+      try {
+        const categoriesMap = await getCategories();
+        // Sort category names based on their index from the map
+        const sortedCategoryNames = Object.keys(categoriesMap).sort(
+          (a, b) => categoriesMap[a] - categoriesMap[b]
+        );
+        setListOption(sortedCategoryNames);
+      } catch (error) {
+        console.error("Failed to fetch categories:", error);
+      }
+    }
+    fetchCategories();
+  }, []);
+
   const [message, setMessage] = useState({
     name: "",
     price: "",
@@ -40,7 +42,7 @@ function UploadForm(props) {
     image: "",
   });
   const [isOpen, setIsOpen] = useState(false);
-  const [option, setOption] = useState("Danh mục");
+  const [option, setOption] = useState(product.category || "Danh mục");
   const [nameProduct, setName] = useState(product.name);
   const [description, setDesc] = useState(product.description);
   const [price, setPrice] = useState(product.price);

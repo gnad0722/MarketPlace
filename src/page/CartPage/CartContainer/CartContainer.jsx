@@ -26,7 +26,7 @@ function CartContainer(props) {
       await updateItemQuantity(id, quantity);
       getCart();
     } catch (err) {
-      console.err(err);
+      console.error(err);
     }
   }
   async function handleRemoveItem(id) {

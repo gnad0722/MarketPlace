@@ -11,8 +11,7 @@ import ChangePage from "./Post/ChangePage";
 import { useEffect } from "react";
 import { useLocation, useSearchParams } from "react-router-dom";
 import { useState } from "react";
-import { getProduct } from "../../services/productService";
-import { listCategories } from "../dataDemo";
+import { getProduct, getCategories } from "../../services/productService";
 import { applySort } from "../../utils/utils";
 function HomePage() {
   const user = JSON.parse(sessionStorage.getItem("user"));
@@ -29,10 +28,10 @@ function HomePage() {
     category: "Tất cả",
     sortBy: "Mới nhất",
   });
-  const [sortState,setOrder]=useState({
-    price:"Giá: Thấp đến cao",
-    type:"Mới nhất"
-  })
+  const [sortState, setOrder] = useState({
+    price: "Giá: Thấp đến cao",
+    type: "Mới nhất",
+  });
   const [advanFilter, setFilterAdvanced] = useState({
     rating_min: 0,
     price_min: 0,
@@ -53,9 +52,11 @@ function HomePage() {
     }));
   }
   const [listProduct, setList] = useState([]);
+  const [listCategories, setListCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   async function getListProduct() {
     try {
+      console.log("category: ", filter.category === "Tất cả" ? "" : filter.category);
       const data = await getProduct({
         search:
           search +
@@ -68,20 +69,31 @@ function HomePage() {
         price_max: advanFilter.price_max,
         page: page,
       });
-      const list = applySort(data,sortState)
+      console.log("products: ", data);
+      const list = applySort(data, sortState);
       setList(list);
     } catch (err) {
       console.error(err);
-    } finally {
-      setLoading(false);
     }
   }
   useEffect(() => {
-    getListProduct();
-  }, [filter.category, advanFilter.keyword,advanFilter.rating_min,advanFilter.price_min,advanFilter.price_max, page]);
+    setLoading(true);
+    Promise.all([getListProduct(), getCategories()])
+      .then(([_, categories]) => {
+        console.log(categories)
+        // categories is already a map: { "Category Name": count, ... }
+        // We need to extract the category names (keys) for setListCategories
+        const categoryNames = Object.keys(categories);
+        console.log(["Tất cả", ...categoryNames]);
+        setListCategories(["Tất cả", ...categoryNames]);
+      })
+      .catch((err) => console.error(err))
+      .finally(() => setLoading(false));
+  }, [filter.category, advanFilter.keyword, advanFilter.rating_min, advanFilter.price_min, advanFilter.price_max, page]);
+
   useEffect(() => {
-    setList(applySort(listProduct,sortState));
-  }, [filter.sortBy,advanFilter.sortByPrice]);
+    setList(applySort(listProduct, sortState));
+  }, [filter.sortBy, advanFilter.sortByPrice]);
   if (loading) return <div>Loading...</div>;
   return (
     <div>
@@ -111,7 +123,7 @@ function HomePage() {
             <ChangePage page={page} onChange={setPage} />
           </div>
           <div className="col">
-            <AdvancedFilter  onSort={setOrder} filter={advanFilter} onFilter={handleAdvFilter} />
+            <AdvancedFilter onSort={setOrder} filter={advanFilter} onFilter={handleAdvFilter} />
             <RecommendSeller />
           </div>
         </div>
