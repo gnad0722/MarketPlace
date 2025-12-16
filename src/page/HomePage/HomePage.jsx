@@ -12,8 +12,7 @@ import { useEffect } from "react";
 import { useLocation, useSearchParams } from "react-router-dom";
 import { useState } from "react";
 import { getProduct,getCategories } from "../../services/productService";
-import { listCategories } from "../dataDemo";
-import {  sortProductsByCriteria } from "../../utils/utils";
+import {  sortProductsByCriteria} from "../../utils/utils";
 function HomePage() {
   const userId = JSON.parse(sessionStorage.getItem("userId"));
   const [searchParams] = useSearchParams();
@@ -28,10 +27,6 @@ function HomePage() {
   const [filter, setFilter] = useState({
     category: "Tất cả",
     sortBy: "Mới nhất",
-  });
-  const [sortState, setOrder] = useState({
-    price: "Giá: Thấp đến cao",
-    type: "Mới nhất",
   });
   const [advanFilter, setFilterAdvanced] = useState({
     rating_min: 0,
@@ -105,7 +100,7 @@ function HomePage() {
         });
 
         console.log(filteredData)
-        const sortedList = applySort(filteredData, sortState);
+        const sortedList = sortProductsByCriteria(filteredData,"Mới nhất");
         setList(sortedList);
       } catch (err) {
         console.error(err);
@@ -123,7 +118,7 @@ function HomePage() {
       }
     };
     Promise.all([fetchAndSortProducts(), fetchCategories()]);
-  }, [filter.category, advanFilter, page, search, sortState]);
+  }, [filter.category, advanFilter, page, search,]);
     useEffect(() => {
     setList(sortProductsByCriteria(data,filter.sortBy));
   }, [filter.sortBy]);
