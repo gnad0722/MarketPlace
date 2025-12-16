@@ -70,8 +70,7 @@ function HomePage() {
         price_max: advanFilter.price_max,
         page: page,
       });
-      console.log("products: ", data);
-      const list = applySort(data, "Mới nhất);
+      const list = sortProductsByCriteria(data,"Mới nhất");
       setList(list);
     } catch (err) {
       console.error(err);
@@ -93,8 +92,8 @@ function HomePage() {
   }, [filter.category, advanFilter.keyword, advanFilter.rating_min, advanFilter.price_min, advanFilter.price_max, page]);
 
   useEffect(() => {
-    setList(applySort(listProduct, sortState));
-  }, [filter.sortBy, advanFilter.sortByPrice]);
+    setList(sortProductsByCriteria(data,filter.sortBy));
+  }, [filter.sortBy]);
   if (loading) return <div>Loading...</div>;
   return (
     <div>
