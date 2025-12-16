@@ -1,30 +1,33 @@
 import React from "react";
 import { Package, Upload } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import SelectBox from "../../HomePage/FilterSection/SelectBox";
 import OptionList from "../../HomePage/FilterSection/OptionList";
 import ImageForm from "./ImageForm";
-import { createProduct } from "../../../services/productService";
-import { de } from "date-fns/locale";
+import { createProduct, getCategories } from "../../../services/productService";
 import { makeHashtag } from "../../../utils/utils";
+
 function UploadForm() {
   const navigate = useNavigate();
-  const listOption = [
-    "Điện thoại",
-    "Đồ điện tử",
-    "Laptop",
-    "Thời trang",
-    "Máy tính bảng",
-    "Phụ kiện",
-    "Đồng hồ",
-    "Giày dép",
-    "Túi xách",
-    "Mỹ phẩm",
-    "Sức khỏe",
-    "Thể thao",
-    "Nội thất",
-  ];
+  const [listOption, setListOption] = useState([]);
+
+  useEffect(() => {
+    async function fetchCategories() {
+      try {
+        const categoriesMap = await getCategories();
+        // Sort category names based on their index from the map
+        const sortedCategoryNames = Object.keys(categoriesMap).sort(
+          (a, b) => categoriesMap[a] - categoriesMap[b]
+        );
+        setListOption(sortedCategoryNames);
+      } catch (error) {
+        console.error("Failed to fetch categories:", error);
+      }
+    }
+    fetchCategories();
+  }, []);
+
   const [message, setMessage] = useState({
     name: "",
     price: "",

@@ -60,3 +60,9 @@ export const getProductImageById = async (id) => {
   const response = await axiosClient.get(`/products/${id}/images`);
   return response.data.data;
 };
+
+export const getCategories = async () => {
+  const response = await axiosClient.get("/products/categories");
+  // console.log('getCategories', response.data)
+  return response.data.data;
+};

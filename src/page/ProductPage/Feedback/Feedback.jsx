@@ -11,13 +11,15 @@ function Feedback(props) {
   async function getReview(id) {
     try {
       const data = await reviewProduct(id);
+      // console.log('feedbacks: ', data.reviews)
       if (sort){
-          setFeedback(sortByNewest(data));
+          setFeedback(sortByNewest(data.reviews));
       }
       else{
-         setFeedback(data);
+         setFeedback(data.reviews);
       }
-      setRateList(countRating(data));
+      setRateList(countRating(data.reviews));
+      // console.log(countRating(data.reviews))
     } catch (err) {
       console.error(err);
     }
