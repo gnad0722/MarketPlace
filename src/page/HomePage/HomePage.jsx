@@ -14,6 +14,9 @@ import { useState } from "react";
 import { getProduct } from "../../services/productService";
 import { listCategories } from "../dataDemo";
 import {  sortProductsByCriteria } from "../../utils/utils";
+import { getCategories } from "../../services/productService";
+import { applySort } from "../../utils/utils";
+
 function HomePage() {
   const userId = JSON.parse(sessionStorage.getItem("userId"));
   const [searchParams] = useSearchParams();
