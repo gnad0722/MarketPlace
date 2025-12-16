@@ -13,9 +13,9 @@ import { useLocation, useSearchParams } from "react-router-dom";
 import { useState } from "react";
 import { getProduct } from "../../services/productService";
 import { listCategories } from "../dataDemo";
-import { applySort } from "../../utils/utils";
+import {  sortProductsByCriteria } from "../../utils/utils";
 function HomePage() {
-  const user = JSON.parse(sessionStorage.getItem("user"));
+  const userId = JSON.parse(sessionStorage.getItem("userId"));
   const [searchParams] = useSearchParams();
   const location = useLocation();
   const { show } = location.state || false;
@@ -68,8 +68,8 @@ function HomePage() {
         price_max: advanFilter.price_max,
         page: page,
       });
-      const list = applySort(data,sortState)
-      setList(list);
+      
+      setList(sortProductsByCriteria(data ,"Mới nhất"));
     } catch (err) {
       console.error(err);
     } finally {
@@ -80,8 +80,8 @@ function HomePage() {
     getListProduct();
   }, [filter.category, advanFilter.keyword,advanFilter.rating_min,advanFilter.price_min,advanFilter.price_max, page]);
   useEffect(() => {
-    setList(applySort(listProduct,sortState));
-  }, [filter.sortBy,advanFilter.sortByPrice]);
+    setList(sortProductsByCriteria(listProduct,filter.sortBy));
+  }, [filter.sortBy]);
   if (loading) return <div>Loading...</div>;
   return (
     <div>
@@ -104,7 +104,7 @@ function HomePage() {
               <Post
                 key={index}
                 productInfo={product}
-                showAddToCart={user.id !== product.seller_id}
+                showAddToCart={userId !== product.seller_id}
                 showAction={false}
               />
             ))}

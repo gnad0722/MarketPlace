@@ -1,9 +1,9 @@
 import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {handleLogout} from "../../../services/authService";
-function Setting() {
-  const [isOpen, setOpen] = useState([false, false, false]);
+import { handleLogout } from "../../../services/authService";
+import EditProfile from "./EditProfile";
+function Setting(props) {
   const navigate = useNavigate();
   async function handleLogout() {
     try {
@@ -15,18 +15,21 @@ function Setting() {
       navigate("/");
     }
   }
-  function handleOpen(index) {
-    setOpen((prev) => {
-      const newState = [...prev];
-      newState[index] = !newState[index];
-      return newState;
-    });
-  }
   return (
     <div className="d-flex flex-column gap-3">
+      
+      <EditProfile user={props.user} />
       <div className="about-me">
         <span style={{ fontWeight: "500" }}>Tài khoản</span>
-         <div
+        <div
+          data-bs-toggle="modal"
+          data-bs-target="#myModal"
+          className="btn-add-cart"
+          onClick={() => {}}
+        >
+          <span style={{ fontWeight: "490" }}>Chỉnh sửa thông tin cá nhân</span>
+        </div>
+        <div
           className="btn-add-cart"
           onClick={() => {
             navigate("/verify-email");

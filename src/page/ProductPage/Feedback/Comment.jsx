@@ -6,6 +6,7 @@ import myPicture from "../../../img/iphone.webp";
 import myPicture2 from "../../../img/iphone2.webp";
 import { parseISO } from "date-fns";
 import FeedBackPopup from "../FeedBackPopup/FeedBackPopup";
+import { API_BASE } from "../../../api/axiosClient";
 function Comment(props) {
   const [isFeedBackPopupOpen, setIsFeedBackPopupOpen] = useState(false);
   const openFeedBackPopup = () => setIsFeedBackPopupOpen(true);
@@ -44,7 +45,7 @@ function Comment(props) {
           {authorAvatar === "" ? (
             authorName[0]
           ) : (
-            <img src={authorAvatar} alt="avatar" />
+            <img src={`${API_BASE}${authorAvatar}`} alt="avatar" />
           )}
         </span>
       </div>

@@ -7,7 +7,7 @@ function ProductContainer(props) {
   return (
     <div className="d-flex flex-column gap-2">
       <span style={{ fontWeight: "500" }}>Sản phẩm</span>
-      {products.map((product, index) => {
+      {products.length>0 ? products.map((product, index) => {
         return (
           <ProductItem
             key={index}
@@ -21,7 +21,8 @@ function ProductContainer(props) {
             showFeedback={orderStatus==="COMPLETED"}
           />
         );
-      })}
+      }): <span>Sản phẩm không còn tồn tại trên hệ thống</span>}
+      {}
       <hr style={{ margin: "0" }} />
     </div>
   );

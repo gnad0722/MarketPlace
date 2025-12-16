@@ -136,6 +136,47 @@ function makeHashtag(productName) {
   const firstWord = productName.trim().split(/\s+/)[0];
   return firstWord.charAt(0).toUpperCase() + firstWord.slice(1);
 }
+
+const sortByPrice = (products, order = "Giá: Thấp đến cao") => {
+  return [...products].sort((a, b) => {
+    const priceA = Number(a.price);
+    const priceB = Number(b.price);
+
+    return order === "Giá: Cao đến thấp"
+      ? priceA - priceB       // thấp → cao
+      : priceB - priceA;      // cao → thấp
+  });
+};
+
+const sortProductsByCriteria = (products, criteria) => {
+  const list = [...products];
+
+  switch (criteria) {
+    case "Mới nhất":
+      return list.sort(
+        (a, b) => new Date(b.created_at) - new Date(a.created_at)
+      );
+
+    case "Cũ nhất":
+      return list.sort(
+        (a, b) => new Date(a.created_at) - new Date(b.created_at)
+      );
+
+    case "Tốt nhất":
+      return list.sort((a, b) => {
+        const ratingDiff =
+          Number(b.average_rating) - Number(a.average_rating);
+        if (ratingDiff !== 0) return ratingDiff;
+
+        return b.review_count - a.review_count;
+      });
+
+    default:
+      return list;
+  }
+};
+
+
 function applySort(list, options = {}) {
   const { type, price } = options;
 
@@ -166,7 +207,6 @@ function applySort(list, options = {}) {
     });
   }
 
-  /* ===== NHÓM: GIÁ ===== */
   if (price === "Giá: Thấp đến cao") {
     result.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
   }
@@ -229,6 +269,22 @@ function sortByNewest(feedbacks) {
     (a, b) => new Date(b.created_at) - new Date(a.created_at)
   );
 }
+const statusViToEn = {
+  "Đang chờ xử lí": "PENDING",
+  "Đã xác nhận": "CONFIRMED",
+  "Đang vận chuyển": "SHIPPED",
+  "Hoàn thành": "COMPLETED",
+};
+const filterOrdersByStatusVi = (orders, statusVi) => {
+  if (!statusVi) return orders;
+
+  const statusEn = statusViToEn[statusVi];
+  console.log(statusViToEn[statusVi]);
+  if (!statusEn) return orders;
+
+  return orders.filter(order => order.status === statusEn);
+};
+
 export {
   formatPriceByCode,
   getAvgRating,
@@ -244,5 +300,8 @@ export {
   getStatusColor,
   calculateTotal,
   getInfoCheckout,
-  sortByNewest
+  sortByNewest,
+  filterOrdersByStatusVi,
+  sortByPrice,
+  sortProductsByCriteria
 };

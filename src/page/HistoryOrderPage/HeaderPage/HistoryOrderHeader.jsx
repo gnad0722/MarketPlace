@@ -3,7 +3,7 @@ import { useState } from "react";
 import SelectBox from "../../HomePage/FilterSection/SelectBox";
 import OptionList from "../../HomePage/FilterSection/OptionList";
 function HistoryOrderHeader(props) {
-  const listOption = ["Tất cả", "Đang giao", "Đang xử lí", "Hoàn tất"];
+  const listOption = ["Tất cả", "Đang chờ xử lí","Đã xác nhận","Đang vận chuyển", "Hoàn thành"];
   const [isOpen, setIsOpen] = useState(false);
   const [option, setOption] = useState(props.status);
   function toggleDropdown() {

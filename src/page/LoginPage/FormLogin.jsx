@@ -27,7 +27,7 @@ function FormLogin() {
         avatar: data.avatar_url || "",
       };
       setUser(userInfo);
-      sessionStorage.setItem("user", JSON.stringify(userInfo));
+      sessionStorage.setItem("userId", JSON.stringify(userInfo.id));
       localStorage.setItem("token", data.accessToken);
       navigate("/home");
     } catch (err) {

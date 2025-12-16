@@ -14,7 +14,7 @@ function ActionOrder(props) {
       >
         Xem chi tiết
       </button>
-      {orderInfo.status === "COMPLETED" && (
+      {orderInfo.status === "COMPLETED" && products.length > 0 && (
         <button
           type="button"
           className="btn btn-outline-secondary btn-custom btn-sm d-none d-md-inline"

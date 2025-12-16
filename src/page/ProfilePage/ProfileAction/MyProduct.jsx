@@ -41,10 +41,10 @@ function MyProduct(props) {
           productInfo={product}
           showAddToCart={false}
           showAction={true}
-          openNotifi={openNotifi}
+           openNotifi={openNotifi}
         />
       ))}
-      <ChangePage page={page} onChange={setPage}/>
+      <ChangePage page={page} onChange={setPage} />
       {showNotifi && (
         <Notification
           show={true}
