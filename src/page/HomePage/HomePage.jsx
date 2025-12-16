@@ -11,10 +11,11 @@ import ChangePage from "./Post/ChangePage";
 import { useEffect } from "react";
 import { useLocation, useSearchParams } from "react-router-dom";
 import { useState } from "react";
-import { getProduct, getCategories } from "../../services/productService";
-import { applySort } from "../../utils/utils";
+import { getProduct } from "../../services/productService";
+import { listCategories } from "../dataDemo";
+import {  sortProductsByCriteria } from "../../utils/utils";
 function HomePage() {
-  const user = JSON.parse(sessionStorage.getItem("user"));
+  const userId = JSON.parse(sessionStorage.getItem("userId"));
   const [searchParams] = useSearchParams();
   const location = useLocation();
   const { show } = location.state || false;
@@ -70,7 +71,7 @@ function HomePage() {
         page: page,
       });
       console.log("products: ", data);
-      const list = applySort(data, sortState);
+      const list = applySort(data, "Mới nhất);
       setList(list);
     } catch (err) {
       console.error(err);
@@ -116,7 +117,7 @@ function HomePage() {
               <Post
                 key={index}
                 productInfo={product}
-                showAddToCart={user.id !== product.seller_id}
+                showAddToCart={userId !== product.seller_id}
                 showAction={false}
               />
             ))}

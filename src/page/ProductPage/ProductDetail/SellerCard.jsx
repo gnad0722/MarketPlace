@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { MessageCircle } from "lucide-react";
 import { followUser,checkFollowing,unfollowUser } from "../../../services/followService";
+import { API_BASE } from "../../../api/axiosClient";
 function SellerCard(props) {
   const infoSeller=props.infoSeller;
   const [follow,setFollowed] =useState(false);
@@ -52,7 +53,7 @@ function SellerCard(props) {
         {infoSeller.avatar === "" ? (
           infoSeller.name[0]
         ) : (
-          <img src={infoSeller.avatar} alt="avatar" />
+          <img src={`${API_BASE}${infoSeller.avatar}`} alt="avatar" />
         )}
       </span>
         </div>

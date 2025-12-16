@@ -1,5 +1,5 @@
 import React from "react";
-
+import { API_BASE } from "../../../api/axiosClient";
 import { useState } from "react";
 import { formatTime } from "../../../utils/utils";
 import { parseISO } from "date-fns";
@@ -21,7 +21,7 @@ function HeaderPost(props) {
   const createAt = parseISO(headerInfo.createAt);
   async function deleteProductById() {
     try {
-      const data = deleteProduct(props.idProduct);
+      await deleteProduct(props.idProduct);
     } catch (err) {
       console.error(err);
     }
@@ -32,7 +32,7 @@ function HeaderPost(props) {
         {author.avatar === "" ? (
           author.name[0]
         ) : (
-          <img src={author.avatar} alt="avatar" />
+          <img src={`${API_BASE}${author.avatar}`}  alt="avatar" />
         )}
       </span>
       <div className="name-seller">

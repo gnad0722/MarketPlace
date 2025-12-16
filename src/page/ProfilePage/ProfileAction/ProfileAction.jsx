@@ -10,13 +10,14 @@ function ProfileAction(props) {
   function handleCurrent(chosen) {
     setCurrent(chosen);
   }
+ 
   return (
     <div className="container-action">
       <ActionBar onCurrent={handleCurrent} />
-      {current === "Sản phẩm của tôi" && <MyProduct/>}
+      {current === "Sản phẩm của tôi" && <MyProduct />}
       {current === "Đơn hàng của tôi" && <MyOrder />}
-      {current === "Giới thiệu" && <AboutMe user={props.user}/>}
-      {current === "Cài đặt" && <Setting />}
+      {current === "Giới thiệu" && <AboutMe user={props.user} />}
+      {current === "Cài đặt" && <Setting user={props.user} />}
     </div>
   );
 }

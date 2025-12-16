@@ -66,9 +66,6 @@ function FollowAndRating(props) {
           </span>
         </div>
       </div>
-      <span style={{ marginTop: "10px", fontWeight: "500", fontSize: "13px" }}>
-        Tham gia từ {formatTime(user.createdAt)}
-      </span>
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { getFollowersCount, followUser, unfollowUser } from "../../../services/followService";
+import { API_BASE } from "../../../api/axiosClient";
 function Recommend(props) {
   const [follow,setFollowed] =useState(true);
   const avatar=props.avatar ?? "";
@@ -50,7 +51,7 @@ function Recommend(props) {
           {avatar ==="" ? (
             name[0]
           ) : (
-            <img src={props.avatar} alt="avatar" />
+            <img src={`${API_BASE}${avatar}`} alt="avatar" />
           )}
         </span>
       </div>

@@ -6,7 +6,7 @@ function ProfileCard(props) {
   const user=props.user;
   return (
     <div className="profile-card">
-      <Avatar avatar={user.avatar} username={user.username}/>
+      <Avatar avatar={user.avatar_url} username={user.username}/>
       <Information user={user}/>
       <FollowAndRating user={user}/>
     </div>

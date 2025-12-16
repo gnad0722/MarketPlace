@@ -1,9 +1,8 @@
 import React from "react";
 import { API_BASE } from "../../../api/axiosClient";
 function Avatar(props) {
-  const avatar=props.avatar;
+  const avatar=props.avatar || "";
   const username=props.username;
-  console.log(username);
   return (
     <div
       className="avt-mini"
