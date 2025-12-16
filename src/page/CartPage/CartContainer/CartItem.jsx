@@ -4,7 +4,7 @@ import { Minus, Plus, X } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { updateItemQuantity, removeItem } from "../../../services/cartService";
-import { getProductImageById } from "../../../services/productService";
+import { getProductImageById, getProductById } from "../../../services/productService";
 import { API_BASE } from "../../../api/axiosClient";
 import { formatPriceByCode } from "../../../utils/utils";
 function CartItem(props) {
@@ -24,9 +24,19 @@ function CartItem(props) {
     props.onSelect(id,isChecked);
     setChecked(isChecked);
   }
-  function handleCount(action) {
-    setCount(action === "plus" ? count + 1 : count - 1);
-    setTotal(action === "plus" ? price * (count + 1) : price * (count - 1));
+  async function handleCount(action) {
+    if (action === "plus") {
+      const product = await getProductById(id);
+      const quantityInStock = product.stock;
+      if (count + 1 > quantityInStock) {
+        return;
+      }
+      setCount(count + 1);
+      setTotal(price * (count + 1));
+    } else if (action === "minus" && count - 1 >= 1) {
+      setCount(count - 1);
+      setTotal(price * (count - 1));
+    }
   }
   useEffect(() => {
     props.onUpdate(item.product_id, count);

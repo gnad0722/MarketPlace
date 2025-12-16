@@ -118,7 +118,6 @@ function groupNotifications(notifications) {
 function countRating(feedback) {
   const ratingCount = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
   feedback.forEach((item) => {
-    // console.log('item: ', item)
     if (item.rating >= 1 && item.rating <= 5) {
       ratingCount[item.rating]++;
     }

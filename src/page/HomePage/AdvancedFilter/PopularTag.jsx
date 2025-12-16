@@ -4,21 +4,28 @@ import TagItem from "./TagItem";
 function PopularTag(props) {
   const tag = props.tag;
   const listTag = [
-    { name: "Chơi game", selected: false },
-    { name: "Học tập", selected: false },
-    { name: "Làm việc văn phòng", selected: false },
-    { name: "Thiết kế đồ họa", selected: false },
-    { name: "Lập trình", selected: false },
-    { name: "Chụp ảnh & Quay video", selected: false },
-    { name: "Giải trí & Xem phim", selected: false },
-    { name: "Nghe nhạc", selected: false },
-    { name: "Sức khỏe & Thể thao", selected: false },
-    { name: "Theo dõi giấc ngủ", selected: false },
-    { name: "Di chuyển & Du lịch", selected: false },
-    { name: "Nhà thông minh", selected: false },
-    { name: "Phụ huynh & Trẻ em", selected: false },
-    { name: "Người lớn tuổi", selected: false },
-    { name: "Dùng hằng ngày", selected: false },
+    { name: "electronics", selected: false },
+    { name: "apple", selected: false },
+    { name: "phone", selected: false },
+    { name: "laptop", selected: false },
+    { name: "gaming", selected: false },
+    { name: "fashion", selected: false },
+    { name: "vintage", selected: false },
+    { name: "sports", selected: false },
+    { name: "fitness", selected: false },
+    { name: "homedecor", selected: false },
+    { name: "trending", selected: false },
+    { name: "sale", selected: false },
+    { name: "dell", selected: false },
+    { name: "headphones", selected: false },
+    { name: "bose", selected: false },
+    { name: "audio", selected: false },
+    { name: "tea", selected: false },
+    { name: "organic", selected: false },
+    { name: "groceries", selected: false },
+    { name: "handmade", selected: false },
+    { name: "ceramics", selected: false },
+    { name: "kitchen", selected: false },
   ];
 
   const [tags, setTags] = useState(
@@ -28,18 +35,19 @@ function PopularTag(props) {
     }))
   );
   function handleTag(name) {
-    const index = tag.indexOf(name);
+    const newTags = [...tag];
+    const index = newTags.indexOf(name);
     if (index !== -1) {
-      tag.splice(index, 1);
+      newTags.splice(index, 1);
     } else {
-      tag.push(name);
+      newTags.push(name);
     }
     setTags((prev) =>
       prev.map((tag) =>
         tag.name === name ? { ...tag, selected: !tag.selected } : tag
       )
     );
-    props.onTag({ keyword: tag });
+    props.onTag({ keyword: newTags });
   }
   return (
     <div className="categories-container" style={{ marginTop: "20px" }}>

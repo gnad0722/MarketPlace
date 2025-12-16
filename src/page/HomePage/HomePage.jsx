@@ -57,7 +57,7 @@ function HomePage() {
   const [loading, setLoading] = useState(true);
   async function getListProduct() {
     try {
-      console.log("category: ", filter.category === "Tất cả" ? "" : filter.category);
+      // console.log("category: ", filter.category === "Tất cả" ? "" : filter.category);
       const data = await getProduct({
         search:
           search +
@@ -70,8 +70,8 @@ function HomePage() {
         price_max: advanFilter.price_max,
         page: page,
       });
-      console.log("products: ", data);
-      const list = applySort(data, "Mới nhất);
+      // console.log("products: ", data);
+      const list = applySort(data, sortState);
       setList(list);
     } catch (err) {
       console.error(err);
@@ -79,22 +79,52 @@ function HomePage() {
   }
   useEffect(() => {
     setLoading(true);
-    Promise.all([getListProduct(), getCategories()])
-      .then(([_, categories]) => {
-        console.log(categories)
-        // categories is already a map: { "Category Name": count, ... }
-        // We need to extract the category names (keys) for setListCategories
-        const categoryNames = Object.keys(categories);
-        console.log(["Tất cả", ...categoryNames]);
-        setListCategories(["Tất cả", ...categoryNames]);
-      })
-      .catch((err) => console.error(err))
-      .finally(() => setLoading(false));
-  }, [filter.category, advanFilter.keyword, advanFilter.rating_min, advanFilter.price_min, advanFilter.price_max, page]);
+    const fetchAndSortProducts = async () => {
+      try {
+        const data = await getProduct({
+          search: search,
+          category: filter.category === "Tất cả" ? "" : filter.category,
+          rating_min: advanFilter.rating_min,
+          price_min: advanFilter.price_min,
+          price_max: advanFilter.price_max,
+          page: page,
+        });
 
-  useEffect(() => {
-    setList(applySort(listProduct, sortState));
-  }, [filter.sortBy, advanFilter.sortByPrice]);
+        const filteredData = data.filter(product => {
+          if (advanFilter.keyword.length === 0) return true;
+          if (!product.hashtags) return false;
+          const keywords = advanFilter.keyword;
+          for (let keyword of keywords) {
+            for (let tag of product.hashtags) {
+              if (tag['tag'] == keyword) {
+                return true
+              }
+            }
+          }
+
+          return false;
+        });
+
+        console.log(filteredData)
+        const sortedList = applySort(filteredData, sortState);
+        setList(sortedList);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    const fetchCategories = async () => {
+      try {
+        const categories = await getCategories();
+        const categoryNames = Object.keys(categories);
+        setListCategories(["Tất cả", ...categoryNames]);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    Promise.all([fetchAndSortProducts(), fetchCategories()]);
+  }, [filter.category, advanFilter, page, search, sortState]);
   if (loading) return <div>Loading...</div>;
   return (
     <div>
