@@ -11,17 +11,8 @@ import ChangePage from "./Post/ChangePage";
 import { useEffect } from "react";
 import { useLocation, useSearchParams } from "react-router-dom";
 import { useState } from "react";
-<<<<<<< HEAD
 import { getProduct,getCategories } from "../../services/productService";
 import {  sortProductsByCriteria} from "../../utils/utils";
-=======
-import { getProduct } from "../../services/productService";
-import { listCategories } from "../dataDemo";
-import {  sortProductsByCriteria } from "../../utils/utils";
-import { getCategories } from "../../services/productService";
-import { applySort } from "../../utils/utils";
-
->>>>>>> 2fe272897ddfce12787cec947a0925c2a65ace6a
 function HomePage() {
   const userId = JSON.parse(sessionStorage.getItem("userId"));
   const [searchParams] = useSearchParams();
@@ -131,7 +122,7 @@ function HomePage() {
     useEffect(() => {
     setList(sortProductsByCriteria(data,filter.sortBy));
   }, [filter.sortBy]);
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <div>Loading..</div>;
   return (
     <div>
       <div className="container py-4 position-relative">
