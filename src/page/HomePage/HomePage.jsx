@@ -120,7 +120,7 @@ function HomePage() {
     Promise.all([fetchAndSortProducts(), fetchCategories()]);
   }, [filter.category, advanFilter, page, search,]);
     useEffect(() => {
-    setList(sortProductsByCriteria(data,filter.sortBy));
+    setList(sortProductsByCriteria(listProduct,filter.sortBy));
   }, [filter.sortBy]);
   if (loading) return <div>Loading..</div>;
   return (
