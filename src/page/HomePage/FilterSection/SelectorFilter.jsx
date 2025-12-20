@@ -11,7 +11,6 @@ function SelectorFilter(props) {
   }
   function handleOptionSelect(option){
     props.onSort({sortBy:option});
-    props.onType(prev=>({...prev,type:option}))
     setOption(option);
     setIsOpen(!isOpen);
   }

@@ -10,7 +10,7 @@ function FilterSection(props) {
       <span className="title-filter">
         <Filter className="icon-btn-size" /> Bộ lọc
       </span>
-      <SelectorFilter sortBy={filter.sortBy} onSort={props.onFilter} onType={props.onSort}/>
+      <SelectorFilter sortBy={filter.sortBy} onSort={props.onFilter}/>
       <Categories filtBy={filter.category} onFilter={props.onFilter} listCategories={listCategories}/>
     </div>
   );

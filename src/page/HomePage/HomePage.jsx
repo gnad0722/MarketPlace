@@ -135,7 +135,6 @@ function HomePage() {
               filter={filter}
               onFilter={handleFilter}
               listCategories={listCategories}
-              onSort={setOrder}
             />
           </div>
           <div className="col-6">
@@ -151,7 +150,7 @@ function HomePage() {
             <ChangePage page={page} onChange={setPage} />
           </div>
           <div className="col">
-            <AdvancedFilter onSort={setOrder} filter={advanFilter} onFilter={handleAdvFilter} />
+            <AdvancedFilter filter={advanFilter} onFilter={handleAdvFilter} />
             <RecommendSeller />
           </div>
         </div>
