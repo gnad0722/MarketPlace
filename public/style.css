@@ -12,6 +12,17 @@
 .btn-logo:hover {
   opacity: 0.8;
 }
+
+/* Global Font Override */
+* {
+  font-family: "Quicksand", sans-serif;
+}
+
+body {
+  font-family: "Quicksand", sans-serif;
+  font-weight: 600;
+}
+
 .logo-space {
   display: flex;
   justify-content: center;

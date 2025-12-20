@@ -27,9 +27,10 @@ function DetailPopup(props) {
             >
               Chi tiết đơn hàng của bạn
             </span>
-            <span style={{ opacity: "0.5" }}>
-              Xem thông tin sản phẩm, địa chỉ giao hàng và tình trạng đơn.
-            </span>
+            Xem thông tin sản phẩm, địa chỉ giao hàng và tình trạng đơn.
+            {props.orderInfo.status === "COMPLETED" && <span style={{ display: 'block', color: '#ff6600', marginTop: '4px' }}>
+              (Nhấn nút "Đánh giá" bên cạnh sản phẩm để gửi nhận xét)
+            </span>}
           </div>
           <button className="close-button" onClick={props.onClose}>
             <X size={20} />

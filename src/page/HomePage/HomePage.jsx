@@ -11,8 +11,8 @@ import ChangePage from "./Post/ChangePage";
 import { useEffect } from "react";
 import { useLocation, useSearchParams } from "react-router-dom";
 import { useState } from "react";
-import { getProduct,getCategories } from "../../services/productService";
-import {  sortProductsByCriteria} from "../../utils/utils";
+import { getProduct, getCategories } from "../../services/productService";
+import { sortProductsByCriteria } from "../../utils/utils";
 function HomePage() {
   const userId = JSON.parse(sessionStorage.getItem("userId"));
   const [searchParams] = useSearchParams();
@@ -65,7 +65,7 @@ function HomePage() {
         price_max: advanFilter.price_max,
         page: page,
       });
-      const list = sortProductsByCriteria(data,"Mới nhất");
+      const list = sortProductsByCriteria(data, "Mới nhất");
       setList(list);
     } catch (err) {
       console.error(err);
@@ -100,7 +100,7 @@ function HomePage() {
         });
 
         console.log(filteredData)
-        const sortedList = sortProductsByCriteria(filteredData,"Mới nhất");
+        const sortedList = sortProductsByCriteria(filteredData, "Mới nhất");
         setList(sortedList);
       } catch (err) {
         console.error(err);
@@ -119,8 +119,8 @@ function HomePage() {
     };
     Promise.all([fetchAndSortProducts(), fetchCategories()]);
   }, [filter.category, advanFilter, page, search,]);
-    useEffect(() => {
-    setList(sortProductsByCriteria(listProduct,filter.sortBy));
+  useEffect(() => {
+    setList(sortProductsByCriteria(listProduct, filter.sortBy));
   }, [filter.sortBy]);
   if (loading) return <div>Loading..</div>;
   return (
@@ -135,7 +135,6 @@ function HomePage() {
               filter={filter}
               onFilter={handleFilter}
               listCategories={listCategories}
-              onSort={setOrder}
             />
           </div>
           <div className="col-6">
@@ -151,7 +150,7 @@ function HomePage() {
             <ChangePage page={page} onChange={setPage} />
           </div>
           <div className="col">
-            <AdvancedFilter onSort={setOrder} filter={advanFilter} onFilter={handleAdvFilter} />
+            <AdvancedFilter filter={advanFilter} onFilter={handleAdvFilter} />
             <RecommendSeller />
           </div>
         </div>

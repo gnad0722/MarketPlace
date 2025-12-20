@@ -28,20 +28,30 @@ function HeaderPost(props) {
   }
   return (
     <div className="info-seller">
-      <span className="avt-mini">
-        {author.avatar === "" ? (
-          author.name[0]
-        ) : (
-          <img src={`${API_BASE}${author.avatar}`}  alt="avatar" />
-        )}
-      </span>
-      <div className="name-seller">
-        <span style={{ fontSize: "1.1rem" }}>{author.name}</span>
-        <span style={{ fontSize: "0.9rem", opacity: "0.5" }}>
-          {headerInfo.updateAt === ""
-            ? formatTime(createAt)
-            : `Đã chỉnh sửa ${formatTime(parseISO(headerInfo.updateAt))}`}
+      <div
+        className="d-flex align-items-center gap-2"
+        style={{ cursor: "pointer" }}
+        onClick={() => {
+          if (author.id) {
+            navigate(`/shop/${author.id}`);
+          }
+        }}
+      >
+        <span className="avt-mini">
+          {author.avatar === "" ? (
+            author.name[0]
+          ) : (
+            <img src={`${API_BASE}${author.avatar}`} alt="avatar" />
+          )}
         </span>
+        <div className="name-seller">
+          <span style={{ fontSize: "1.1rem", fontWeight: "600" }}>{author.name}</span>
+          <span style={{ fontSize: "0.9rem", opacity: "0.5" }}>
+            {headerInfo.updateAt === ""
+              ? formatTime(createAt)
+              : `Đã chỉnh sửa ${formatTime(parseISO(headerInfo.updateAt))}`}
+          </span>
+        </div>
       </div>
       {props.showAction && (
         <div

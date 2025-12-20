@@ -56,11 +56,8 @@ function InfoProduct(props) {
       return;
     }
     try {
-      // const listProductId = products.map((product) => ({
-      //   product_id: product.product_id,
-      //   quantity: product.quantity,
-      // }));
-      await placeOrder(infoOrder, products);
+      const listProductId = products.map((product) => product.product_id);
+      await placeOrder(infoOrder, listProductId);
       navigate("/home", {
         state: {
           show: true,
@@ -71,9 +68,11 @@ function InfoProduct(props) {
     } catch (err) {
       if (err.response && err.response.status === 400) {
         const listError = err.response.data.errors;
-        listError.forEach((error) => {
-          msg[error.path] = error.msg;
-        });
+        if (listError) {
+          listError.forEach((error) => {
+            msg[error.path] = error.msg;
+          });
+        }
       }
       else {
         msg.order = "Đã có lỗi xảy ra. Vui lòng thử lại sau.";

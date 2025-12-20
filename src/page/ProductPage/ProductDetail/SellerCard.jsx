@@ -1,46 +1,48 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { MessageCircle } from "lucide-react";
-import { followUser,checkFollowing,unfollowUser } from "../../../services/followService";
+import { useNavigate } from "react-router-dom";
+import { followUser, checkFollowing, unfollowUser } from "../../../services/followService";
 import { API_BASE } from "../../../api/axiosClient";
 function SellerCard(props) {
-  const infoSeller=props.infoSeller;
-  const [follow,setFollowed] =useState(false);
-  const [loading,setLoading]=useState(true);
+  const navigate = useNavigate();
+  const infoSeller = props.infoSeller;
+  const [follow, setFollowed] = useState(false);
+  const [loading, setLoading] = useState(true);
   async function checkFollow(id) {
-    try{
-      const data= await checkFollowing(id);
+    try {
+      const data = await checkFollowing(id);
       setFollowed(data.is_following);
     }
-    catch(err){
+    catch (err) {
       console.log(err);
     }
-    finally{
+    finally {
       setLoading(false);
     }
   }
-  async function handleFollow(){
-    if (!follow){
-      try{
+  async function handleFollow() {
+    if (!follow) {
+      try {
         await followUser(infoSeller.id);
       }
-      catch(err){
+      catch (err) {
         console.log(err);
       }
     }
-    else{
-      try{
+    else {
+      try {
         await unfollowUser(infoSeller.id);
       }
-      catch(err){
+      catch (err) {
         console.log(err);
       }
     }
     setFollowed(!follow);
   }
-  useEffect(()=>{
+  useEffect(() => {
     checkFollow(infoSeller.id);
-  },[])
+  }, [])
   if (loading) return <div>Loading....</div>
   return (
     <div className="product-card">
@@ -50,12 +52,12 @@ function SellerCard(props) {
       <div className="recommend" style={{ alignItems: "start" }}>
         <div className="avt-container">
           <span className="avt-mini">
-        {infoSeller.avatar === "" ? (
-          infoSeller.name[0]
-        ) : (
-          <img src={`${API_BASE}${infoSeller.avatar}`} alt="avatar" />
-        )}
-      </span>
+            {infoSeller.avatar === "" ? (
+              infoSeller.name[0]
+            ) : (
+              <img src={`${API_BASE}${infoSeller.avatar}`} alt="avatar" />
+            )}
+          </span>
         </div>
         <div className="info-recommend" style={{ width: "100%" }}>
           <span style={{ fontSize: "1.1rem" }}>{infoSeller.name}</span>
@@ -75,7 +77,7 @@ function SellerCard(props) {
       </div>
       <div style={{ display: "flex", gap: "5px", margin: "10px 0" }}>
         <div className="btn-add-cart" onClick={handleFollow}>
-          <span style={{ fontWeight: "500" }}>{follow?"Đang theo dõi":"Theo dõi"}</span>
+          <span style={{ fontWeight: "500" }}>{follow ? "Đang theo dõi" : "Theo dõi"}</span>
         </div>
         <div className="btn-add-cart">
           <span
@@ -91,11 +93,13 @@ function SellerCard(props) {
           </span>
         </div>
       </div>
-        <div className="btn-add-cart">
-          <span style={{ fontWeight: "500" }}>
-            Xem cửa hàng
-          </span>
-        </div>
+      <div className="btn-add-cart" onClick={() => {
+        navigate(`/shop/${infoSeller.id}`);
+      }}>
+        <span style={{ fontWeight: "500" }}>
+          Xem cửa hàng
+        </span>
+      </div>
     </div>
   );
 }

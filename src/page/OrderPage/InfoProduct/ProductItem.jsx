@@ -7,8 +7,8 @@ function ProductItem(props) {
   const nameProduct = props.nameProduct;
   const quantity = props.quantity;
   const price = props.price;
-  const img=props.img;
-  const idItem=props.idItem || null;
+  const img = props.img;
+  const idItem = props.idItem || null;
   return (
     <div
       style={{
@@ -22,9 +22,9 @@ function ProductItem(props) {
       <div
         className="mini-img"
         onClick={() => {
-          navigate("/detail",{
-            state:{
-              id:props.id
+          navigate("/detail", {
+            state: {
+              id: props.id
             }
           });
         }}
@@ -41,15 +41,16 @@ function ProductItem(props) {
         </span>
         <div className="d-flex justify-content-between">
           <span style={{ color: "#ff6a00" }}>{price}</span>
-          {props.showFeedback &&  <span
+          {props.showFeedback && <span
+            className="btn btn-sm btn-outline-warning"
             style={{
-              opacity: "0.5",
-              textDecorationLine: "underline",
-              fontSize: "15px",
+              fontSize: "13px",
+              padding: "2px 8px"
             }}
-            onClick={()=>{
-                props.onClose();
-                props.onOpenFeedBack(idItem);
+            onClick={(e) => {
+              e.stopPropagation();
+              props.onClose();
+              props.onOpenFeedBack(idItem);
             }}
           >
             Đánh giá

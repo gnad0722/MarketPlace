@@ -18,11 +18,15 @@ import {
 import { useNavigate } from "react-router-dom";
 import { logout } from "../services/authService";
 import { getNotification } from "../services/notficationService";
+import { getCartItems } from "../services/cartService";
+
 function Header(props) {
   const navigate = useNavigate();
   const [notifications, setList] = useState([]);
   const [numberNoti, setNumber] = useState(0);
+  const [cartCount, setCartCount] = useState(0);
   const [keyword, setKeyword] = useState("");
+
   async function handleLogout() {
     try {
       await logout();
@@ -33,6 +37,7 @@ function Header(props) {
       navigate("/");
     }
   }
+
   async function fetchNotificationForHeader() {
     try {
       const data = await getNotification();
@@ -42,10 +47,32 @@ function Header(props) {
       console.error(err);
     }
   }
+
+  async function fetchCartCount() {
+    try {
+      const cartData = await getCartItems();
+      if (cartData && cartData.items) {
+        setCartCount(cartData.items.length);
+      } else {
+        setCartCount(0);
+      }
+    } catch (err) {
+      // console.error(err);
+    }
+  }
+
   useEffect(() => {
     fetchNotificationForHeader();
+    fetchCartCount();
+
+    const handleCartUpdate = () => fetchCartCount();
+    window.addEventListener('cart-updated', handleCartUpdate);
+
     const interval = setInterval(fetchNotificationForHeader, 500);
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('cart-updated', handleCartUpdate);
+    };
   }, []);
   return (
     <header className="header-sticky">
@@ -155,6 +182,11 @@ function Header(props) {
             }}
           >
             <ShoppingCart className="icon-btn-size" />
+            {cartCount > 0 && (
+              <div className="badge-container">
+                <p style={{ margin: "0" }}>{cartCount}</p>
+              </div>
+            )}
           </button>
           <button
             className="btn btn-outline-secondary btn-custom ms-3  btn-avt"
