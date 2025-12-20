@@ -26,6 +26,7 @@ function ActionOrder(props) {
                   product_id: item.id,
                   quantity: item.quantity,
                   name: item.name,
+                  
                   price: item.price_at_purchase.toFixed(2),
                   stock: item.stock || null,
                   status: "active",
@@ -36,6 +37,16 @@ function ActionOrder(props) {
           }}
         >
           Mua lại
+        </button>
+      )}
+      {orderInfo.status === "COMPLETED" && products.length > 0 && (
+        <button
+          type="button"
+          className="btn btn-warning btn-custom btn-sm d-none d-md-inline"
+          style={{ fontWeight: "500", color: "white" }}
+          onClick={props.onOpenDetail}
+        >
+          Đánh giá đơn hàng
         </button>
       )}
     </div>

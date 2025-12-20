@@ -65,10 +65,10 @@ function Comment(props) {
 
         <span style={{ marginTop: "10px" }}>{content}</span>
       </div>
-      {!replies && numberReplies === 0 && (
-        <div className="btn-create" onClick={openFeedBackPopup}>Phản hồi</div>
+      {!replies && (
+        <div className="btn-create" onClick={openFeedBackPopup}>Phản hồi ({numberReplies})</div>
       )}
-      <FeedBackPopup id={id} isOpen={isFeedBackPopupOpen} onClose={closeFeedBackPopup} nameUser={authorName} comment={content}/>
+      <FeedBackPopup id={id} isOpen={isFeedBackPopupOpen} onClose={closeFeedBackPopup} nameUser={authorName} comment={content} />
     </div>
   );
 }

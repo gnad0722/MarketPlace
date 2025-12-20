@@ -34,13 +34,21 @@ function FormRegister() {
         navigate("/login");
       }
     } catch (err) {
-      if (err.response && err.response.status === 400) {
-        const listError = err.response.data.errors;
-        const msg = {};
-        listError.forEach((error) => {
-          msg[error.path] = error.msg;
-        });
-        setMessage(msg);
+      if (err.response) {
+        if (err.response.status === 400 && err.response.data.errors) {
+          const listError = err.response.data.errors;
+          const msg = {};
+          listError.forEach((error) => {
+            msg[error.path] = error.msg;
+          });
+          setMessage(msg);
+        } else {
+          // Handle 500 or other errors (like duplicate email)
+          setMessage({
+            ...message,
+            email: err.response.data.message || "Đăng ký thất bại."
+          });
+        }
       }
     }
   }

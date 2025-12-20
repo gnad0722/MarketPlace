@@ -45,21 +45,21 @@ function PriceRangeSelect(props) {
     },
   ];
 
-  const defaultIndex = listPrice.findIndex(
+  const selected = listPrice.findIndex(
     (range) =>
       range.price_min === props.price_min && range.price_max === props.price_max
   );
+  if (selected === -1 && props.price_min === 0 && props.price_max === Infinity) {
+    // Default to "Tất cả" if clean match fails but it corresponds to default
+  }
 
-  const [selected, setSelected] = useState(
-    defaultIndex === -1 ? 0 : defaultIndex
-  );
   function handleSelected(id) {
     const range = {
       price_min: listPrice[id].price_min,
       price_max: listPrice[id].price_max,
     };
     props.onRange(range);
-    setSelected(id);
+    // setSelected(id); // No longer needed
   }
   return (
     <div className="categories-container">

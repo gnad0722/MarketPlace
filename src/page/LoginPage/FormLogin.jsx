@@ -3,7 +3,7 @@ import { User, Lock, Eye, EyeClosed } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { checkValidAccount } from "../../utils/utils";
-import { login } from "../../services/authService";
+import { login, resendVerificationEmail } from "../../services/authService";
 function FormLogin() {
   const [show, setShow] = useState(false);
   const [email, setEmail] = useState("");
@@ -114,7 +114,7 @@ function FormLogin() {
       <span
         className="underline-text"
         onClick={() => {
-          navigate("/verify-email");
+          navigate("/reset-password");
         }}
       >
         Quên mật khẩu?
@@ -141,10 +141,34 @@ function FormLogin() {
             navigate("/register");
           }}
         >
-          Đăng ký ngay
         </span>
       </span>
-    </div>
+      <span
+        style={{
+          alignSelf: "center",
+          paddingTop: "10px",
+          opacity: "0.7",
+          fontSize: "14px",
+          cursor: "pointer",
+          color: "#ff6a00"
+        }}
+        onClick={async () => {
+          if (!email) {
+            setMessage({ ...message, error: "Vui lòng nhập email để gửi lại xác thực." });
+            return;
+          }
+          try {
+            const res = await resendVerificationEmail(email);
+            setMessage({ ...message, error: "", email: "", password: "", success: res.message });
+            alert(res.message);
+          } catch (err) {
+            setMessage({ ...message, error: "Có lỗi xảy ra." });
+          }
+        }}
+      >
+        Chưa nhận được email xác thực? Gửi lại
+      </span>
+    </div >
   );
 }
 export default FormLogin;

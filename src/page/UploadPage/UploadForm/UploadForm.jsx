@@ -5,18 +5,22 @@ import { useNavigate } from "react-router-dom";
 import SelectBox from "../../HomePage/FilterSection/SelectBox";
 import OptionList from "../../HomePage/FilterSection/OptionList";
 import ImageForm from "./ImageForm";
-import { createProduct, getCategories } from "../../../services/productService";
+import { createProduct, getCategories, updateProduct } from "../../../services/productService";
 import { makeHashtag } from "../../../utils/utils";
+import { useLocation } from "react-router-dom";
 
 function UploadForm() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [listOption, setListOption] = useState([]);
+
+  // Check for edit mode
+  const { isEdit, product } = location.state || {};
 
   useEffect(() => {
     async function fetchCategories() {
       try {
         const categoriesMap = await getCategories();
-        // Sort category names based on their index from the map
         const sortedCategoryNames = Object.keys(categoriesMap).sort(
           (a, b) => categoriesMap[a] - categoriesMap[b]
         );
@@ -27,6 +31,20 @@ function UploadForm() {
     }
     fetchCategories();
   }, []);
+
+  // Pre-fill if editing
+  useEffect(() => {
+    if (isEdit && product) {
+      setName(product.name);
+      setPrice(product.price);
+      setStock(product.stock);
+      setDesc(product.description);
+      setCategory(product.category_name || "Danh mục"); // Assuming category_name is available or mapped
+      setOption(product.category_name || "Danh mục");
+      // Images handling is complex, for now we skip pre-filling files as they are File objects.
+      // User must upload new images to replace (or we handle separately).
+    }
+  }, [isEdit, product]);
 
   const [message, setMessage] = useState({
     name: "",
@@ -53,30 +71,67 @@ function UploadForm() {
     setIsOpen(!isOpen);
   }
 
-  async function handleCreate(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     const msg = {};
     if (
       category === "" ||
       nameProduct === "" ||
       price === "" ||
-      stock ==="" ||
-      files.length === 0
+      stock === ""
+      // || files.length === 0 // Allow empty files for update if generic behavior (but here created requires it)
+      // For simplicity, require files for now or assume update replaces it.
+      // If edit, maybe allow empty files?
+    ) {
+      if (!isEdit && files.length === 0) {
+        msg["image"] = "Vui lòng chọn hình ảnh!";
+      }
+      if (category === "") msg["category"] = "Vui lòng chọn danh mục!";
+      if (nameProduct === "") msg["name"] = "Vui lòng nhập tên sản phẩm!";
+      // etc.
+      // Reuse existing validation logic but adapted
+    }
+
+    // Simple validation copy from original but adapted
+    if (
+      category === "" ||
+      nameProduct === "" ||
+      price === "" ||
+      stock === "" ||
+      (!isEdit && files.length === 0)
     ) {
       msg["image"] = "Vui lòng nhập đầy đủ các thông tin yêu cầu!";
-    } else {
-      try {
-        const formData = new FormData();
-        formData.append("name", nameProduct);
-        formData.append("stock", stock);
-        formData.append("price", price);
-        formData.append("description", description);
-        formData.append("category", category);
-        formData.append("hashtags", [category, makeHashtag(nameProduct)]);
-        files.forEach((file) => {
-          formData.append("images", file);
+      if (files.length === 0 && !isEdit) msg["image"] = "Vui lòng chọn ảnh.";
+      setMessage(msg);
+      return;
+    }
+
+
+    try {
+      const formData = new FormData();
+      formData.append("name", nameProduct);
+      formData.append("stock", stock);
+      formData.append("price", price);
+      formData.append("description", description);
+      formData.append("category", category);
+      formData.append("hashtags", [category, makeHashtag(nameProduct)]); // Simplified array to string usually handled by backend? Backend expects array usually.
+      // But original code passed array.
+
+      files.forEach((file) => {
+        formData.append("images", file);
+      });
+
+      if (isEdit) {
+        await updateProduct(formData, product.id);
+        navigate("/home", {
+          state: {
+            show: true,
+            message: "Cập nhật sản phẩm thành công!",
+            color: "#28a745",
+          },
         });
-        const data = await createProduct(formData);
+      } else {
+        await createProduct(formData);
         navigate("/home", {
           state: {
             show: true,
@@ -84,16 +139,22 @@ function UploadForm() {
             color: "#ff9013",
           },
         });
-      } catch (err) {
-        if (err.response && err.response.status === 400) {
-          const listError = err.response.data.errors;
+      }
+
+    } catch (err) {
+      if (err.response && err.response.status === 400) {
+        const listError = err.response.data.errors;
+        if (listError) {
           listError.forEach((error) => {
             msg[error.path] = error.msg;
           });
+        } else {
+          // Genric
+          console.error(err);
         }
       }
+      setMessage(msg);
     }
-    setMessage(msg);
   }
   return (
     <div className="order-info">
@@ -212,7 +273,7 @@ function UploadForm() {
             <div
               className="btn-create"
               style={{ marginLeft: "15px" }}
-              onClick={handleCreate}
+              onClick={handleSubmit}
             >
               <span style={{ fontWeight: "500" }}>
                 <Upload
@@ -220,7 +281,7 @@ function UploadForm() {
                   size={20}
                   style={{ marginRight: "5px", paddingBottom: "3px" }}
                 />
-                Đăng sản phẩm
+                {isEdit ? "Cập nhật sản phẩm" : "Đăng sản phẩm"}
               </span>
             </div>
             <button

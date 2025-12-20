@@ -23,7 +23,7 @@ function NotificationContainer(props) {
                   if (
                     (notification.type === "NEW_ORDER" ||
                       notification.type === "ORDER_STATUS_UPDATE") &&
-                    (typeNotification === "Đớn hàng của tôi" ||
+                    (typeNotification === "Đơn hàng của tôi" ||
                       typeNotification === "Tất cả")
                   ) {
                     return (

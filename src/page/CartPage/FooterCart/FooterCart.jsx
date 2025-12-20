@@ -33,8 +33,8 @@ function FooterCart(props) {
           />
         </div>
         <span>Chọn tất cả</span>
-        <span style={{ marginLeft: "20px", cursor: "pointer" }} onClick={()=>{
-          listSelected.forEach((id)=>{
+        <span style={{ marginLeft: "20px", cursor: "pointer" }} onClick={() => {
+          listSelected.forEach((id) => {
             handleRemoveItem(id);
           })
           navigate(0);
@@ -54,6 +54,15 @@ function FooterCart(props) {
         <div
           className="btn-create"
           onClick={() => {
+            if (items.length === 0) {
+              // Use a proper notification if available, otherwise alert
+              alert("Giỏ hàng của bạn đang trống! Vui lòng thêm sản phẩm.");
+              return;
+            }
+            if (listSelected.length === 0) {
+              alert("Vui lòng chọn sản phẩm để thanh toán!");
+              return;
+            }
             navigate("/order", {
               state: {
                 listItem: items.filter((item) =>

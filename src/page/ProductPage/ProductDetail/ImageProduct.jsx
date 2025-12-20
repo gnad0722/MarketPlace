@@ -1,20 +1,20 @@
 import React from "react";
 import myPicture from "../../../img/iphone.webp";
 import myPicture2 from "../../../img/iphone2.webp";
-import { API_BASE, PRODUCT_IMAGE_BASE } from "../../../api/axiosClient";
+import { API_BASE } from "../../../api/axiosClient";
 function ImageProduct(props) {
   const images = props.images;
   return (
     <div id="carouselExample" className="carousel slide">
       <div className="carousel-inner image-container">
         <div className="carousel-item active">
-          <img src={`${PRODUCT_IMAGE_BASE}${images[0].image_url}`} />
+          <img src={`${API_BASE}${images[0].image_url}`} />
         </div>
         {images.map((image, index) => {
           if (index > 0) {
             return (
               <div key={index} className="carousel-item">
-                <img  src={`${PRODUCT_IMAGE_BASE}${image.image_url}`} />
+                <img  src={`${API_BASE}${image.image_url}`} />
               </div>
             );
           }

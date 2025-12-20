@@ -11,7 +11,7 @@ function FilterNotification(props) {
     <div className="filter-bar row">
       <TypeAction type="Tất cả" chosen={chosen} onChosen={handleChoose}/>
       <TypeAction type="Người dùng" chosen={chosen} onChosen={handleChoose}/>
-      <TypeAction type="Đớn hàng của tôi" chosen={chosen} onChosen={handleChoose}/>
+      <TypeAction type="Đơn hàng của tôi" chosen={chosen} onChosen={handleChoose}/>
       <TypeAction type="Hệ thống" chosen={chosen} onChosen={handleChoose}/>
     </div>
   );
